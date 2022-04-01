@@ -1,0 +1,66 @@
+---
+title: "Advanced topics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Advanced topics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(chronicler)
+library(testthat)
+```
+
+# Monadic laws
+
+First draft: are we dealing with a monad?
+
+- First law
+
+```{r}
+a <- as_chronicle(10)
+
+test_that("first monadic law", {
+  expect_equal(flat_chronicle(a, sqrt)$value, sqrt(a$value))
+})
+
+
+```
+
+- Second law
+
+```{r}
+test_that("second monadic law", {
+  expect_equal(bind_record(a, as_chronicle)$value, a$value)
+})
+
+```
+
+- Third law
+
+```{r}
+a <- as_chronicle(10)
+
+r_sqrt <- record(sqrt)
+r_exp <- record(exp)
+r_mean <- record(mean)
+
+test_that("third monadic law", {
+  expect_equal(
+    (bind_record(a, r_sqrt)) |>
+      bind_record(r_exp),
+    a |>
+    (\(x) bind_record(x, r_sqrt) |> bind_record(r_exp))(),
+  tolerance = .01
+  )
+})
+
+```
