@@ -1,0 +1,5 @@
+url: https://b-rodrigues.github.io/chronicler/
+template:
+  bootstrap: 5
+  bootswatch: darkly
+  theme: arrow-dark
