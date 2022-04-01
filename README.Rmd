@@ -1,0 +1,194 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# loud
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+Easily add logs to your functions.
+
+## Installation
+
+You can install the development version of loud from [GitHub](https://github.com/) with:
+
+```{r, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("b-rodrigues/chronicler")
+```
+
+## Introduction
+
+{chronicler} allows you to decorate functions make them provide enhanced output:
+
+
+```{r example}
+library(chronicler)
+
+r_sqrt <- record(sqrt)
+
+a <- r_sqrt(1:5)
+
+```
+
+Object `a` is now an object of class `loud`. The value of the `sqrt()` function applied to its arguments
+can be obtained using `pick()`:
+
+```{r}
+pick(a, "value")
+```
+
+A log also gets generated and can be read using `read_log()`:
+
+```{r}
+read_log(a)
+```
+This is especially useful for objects that get created using multiple calls:
+
+```{r}
+
+r_sqrt <- record(sqrt)
+r_exp <- record(exp)
+r_mean <- record(mean)
+
+b <- 1:10 |>
+  r_sqrt() |>
+  bind_record(r_exp) |>
+  bind_record(r_mean)
+
+```
+
+```{r}
+read_log(b)
+
+pick(b, "value")
+```
+
+## Composing decorated functions
+
+`bind_record()` is used to pass the output from one decorated function to the next.
+
+`record()` works with any function:
+
+```{r}
+library(dplyr)
+
+r_group_by <- record(group_by)
+r_select <- record(select)
+r_summarise <- record(summarise)
+r_filter <- record(filter)
+
+output <- starwars %>%
+  r_select(height, mass, species, sex) %>%
+  bind_record(r_group_by, species, sex) %>%
+  bind_record(r_filter, sex != "male") %>%
+  bind_record(r_summarise,
+              mass = mean(mass, na.rm = TRUE)
+              )
+
+```
+
+```{r}
+read_log(output)
+```
+
+The value can then be accessed and worked on as usual using `pick()`:
+
+```{r}
+pick(output, "value")
+```
+
+This package also ships with a dedicated pipe, `%>=%` which you can use instead of `bind_record()`:
+
+```{r}
+output_pipe <- starwars %>%
+  as_chronicle() %>=%
+  r_select(height, mass, species, sex) %>=%
+  r_group_by(species, sex) %>=%
+  r_filter(sex != "male") %>=%
+  r_summarise(mass = mean(mass, na.rm = TRUE))
+
+```
+
+```{r}
+pick(output_pipe, "value")
+```
+
+Objects of class `chronicle` have their own print method:
+
+```{r}
+output_pipe
+```
+
+## Condition handling
+
+By default, errors and warnings get caught and composed in the log:
+
+```{r}
+
+errord_output <- starwars %>%
+  as_chronicle() %>=%
+  r_select(height, mass, species, sex) %>=% 
+  r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
+  r_filter(sex != "male") %>=%
+  r_summarise(mass = mean(mass, na.rm = TRUE))
+
+```
+
+```{r}
+errord_output
+```
+
+Reading the log tells you which function failed, and with which error message:
+
+```{r}
+read_log(errord_output)
+```
+
+It is also possible to only capture errors, or catpure errors, warnings and messages using
+the `strict` parameter of `loud()`
+
+```{r}
+# Only errors:
+
+r_sqrt <- record(sqrt, strict = 1)
+
+r_sqrt(-10) |>
+  read_log()
+
+# Errors and warnings:
+
+r_sqrt <- record(sqrt, strict = 2)
+
+r_sqrt(-10) |>
+  read_log()
+
+# Errors, warnings and messages
+
+my_f <- function(x){
+  message("this is a message")
+  10
+}
+
+record(my_f, strict = 3)(10) |>
+                         read_log()
+
+```
+
+## Thanks
+
+I’d like to thank [armcn](https://github.com/armcn), [Kupac](https://github.com/Kupac) for their
+blog posts ([here](https://kupac.gitlab.io/biofunctor/2019/05/25/maybe-monad-in-r/)) and 
+packages ([maybe](https://armcn.github.io/maybe/)) which inspired me to build this package.
