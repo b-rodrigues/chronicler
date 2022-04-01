@@ -114,7 +114,6 @@ This package also ships with a dedicated pipe, `%>=%` which you can use instead 
 
 ```{r}
 output_pipe <- starwars %>%
-  as_chronicle() %>=%
   r_select(height, mass, species, sex) %>=%
   r_group_by(species, sex) %>=%
   r_filter(sex != "male") %>=%
@@ -139,7 +138,6 @@ By default, errors and warnings get caught and composed in the log:
 ```{r}
 
 errord_output <- starwars %>%
-  as_chronicle() %>=%
   r_select(height, mass, species, sex) %>=% 
   r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
   r_filter(sex != "male") %>=%
@@ -199,7 +197,6 @@ r_summarise <- record(summarise, .g = dim)
 r_filter <- record(filter, .g = dim)
 
 output_pipe <- starwars %>%
-  as_chronicle() %>=%
   r_select(height, mass, species, sex) %>=%
   r_group_by(species, sex) %>=%
   r_filter(sex != "male") %>=%
