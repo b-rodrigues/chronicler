@@ -31,7 +31,7 @@ devtools::install_github("b-rodrigues/chronicler")
 
 ## Introduction
 
-{chronicler} allows you to decorate functions make them provide enhanced output:
+{chronicler} allows you to decorate functions to make them provide enhanced output:
 
 
 ```{r example}
@@ -43,7 +43,7 @@ a <- r_sqrt(1:5)
 
 ```
 
-Object `a` is now an object of class `loud`. The value of the `sqrt()` function applied to its arguments
+Object `a` is now an object of class `chronicle`. The value of the `sqrt()` function applied to its arguments
 can be obtained using `pick()`:
 
 ```{r}
