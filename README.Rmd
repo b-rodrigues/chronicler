@@ -213,7 +213,7 @@ pick(output_pipe, "log_df")
 It is thus possible to take a look at the output of the function provided (`dim()`):
 
 ```{r}
-output_pipe$log_df[, c("function", "g")]
+as.data.frame(output_pipe$log_df[, c("function", "g")])
 ```
 
 We can see that the dimension of the dataframe was (87, 4) after the call to `select()`, (23, 4)

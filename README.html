@@ -50,7 +50,7 @@ body {
 <p>A log also gets generated and can be read using <code>read_log()</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_log</span>(a)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Complete log:&quot;                                                 </span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; sqrt(1:5) ran successfully at 2022-04-01 12:23:20&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; sqrt(1:5) ran successfully at 2022-04-01 12:24:40&quot;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;Total running time: 0 secs&quot;</span></span></code></pre></div>
 <p>This is especially useful for objects that get created using multiple calls:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>r_sqrt <span class="ot">&lt;-</span> <span class="fu">record</span>(sqrt)</span>
@@ -63,10 +63,10 @@ body {
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_record</span>(r_mean)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_log</span>(b)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Complete log:&quot;                                                      </span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; sqrt(1:10) ran successfully at 2022-04-01 12:23:20&quot;    </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; exp(.c$value) ran successfully at 2022-04-01 12:23:20&quot; </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; mean(.c$value) ran successfully at 2022-04-01 12:23:20&quot;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;Total running time: 0.00629806518554688 secs&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; sqrt(1:10) ran successfully at 2022-04-01 12:24:40&quot;    </span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; exp(.c$value) ran successfully at 2022-04-01 12:24:40&quot; </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; mean(.c$value) ran successfully at 2022-04-01 12:24:40&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;Total running time: 0.00598526000976562 secs&quot;</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pick</span>(b, <span class="st">&quot;value&quot;</span>)</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 11.55345</span></span></code></pre></div>
@@ -89,11 +89,11 @@ body {
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>              )</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_log</span>(output)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Complete log:&quot;                                                                                    </span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; select(.,height,mass,species,sex) ran successfully at 2022-04-01 12:23:20&quot;           </span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; group_by(.c$value,species,sex) ran successfully at 2022-04-01 12:23:20&quot;              </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; filter(.c$value,sex != \&quot;male\&quot;) ran successfully at 2022-04-01 12:23:20&quot;            </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; summarise(.c$value,mean(mass, na.rm = TRUE)) ran successfully at 2022-04-01 12:23:20&quot;</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;Total running time: 0.0519671440124512 secs&quot;</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; select(.,height,mass,species,sex) ran successfully at 2022-04-01 12:24:40&quot;           </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; group_by(.c$value,species,sex) ran successfully at 2022-04-01 12:24:40&quot;              </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; filter(.c$value,sex != \&quot;male\&quot;) ran successfully at 2022-04-01 12:24:40&quot;            </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; summarise(.c$value,mean(mass, na.rm = TRUE)) ran successfully at 2022-04-01 12:24:40&quot;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;Total running time: 0.0531117916107178 secs&quot;</span></span></code></pre></div>
 <p>The value can then be accessed and worked on as usual using <code>pick()</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pick</span>(output, <span class="st">&quot;value&quot;</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 9 x 3</span></span>
@@ -170,11 +170,11 @@ body {
 <p>Reading the log tells you which function failed, and with which error message:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_log</span>(errord_output)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Complete log:&quot;                                                                                                                                                                                               </span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; select(.,height,mass,species,sex) ran successfully at 2022-04-01 12:23:20&quot;                                                                                                                      </span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; group_by(.c$value,species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\nx Column `sx` is not found. at 2022-04-01 12:23:20&quot;                       </span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; filter(.c$value,sex != \&quot;male\&quot;) ran unsuccessfully with following exception: no applicable method for &#39;filter&#39; applied to an object of class \&quot;logical\&quot; at 2022-04-01 12:23:20&quot;               </span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; summarise(.c$value,mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for &#39;summarise&#39; applied to an object of class \&quot;logical\&quot; at 2022-04-01 12:23:20&quot;</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;Total running time: 0.0890898704528809 secs&quot;</span></span></code></pre></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;94&gt; select(.,height,mass,species,sex) ran successfully at 2022-04-01 12:24:40&quot;                                                                                                                      </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; group_by(.c$value,species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\nx Column `sx` is not found. at 2022-04-01 12:24:40&quot;                       </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; filter(.c$value,sex != \&quot;male\&quot;) ran unsuccessfully with following exception: no applicable method for &#39;filter&#39; applied to an object of class \&quot;logical\&quot; at 2022-04-01 12:24:40&quot;               </span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; summarise(.c$value,mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for &#39;summarise&#39; applied to an object of class \&quot;logical\&quot; at 2022-04-01 12:24:40&quot;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] &quot;Total running time: 0.0876007080078125 secs&quot;</span></span></code></pre></div>
 <p>It is also possible to only capture errors, or catpure errors, warnings and messages using the <code>strict</code> parameter of <code>record()</code></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only errors:</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -184,7 +184,7 @@ body {
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_log</span>()</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in .f(...): NaNs produced</span></span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Complete log:&quot;                                                                                </span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; sqrt(-10) ran unsuccessfully with following exception: NA at 2022-04-01 12:23:20&quot;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; sqrt(-10) ran unsuccessfully with following exception: NA at 2022-04-01 12:24:40&quot;</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;Total running time: 0 secs&quot;</span></span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Errors and warnings:</span></span>
@@ -194,7 +194,7 @@ body {
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">r_sqrt</span>(<span class="sc">-</span><span class="dv">10</span>) <span class="sc">|</span><span class="er">&gt;</span></span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_log</span>()</span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Complete log:&quot;                                                                                           </span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; sqrt(-10) ran unsuccessfully with following exception: NaNs produced at 2022-04-01 12:23:20&quot;</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; sqrt(-10) ran unsuccessfully with following exception: NaNs produced at 2022-04-01 12:24:40&quot;</span></span>
 <span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;Total running time: 0 secs&quot;</span></span>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Errors, warnings and messages</span></span>
@@ -207,7 +207,7 @@ body {
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="fu">record</span>(my_f, <span class="at">strict =</span> <span class="dv">3</span>)(<span class="dv">10</span>) <span class="sc">|</span><span class="er">&gt;</span></span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">read_log</span>()</span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Complete log:&quot;                                                                                                </span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; my_f(10) ran unsuccessfully with following exception: this is a message\n at 2022-04-01 12:23:20&quot;</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &quot;&lt;e2&gt;&lt;9c&gt;&lt;96&gt; my_f(10) ran unsuccessfully with following exception: this is a message\n at 2022-04-01 12:24:40&quot;</span></span>
 <span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] &quot;Total running time: 0 secs&quot;</span></span></code></pre></div>
 <h2 id="advanced-logging">Advanced logging</h2>
 <p>You can provide a function to <code>record()</code>, which will be evaluated on the output. This makes it possible to, for example, monitor the size of a data frame throughout the pipeline:</p>
@@ -226,20 +226,18 @@ body {
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 x 8</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   outcome   `function` arguments message start_time          end_time           </span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;   &lt;dttm&gt;              &lt;dttm&gt;             </span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 &lt;e2&gt;&lt;9c&gt;~ select     &quot;.,heigh~ NA      2022-04-01 12:23:20 2022-04-01 12:23:20</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 &lt;e2&gt;&lt;9c&gt;~ group_by   &quot;.c$valu~ NA      2022-04-01 12:23:20 2022-04-01 12:23:20</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 &lt;e2&gt;&lt;9c&gt;~ filter     &quot;.c$valu~ NA      2022-04-01 12:23:20 2022-04-01 12:23:20</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 &lt;e2&gt;&lt;9c&gt;~ summarise  &quot;.c$valu~ NA      2022-04-01 12:23:20 2022-04-01 12:23:20</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 &lt;e2&gt;&lt;9c&gt;~ select     &quot;.,heigh~ NA      2022-04-01 12:24:40 2022-04-01 12:24:40</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 &lt;e2&gt;&lt;9c&gt;~ group_by   &quot;.c$valu~ NA      2022-04-01 12:24:40 2022-04-01 12:24:40</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 &lt;e2&gt;&lt;9c&gt;~ filter     &quot;.c$valu~ NA      2022-04-01 12:24:40 2022-04-01 12:24:40</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 &lt;e2&gt;&lt;9c&gt;~ summarise  &quot;.c$valu~ NA      2022-04-01 12:24:40 2022-04-01 12:24:40</span></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 2 more variables: run_time &lt;drtn&gt;, g &lt;list&gt;</span></span></code></pre></div>
 <p>It is thus possible to take a look at the output of the function provided (<code>dim()</code>):</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>output_pipe<span class="sc">$</span>log_df[, <span class="fu">c</span>(<span class="st">&quot;function&quot;</span>, <span class="st">&quot;g&quot;</span>)]</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 x 2</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   `function` g        </span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;list&gt;   </span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 select     &lt;int [2]&gt;</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 group_by   &lt;lgl [1]&gt;</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 filter     &lt;int [2]&gt;</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 summarise  &lt;int [2]&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(output_pipe<span class="sc">$</span>log_df[, <span class="fu">c</span>(<span class="st">&quot;function&quot;</span>, <span class="st">&quot;g&quot;</span>)])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    function     g</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    select 87, 4</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  group_by    NA</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    filter 23, 4</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 summarise  9, 3</span></span></code></pre></div>
 <p>We can see that the dimension of the dataframe was (87, 4) after the call to <code>select()</code>, (23, 4) after the call to <code>filter()</code> and finally (9, 3) after the call to <code>summarise()</code>.</p>
 <h2 id="thanks">Thanks</h2>
 <p>I’d like to thank <a href="https://github.com/armcn">armcn</a>, <a href="https://github.com/Kupac">Kupac</a> for their blog posts (<a href="https://kupac.gitlab.io/biofunctor/2019/05/25/maybe-monad-in-r/">here</a>) and packages (<a href="https://armcn.github.io/maybe/">maybe</a>) which inspired me to build this package.</p>
