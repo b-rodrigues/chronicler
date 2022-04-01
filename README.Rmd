@@ -187,6 +187,41 @@ record(my_f, strict = 3)(10) |>
 
 ```
 
+## Advanced logging
+
+You can provide a function to `record()`, which will be evaluated on the output. This makes it possible
+to, for example, monitor the size of a data frame throughout the pipeline:
+
+```{r}
+r_group_by <- record(group_by)
+r_select <- record(select, .g = dim)
+r_summarise <- record(summarise, .g = dim)
+r_filter <- record(filter, .g = dim)
+
+output_pipe <- starwars %>%
+  as_chronicle() %>=%
+  r_select(height, mass, species, sex) %>=%
+  r_group_by(species, sex) %>=%
+  r_filter(sex != "male") %>=%
+  r_summarise(mass = mean(mass, na.rm = TRUE))
+
+```
+
+The `$log_df` element of a `chronicle` object contains detailled information:
+
+```{r}
+pick(output_pipe, "log_df")
+```
+
+It is thus possible to take a look at the output of the function provided (`dim()`):
+
+```{r}
+output_pipe$log_df[, c("function", "g")]
+```
+
+We can see that the dimension of the dataframe was (87, 4) after the call to `select()`, (23, 4)
+after the call to `filter()` and finally (9, 3) after the call to `summarise()`.
+
 ## Thanks
 
 I’d like to thank [armcn](https://github.com/armcn), [Kupac](https://github.com/Kupac) for their
