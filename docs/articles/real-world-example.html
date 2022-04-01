@@ -134,9 +134,9 @@
 <p><code>avia_monthly</code> is an object of class <code>loud</code>, but in essence, it is just a list, with its own print method:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avia_monthly</span>
-<span class="co">#&gt; &lt;e2&gt;&lt;9c&gt;&lt;94&gt; Value computed successfully:</span>
+<span class="co">#&gt; ✔ Value computed successfully:</span>
 <span class="co">#&gt; ---------------</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 x 3</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 × 3</span></span>
 <span class="co">#&gt;    destination     date       passengers</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> LU_ELLX_AT_LOWW 2018-03-01 3967      </span>
@@ -149,7 +149,7 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> LU_ELLX_AT_LOWW 2017-08-01 4399      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> LU_ELLX_AT_LOWW 2017-07-01 4277      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span> LU_ELLX_AT_LOWW 2017-06-01 4674      </span>
-<span class="co">#&gt; <span style="color: #949494;"># ... with 7,622 more rows</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 7,622 more rows</span></span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; This is an object of type `chronicle`.</span>
@@ -158,20 +158,20 @@
 <p>Now that the data is clean, we can read the log:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Complete log:"                                                                                                                               </span>
-<span class="co">#&gt; [2] "&lt;e2&gt;&lt;9c&gt;&lt;94&gt; select(.,1,contains(\"20\")) ran successfully at 2022-04-01 11:23:59"                                                           </span>
-<span class="co">#&gt; [3] "&lt;e2&gt;&lt;9c&gt;&lt;94&gt; pivot_longer(.c$value,-starts_with(\"unit\"),date,passengers) ran successfully at 2022-04-01 11:23:59"                          </span>
-<span class="co">#&gt; [4] "&lt;e2&gt;&lt;9c&gt;&lt;94&gt; separate(.c$value,1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-04-01 11:23:59"                   </span>
-<span class="co">#&gt; [5] "&lt;e2&gt;&lt;9c&gt;&lt;94&gt; filter(.c$value,tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-04-01 11:24:01"</span>
-<span class="co">#&gt; [6] "&lt;e2&gt;&lt;9c&gt;&lt;94&gt; mutate(.c$value,paste0(date, \"01\"),ymd(date)) ran successfully at 2022-04-01 11:24:01"                                        </span>
-<span class="co">#&gt; [7] "&lt;e2&gt;&lt;9c&gt;&lt;94&gt; select(.c$value,air_pr\\time,date,passengers) ran successfully at 2022-04-01 11:24:01"                                          </span>
-<span class="co">#&gt; [8] "Total running time: 1.88556289672852 secs"</span></code></pre></div>
+<span class="co">#&gt; [1] "Complete log:"                                                                                                                    </span>
+<span class="co">#&gt; [2] "✔ select(.,1,contains(\"20\")) ran successfully at 2022-04-01 16:01:55"                                                           </span>
+<span class="co">#&gt; [3] "✔ pivot_longer(.c$value,-starts_with(\"unit\"),date,passengers) ran successfully at 2022-04-01 16:01:55"                          </span>
+<span class="co">#&gt; [4] "✔ separate(.c$value,1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-04-01 16:01:55"                   </span>
+<span class="co">#&gt; [5] "✔ filter(.c$value,tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-04-01 16:01:56"</span>
+<span class="co">#&gt; [6] "✔ mutate(.c$value,paste0(date, \"01\"),ymd(date)) ran successfully at 2022-04-01 16:01:56"                                        </span>
+<span class="co">#&gt; [7] "✔ select(.c$value,air_pr\\time,date,passengers) ran successfully at 2022-04-01 16:01:56"                                          </span>
+<span class="co">#&gt; [8] "Total running time: 1.80027866363525 secs"</span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code> gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People that then read this object, can read the log to know what happened and reproduce the steps if necessary.</p>
 <p>Let’s take a look at the final data set:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avia_monthly</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/pick.html">pick</a></span><span class="op">(</span><span class="st">"value"</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 x 3</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 × 3</span></span>
 <span class="co">#&gt;    destination     date       passengers</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> LU_ELLX_AT_LOWW 2018-03-01 3967      </span>
@@ -184,21 +184,21 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> LU_ELLX_AT_LOWW 2017-08-01 4399      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> LU_ELLX_AT_LOWW 2017-07-01 4277      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span> LU_ELLX_AT_LOWW 2017-06-01 4674      </span>
-<span class="co">#&gt; <span style="color: #949494;"># ... with 7,622 more rows</span></span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># … with 7,622 more rows</span></span></code></pre></div>
 <p>It is also possible to take a look at the underlying <code>.log_df</code> object that contains more details:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avia_monthly</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/pick.html">pick</a></span><span class="op">(</span><span class="st">"log_df"</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 x 8</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 8</span></span>
 <span class="co">#&gt;   outcome   `function` arguments message start_time          end_time           </span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>             </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> &lt;e2&gt;&lt;9c&gt;~ select     <span style="color: #949494;">"</span>.,1,con~ NA      2022-04-01 <span style="color: #949494;">11:23:59</span> 2022-04-01 <span style="color: #949494;">11:23:59</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> &lt;e2&gt;&lt;9c&gt;~ pivot_lon~ <span style="color: #949494;">"</span>.c$valu~ NA      2022-04-01 <span style="color: #949494;">11:23:59</span> 2022-04-01 <span style="color: #949494;">11:23:59</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> &lt;e2&gt;&lt;9c&gt;~ separate   <span style="color: #949494;">"</span>.c$valu~ NA      2022-04-01 <span style="color: #949494;">11:23:59</span> 2022-04-01 <span style="color: #949494;">11:24:01</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> &lt;e2&gt;&lt;9c&gt;~ filter     <span style="color: #949494;">"</span>.c$valu~ NA      2022-04-01 <span style="color: #949494;">11:24:01</span> 2022-04-01 <span style="color: #949494;">11:24:01</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> &lt;e2&gt;&lt;9c&gt;~ mutate     <span style="color: #949494;">"</span>.c$valu~ NA      2022-04-01 <span style="color: #949494;">11:24:01</span> 2022-04-01 <span style="color: #949494;">11:24:01</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> &lt;e2&gt;&lt;9c&gt;~ select     <span style="color: #949494;">"</span>.c$valu~ NA      2022-04-01 <span style="color: #949494;">11:24:01</span> 2022-04-01 <span style="color: #949494;">11:24:01</span></span>
-<span class="co">#&gt; <span style="color: #949494;"># ... with 2 more variables: run_time &lt;drtn&gt;, g &lt;list&gt;</span></span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> ✔ Success select     <span style="color: #949494;">"</span>.,1,con… NA      2022-04-01 <span style="color: #949494;">16:01:55</span> 2022-04-01 <span style="color: #949494;">16:01:55</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ✔ Success pivot_lon… <span style="color: #949494;">"</span>.c$valu… NA      2022-04-01 <span style="color: #949494;">16:01:55</span> 2022-04-01 <span style="color: #949494;">16:01:55</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> ✔ Success separate   <span style="color: #949494;">"</span>.c$valu… NA      2022-04-01 <span style="color: #949494;">16:01:55</span> 2022-04-01 <span style="color: #949494;">16:01:56</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> ✔ Success filter     <span style="color: #949494;">"</span>.c$valu… NA      2022-04-01 <span style="color: #949494;">16:01:56</span> 2022-04-01 <span style="color: #949494;">16:01:56</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> ✔ Success mutate     <span style="color: #949494;">"</span>.c$valu… NA      2022-04-01 <span style="color: #949494;">16:01:56</span> 2022-04-01 <span style="color: #949494;">16:01:56</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> ✔ Success select     <span style="color: #949494;">"</span>.c$valu… NA      2022-04-01 <span style="color: #949494;">16:01:56</span> 2022-04-01 <span style="color: #949494;">16:01:56</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 2 more variables: run_time &lt;drtn&gt;, g &lt;list&gt;</span></span></code></pre></div>
   </main>
 </div>
 

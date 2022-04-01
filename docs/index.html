@@ -73,7 +73,7 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of loud from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"b-rodrigues/chronicler"</span><span class="op">)</span></code></pre></div>
@@ -81,23 +81,23 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>{chronicler} allows you to decorate functions make them provide enhanced output:</p>
+<p>{chronicler} allows you to decorate functions to make them provide enhanced output:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">chronicler</span><span class="op">)</span>
 
 <span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
 
 <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">r_sqrt</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
-<p>Object <code>a</code> is now an object of class <code>loud</code>. The value of the <code><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt()</a></code> function applied to its arguments can be obtained using <code><a href="reference/pick.html">pick()</a></code>:</p>
+<p>Object <code>a</code> is now an object of class <code>chronicle</code>. The value of the <code><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt()</a></code> function applied to its arguments can be obtained using <code><a href="reference/pick.html">pick()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">a</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1.000000 1.414214 1.732051 2.000000 2.236068</span></code></pre></div>
 <p>A log also gets generated and can be read using <code><a href="reference/read_log.html">read_log()</a></code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Complete log:"                                             </span>
-<span class="co">#&gt; [2] "&lt;U+2714&gt; sqrt(1:5) ran successfully at 2022-04-01 11:14:43"</span>
-<span class="co">#&gt; [3] "Total running time: 0.00099492073059082 secs"</span></code></pre></div>
+<span class="co">#&gt; [1] "Complete log:"                                      </span>
+<span class="co">#&gt; [2] "✔ sqrt(1:5) ran successfully at 2022-04-01 16:01:09"</span>
+<span class="co">#&gt; [3] "Total running time: 0.00013422966003418 secs"</span></code></pre></div>
 <p>This is especially useful for objects that get created using multiple calls:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
@@ -110,11 +110,11 @@
   <span class="fu"><a href="reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_mean</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Complete log:"                                                  </span>
-<span class="co">#&gt; [2] "&lt;U+2714&gt; sqrt(1:10) ran successfully at 2022-04-01 11:14:43"    </span>
-<span class="co">#&gt; [3] "&lt;U+2714&gt; exp(.c$value) ran successfully at 2022-04-01 11:14:43" </span>
-<span class="co">#&gt; [4] "&lt;U+2714&gt; mean(.c$value) ran successfully at 2022-04-01 11:14:43"</span>
-<span class="co">#&gt; [5] "Total running time: 0.00805497169494629 secs"</span>
+<span class="co">#&gt; [1] "Complete log:"                                           </span>
+<span class="co">#&gt; [2] "✔ sqrt(1:10) ran successfully at 2022-04-01 16:01:09"    </span>
+<span class="co">#&gt; [3] "✔ exp(.c$value) ran successfully at 2022-04-01 16:01:09" </span>
+<span class="co">#&gt; [4] "✔ mean(.c$value) ran successfully at 2022-04-01 16:01:09"</span>
+<span class="co">#&gt; [5] "Total running time: 0.00696229934692383 secs"</span>
 
 <span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">b</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 11.55345</span></code></pre></div>
@@ -141,45 +141,68 @@
               <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Complete log:"                                                                                </span>
-<span class="co">#&gt; [2] "&lt;U+2714&gt; select(.,height,mass,species,sex) ran successfully at 2022-04-01 11:14:43"           </span>
-<span class="co">#&gt; [3] "&lt;U+2714&gt; group_by(.c$value,species,sex) ran successfully at 2022-04-01 11:14:43"              </span>
-<span class="co">#&gt; [4] "&lt;U+2714&gt; filter(.c$value,sex != \"male\") ran successfully at 2022-04-01 11:14:43"            </span>
-<span class="co">#&gt; [5] "&lt;U+2714&gt; summarise(.c$value,mean(mass, na.rm = TRUE)) ran successfully at 2022-04-01 11:14:43"</span>
-<span class="co">#&gt; [6] "Total running time: 0.0585381984710693 secs"</span></code></pre></div>
+<span class="co">#&gt; [1] "Complete log:"                                                                         </span>
+<span class="co">#&gt; [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-01 16:01:09"           </span>
+<span class="co">#&gt; [3] "✔ group_by(.c$value,species,sex) ran successfully at 2022-04-01 16:01:09"              </span>
+<span class="co">#&gt; [4] "✔ filter(.c$value,sex != \"male\") ran successfully at 2022-04-01 16:01:09"            </span>
+<span class="co">#&gt; [5] "✔ summarise(.c$value,mean(mass, na.rm = TRUE)) ran successfully at 2022-04-01 16:01:09"</span>
+<span class="co">#&gt; [6] "Total running time: 0.0487124919891357 secs"</span></code></pre></div>
 <p>The value can then be accessed and worked on as usual using <code><a href="reference/pick.html">pick()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output</span>, <span class="st">"value"</span><span class="op">)</span>
-<span class="co">#&gt; tibble [9, 3] </span>
-<span class="co">#&gt; grouped by: species [9] </span>
-<span class="co">#&gt; species chr Clawdite Droid Human Hutt Kaminoan Mirialan</span>
-<span class="co">#&gt; sex     chr female none female hermaphroditic female female</span>
-<span class="co">#&gt; mass    dbl 55 69.75 56.333333 1358 NaN 53.1</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 9 × 3</span>
+<span class="co">#&gt; # Groups:   species [9]</span>
+<span class="co">#&gt;   species    sex              mass</span>
+<span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Clawdite   female           55  </span>
+<span class="co">#&gt; 2 Droid      none             69.8</span>
+<span class="co">#&gt; 3 Human      female           56.3</span>
+<span class="co">#&gt; 4 Hutt       hermaphroditic 1358  </span>
+<span class="co">#&gt; 5 Kaminoan   female          NaN  </span>
+<span class="co">#&gt; 6 Mirialan   female           53.1</span>
+<span class="co">#&gt; 7 Tholothian female           50  </span>
+<span class="co">#&gt; 8 Togruta    female           57  </span>
+<span class="co">#&gt; 9 Twi'lek    female           55</span></code></pre></div>
 <p>This package also ships with a dedicated pipe, <code>%&gt;=%</code> which you can use instead of <code><a href="reference/bind_record.html">bind_record()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_pipe</span> <span class="op">&lt;-</span> <span class="va">starwars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="reference/as_chronicle.html">as_chronicle</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_select</span><span class="op">(</span><span class="va">height</span>, <span class="va">mass</span>, <span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_group_by</span><span class="op">(</span><span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output_pipe</span>, <span class="st">"value"</span><span class="op">)</span>
-<span class="co">#&gt; tibble [9, 3] </span>
-<span class="co">#&gt; grouped by: species [9] </span>
-<span class="co">#&gt; species chr Clawdite Droid Human Hutt Kaminoan Mirialan</span>
-<span class="co">#&gt; sex     chr female none female hermaphroditic female female</span>
-<span class="co">#&gt; mass    dbl 55 69.75 56.333333 1358 NaN 53.1</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 9 × 3</span>
+<span class="co">#&gt; # Groups:   species [9]</span>
+<span class="co">#&gt;   species    sex              mass</span>
+<span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Clawdite   female           55  </span>
+<span class="co">#&gt; 2 Droid      none             69.8</span>
+<span class="co">#&gt; 3 Human      female           56.3</span>
+<span class="co">#&gt; 4 Hutt       hermaphroditic 1358  </span>
+<span class="co">#&gt; 5 Kaminoan   female          NaN  </span>
+<span class="co">#&gt; 6 Mirialan   female           53.1</span>
+<span class="co">#&gt; 7 Tholothian female           50  </span>
+<span class="co">#&gt; 8 Togruta    female           57  </span>
+<span class="co">#&gt; 9 Twi'lek    female           55</span></code></pre></div>
 <p>Objects of class <code>chronicle</code> have their own print method:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_pipe</span>
-<span class="co">#&gt; &lt;U+2714&gt; Value computed successfully:</span>
+<span class="co">#&gt; ✔ Value computed successfully:</span>
 <span class="co">#&gt; ---------------</span>
-<span class="co">#&gt; tibble [9, 3] </span>
-<span class="co">#&gt; grouped by: species [9] </span>
-<span class="co">#&gt; species chr Clawdite Droid Human Hutt Kaminoan Mirialan</span>
-<span class="co">#&gt; sex     chr female none female hermaphroditic female female</span>
-<span class="co">#&gt; mass    dbl 55 69.75 56.333333 1358 NaN 53.1 </span>
+<span class="co">#&gt; # A tibble: 9 × 3</span>
+<span class="co">#&gt; # Groups:   species [9]</span>
+<span class="co">#&gt;   species    sex              mass</span>
+<span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Clawdite   female           55  </span>
+<span class="co">#&gt; 2 Droid      none             69.8</span>
+<span class="co">#&gt; 3 Human      female           56.3</span>
+<span class="co">#&gt; 4 Hutt       hermaphroditic 1358  </span>
+<span class="co">#&gt; 5 Kaminoan   female          NaN  </span>
+<span class="co">#&gt; 6 Mirialan   female           53.1</span>
+<span class="co">#&gt; 7 Tholothian female           50  </span>
+<span class="co">#&gt; 8 Togruta    female           57  </span>
+<span class="co">#&gt; 9 Twi'lek    female           55  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; This is an object of type `chronicle`.</span>
@@ -192,14 +215,13 @@
 <p>By default, errors and warnings get caught and composed in the log:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">errord_output</span> <span class="op">&lt;-</span> <span class="va">starwars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="reference/as_chronicle.html">as_chronicle</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_select</span><span class="op">(</span><span class="va">height</span>, <span class="va">mass</span>, <span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span> 
   <span class="fu">r_group_by</span><span class="op">(</span><span class="va">species</span>, <span class="va">sx</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span> <span class="co"># typo, "sx" instead of "sex"</span>
   <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">errord_output</span>
-<span class="co">#&gt; &lt;U+2716&gt; Value computed unsuccessfully &lt;U+2716&gt;:</span>
+<span class="co">#&gt; ✖ Value computed unsuccessfully ✖:</span>
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; [1] NA</span>
 <span class="co">#&gt; </span>
@@ -210,14 +232,13 @@
 <p>Reading the log tells you which function failed, and with which error message:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">errord_output</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                                           </span>
-<span class="co">#&gt; [2] "&lt;U+2714&gt; as_chronicle(NA) ran successfully at 2022-04-01 11:14:43"                                                                                                                                       </span>
-<span class="co">#&gt; [3] "&lt;U+2714&gt; select(.c$value,height,mass,species,sex) ran successfully at 2022-04-01 11:14:43"                                                                                                               </span>
-<span class="co">#&gt; [4] "&lt;U+2716&gt; group_by(.c$value,species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\nx Column `sx` is not found. at 2022-04-01 11:14:43"                       </span>
-<span class="co">#&gt; [5] "&lt;U+2716&gt; filter(.c$value,sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-01 11:14:43"               </span>
-<span class="co">#&gt; [6] "&lt;U+2716&gt; summarise(.c$value,mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-01 11:14:43"</span>
-<span class="co">#&gt; [7] "Total running time: 0.109799146652222 secs"</span></code></pre></div>
-<p>It is also possible to only capture errors, or catpure errors, warnings and messages using the <code>strict</code> parameter of <code>loud()</code></p>
+<span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                                    </span>
+<span class="co">#&gt; [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-01 16:01:09"                                                                                                                      </span>
+<span class="co">#&gt; [3] "✖ group_by(.c$value,species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-01 16:01:09"                       </span>
+<span class="co">#&gt; [4] "✖ filter(.c$value,sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-01 16:01:09"               </span>
+<span class="co">#&gt; [5] "✖ summarise(.c$value,mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-01 16:01:09"</span>
+<span class="co">#&gt; [6] "Total running time: 0.107323169708252 secs"</span></code></pre></div>
+<p>It is also possible to only capture errors, or catpure errors, warnings and messages using the <code>strict</code> parameter of <code><a href="reference/record.html">record()</a></code></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Only errors:</span>
 
@@ -226,9 +247,9 @@
 <span class="fu">r_sqrt</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Warning in .f(...): NaNs produced</span>
-<span class="co">#&gt; [1] "Complete log:"                                                                            </span>
-<span class="co">#&gt; [2] "&lt;U+2716&gt; sqrt(-10) ran unsuccessfully with following exception: NA at 2022-04-01 11:14:44"</span>
-<span class="co">#&gt; [3] "Total running time: 0 secs"</span>
+<span class="co">#&gt; [1] "Complete log:"                                                                     </span>
+<span class="co">#&gt; [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NA at 2022-04-01 16:01:09"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000174283981323242 secs"</span>
 
 <span class="co"># Errors and warnings:</span>
 
@@ -236,9 +257,9 @@
 
 <span class="fu">r_sqrt</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Complete log:"                                                                                       </span>
-<span class="co">#&gt; [2] "&lt;U+2716&gt; sqrt(-10) ran unsuccessfully with following exception: NaNs produced at 2022-04-01 11:14:44"</span>
-<span class="co">#&gt; [3] "Total running time: 0 secs"</span>
+<span class="co">#&gt; [1] "Complete log:"                                                                                </span>
+<span class="co">#&gt; [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NaNs produced at 2022-04-01 16:01:09"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000232458114624023 secs"</span>
 
 <span class="co"># Errors, warnings and messages</span>
 
@@ -249,9 +270,45 @@
 
 <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">my_f</span>, strict <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> |&gt;
                          <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Complete log:"                                                                                            </span>
-<span class="co">#&gt; [2] "&lt;U+2716&gt; my_f(10) ran unsuccessfully with following exception: this is a message\n at 2022-04-01 11:14:44"</span>
-<span class="co">#&gt; [3] "Total running time: 0.00099492073059082 secs"</span></code></pre></div>
+<span class="co">#&gt; [1] "Complete log:"                                                                                     </span>
+<span class="co">#&gt; [2] "✖ my_f(10) ran unsuccessfully with following exception: this is a message\n at 2022-04-01 16:01:09"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000235557556152344 secs"</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="advanced-logging">Advanced logging<a class="anchor" aria-label="anchor" href="#advanced-logging"></a>
+</h2>
+<p>You can provide a function to <code><a href="reference/record.html">record()</a></code>, which will be evaluated on the output. This makes it possible to, for example, monitor the size of a data frame throughout the pipeline:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r_group_by</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">group_by</span><span class="op">)</span>
+<span class="va">r_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">select</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span>
+<span class="va">r_summarise</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">summarise</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span>
+<span class="va">r_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">filter</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span>
+
+<span class="va">output_pipe</span> <span class="op">&lt;-</span> <span class="va">starwars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">r_select</span><span class="op">(</span><span class="va">height</span>, <span class="va">mass</span>, <span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_group_by</span><span class="op">(</span><span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>The <code>$log_df</code> element of a <code>chronicle</code> object contains detailled information:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output_pipe</span>, <span class="st">"log_df"</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 4 × 8</span>
+<span class="co">#&gt;   outcome   `function` arguments message start_time          end_time           </span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;   &lt;dttm&gt;              &lt;dttm&gt;             </span>
+<span class="co">#&gt; 1 ✔ Success select     ".,heigh… NA      2022-04-01 16:01:09 2022-04-01 16:01:09</span>
+<span class="co">#&gt; 2 ✔ Success group_by   ".c$valu… NA      2022-04-01 16:01:09 2022-04-01 16:01:09</span>
+<span class="co">#&gt; 3 ✔ Success filter     ".c$valu… NA      2022-04-01 16:01:09 2022-04-01 16:01:09</span>
+<span class="co">#&gt; 4 ✔ Success summarise  ".c$valu… NA      2022-04-01 16:01:09 2022-04-01 16:01:09</span>
+<span class="co">#&gt; # … with 2 more variables: run_time &lt;drtn&gt;, g &lt;list&gt;</span></code></pre></div>
+<p>It is thus possible to take a look at the output of the function provided (<code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code>):</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">output_pipe</span><span class="op">$</span><span class="va">log_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"function"</span>, <span class="st">"g"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="co">#&gt;    function     g</span>
+<span class="co">#&gt; 1    select 87, 4</span>
+<span class="co">#&gt; 2  group_by    NA</span>
+<span class="co">#&gt; 3    filter 23, 4</span>
+<span class="co">#&gt; 4 summarise  9, 3</span></code></pre></div>
+<p>We can see that the dimension of the dataframe was (87, 4) after the call to <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, (23, 4) after the call to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code> and finally (9, 3) after the call to <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>
