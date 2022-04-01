@@ -45,8 +45,8 @@ A log also gets generated and can be read using `read_log()`:
 ``` r
 read_log(a)
 #> [1] "Complete log:"                                      
-#> [2] "✔ sqrt(1:5) ran successfully at 2022-04-01 16:01:09"
-#> [3] "Total running time: 0.00013422966003418 secs"
+#> [2] "✔ sqrt(1:5) ran successfully at 2022-04-01 16:04:28"
+#> [3] "Total running time: 8.17775726318359e-05 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -66,10 +66,10 @@ b <- 1:10 |>
 ``` r
 read_log(b)
 #> [1] "Complete log:"                                           
-#> [2] "✔ sqrt(1:10) ran successfully at 2022-04-01 16:01:09"    
-#> [3] "✔ exp(.c$value) ran successfully at 2022-04-01 16:01:09" 
-#> [4] "✔ mean(.c$value) ran successfully at 2022-04-01 16:01:09"
-#> [5] "Total running time: 0.00696229934692383 secs"
+#> [2] "✔ sqrt(1:10) ran successfully at 2022-04-01 16:04:28"    
+#> [3] "✔ exp(.c$value) ran successfully at 2022-04-01 16:04:28" 
+#> [4] "✔ mean(.c$value) ran successfully at 2022-04-01 16:04:28"
+#> [5] "Total running time: 0.0211019515991211 secs"
 
 pick(b, "value")
 #> [1] 11.55345
@@ -102,11 +102,11 @@ output <- starwars %>%
 ``` r
 read_log(output)
 #> [1] "Complete log:"                                                                         
-#> [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-01 16:01:09"           
-#> [3] "✔ group_by(.c$value,species,sex) ran successfully at 2022-04-01 16:01:09"              
-#> [4] "✔ filter(.c$value,sex != \"male\") ran successfully at 2022-04-01 16:01:09"            
-#> [5] "✔ summarise(.c$value,mean(mass, na.rm = TRUE)) ran successfully at 2022-04-01 16:01:09"
-#> [6] "Total running time: 0.0487124919891357 secs"
+#> [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-01 16:04:28"           
+#> [3] "✔ group_by(.c$value,species,sex) ran successfully at 2022-04-01 16:04:28"              
+#> [4] "✔ filter(.c$value,sex != \"male\") ran successfully at 2022-04-01 16:04:28"            
+#> [5] "✔ summarise(.c$value,mean(mass, na.rm = TRUE)) ran successfully at 2022-04-01 16:04:28"
+#> [6] "Total running time: 0.0484888553619385 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`:
@@ -196,7 +196,7 @@ errord_output <- starwars %>%
 
 ``` r
 errord_output
-#> ✖ Value computed unsuccessfully ✖:
+#> ✖ Value computed unsuccessfully:
 #> ---------------
 #> [1] NA
 #> 
@@ -212,11 +212,11 @@ message:
 ``` r
 read_log(errord_output)
 #> [1] "Complete log:"                                                                                                                                                                                    
-#> [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-01 16:01:09"                                                                                                                      
-#> [3] "✖ group_by(.c$value,species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-01 16:01:09"                       
-#> [4] "✖ filter(.c$value,sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-01 16:01:09"               
-#> [5] "✖ summarise(.c$value,mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-01 16:01:09"
-#> [6] "Total running time: 0.107323169708252 secs"
+#> [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-01 16:04:28"                                                                                                                      
+#> [3] "✖ group_by(.c$value,species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-01 16:04:28"                       
+#> [4] "✖ filter(.c$value,sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-01 16:04:28"               
+#> [5] "✖ summarise(.c$value,mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-01 16:04:28"
+#> [6] "Total running time: 0.0922913551330566 secs"
 ```
 
 It is also possible to only capture errors, or catpure errors, warnings
@@ -231,7 +231,7 @@ r_sqrt(-10) |>
   read_log()
 #> Warning in .f(...): NaNs produced
 #> [1] "Complete log:"                                                                     
-#> [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NA at 2022-04-01 16:01:09"
+#> [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NA at 2022-04-01 16:04:28"
 #> [3] "Total running time: 0.000174283981323242 secs"
 
 # Errors and warnings:
@@ -241,8 +241,8 @@ r_sqrt <- record(sqrt, strict = 2)
 r_sqrt(-10) |>
   read_log()
 #> [1] "Complete log:"                                                                                
-#> [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NaNs produced at 2022-04-01 16:01:09"
-#> [3] "Total running time: 0.000232458114624023 secs"
+#> [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NaNs produced at 2022-04-01 16:04:28"
+#> [3] "Total running time: 0.00021052360534668 secs"
 
 # Errors, warnings and messages
 
@@ -254,8 +254,8 @@ my_f <- function(x){
 record(my_f, strict = 3)(10) |>
                          read_log()
 #> [1] "Complete log:"                                                                                     
-#> [2] "✖ my_f(10) ran unsuccessfully with following exception: this is a message\n at 2022-04-01 16:01:09"
-#> [3] "Total running time: 0.000235557556152344 secs"
+#> [2] "✖ my_f(10) ran unsuccessfully with following exception: this is a message\n at 2022-04-01 16:04:28"
+#> [3] "Total running time: 0.000233650207519531 secs"
 ```
 
 ## Advanced logging
@@ -285,10 +285,10 @@ pick(output_pipe, "log_df")
 #> # A tibble: 4 × 8
 #>   outcome   `function` arguments message start_time          end_time           
 #>   <chr>     <chr>      <chr>     <chr>   <dttm>              <dttm>             
-#> 1 ✔ Success select     ".,heigh… NA      2022-04-01 16:01:09 2022-04-01 16:01:09
-#> 2 ✔ Success group_by   ".c$valu… NA      2022-04-01 16:01:09 2022-04-01 16:01:09
-#> 3 ✔ Success filter     ".c$valu… NA      2022-04-01 16:01:09 2022-04-01 16:01:09
-#> 4 ✔ Success summarise  ".c$valu… NA      2022-04-01 16:01:09 2022-04-01 16:01:09
+#> 1 ✔ Success select     ".,heigh… NA      2022-04-01 16:04:28 2022-04-01 16:04:28
+#> 2 ✔ Success group_by   ".c$valu… NA      2022-04-01 16:04:28 2022-04-01 16:04:28
+#> 3 ✔ Success filter     ".c$valu… NA      2022-04-01 16:04:28 2022-04-01 16:04:28
+#> 4 ✔ Success summarise  ".c$valu… NA      2022-04-01 16:04:28 2022-04-01 16:04:28
 #> # … with 2 more variables: run_time <drtn>, g <list>
 ```
 

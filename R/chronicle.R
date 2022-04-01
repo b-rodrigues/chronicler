@@ -117,7 +117,7 @@ print.chronicle <- function(.c, ...){
 
   } else {
 
-    succeed <- "unsuccessfully ✖"
+    succeed <- "unsuccessfully"
     success_symbol <- "✖"
 
   }
