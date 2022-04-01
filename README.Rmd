@@ -158,7 +158,7 @@ read_log(errord_output)
 ```
 
 It is also possible to only capture errors, or catpure errors, warnings and messages using
-the `strict` parameter of `loud()`
+the `strict` parameter of `record()`
 
 ```{r}
 # Only errors:
