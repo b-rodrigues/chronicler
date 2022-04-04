@@ -357,41 +357,21 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 #' @export
 `%>=%` <- function(.c, .f, ...) {
 
-  parsed <- parse_function(deparse1(substitute(.f)))
+  f_quo <- rlang::enquo(.f)
+  f_exp <- rlang::quo_get_expr(f_quo)
+  f_env <- rlang::quo_get_env(f_quo)
+  f_chr <- deparse(f_exp[[1]])
 
-  cmd <- make_command(parsed)
-  eval(parse(text = cmd))
+  f <- get(f_chr, envir = f_env)
 
-}
 
-make_command <- function(parsed_function){
+  q_ex_std <- rlang::call_match(call = f_exp, fn = f)
+  expr_ls <- as.list(q_ex_std)
 
-  paste0(".c$value |> ",
-         parsed_function$func,
-         "(",
-         parsed_function$args,
-         ".log_df = .c$log_df)")
 
-}
-
-parse_function <- function(.f_string){
-
-  func <- gsub("\\(.*$", "", .f_string)
-  args <- stringr::str_extract(.f_string, "\\(.*")
-  args <- gsub("^\\(", "", args)
-  args <- gsub("\\)$", "", args)
-  args <- ifelse(args != "", paste0(args, ", "), "")
-
- # func <- .f_string[1]
- # args <- ifelse(is.na(.f_string[-1]),
- #                "",
- #                c(paste0(.f_string[-1], collapse = ", "), ", "))
-
-  list("func" = func,
-       "args" = args)
+  eval(call2(f, .c$value, !!!expr_ls[-1], .log_df = .c$log_df))
 
 }
-
 
 
 #' Retrieve an element from a chronicle object

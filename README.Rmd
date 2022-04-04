@@ -113,6 +113,7 @@ pick(output, "value")
 This package also ships with a dedicated pipe, `%>=%` which you can use instead of `bind_record()`:
 
 ```{r}
+
 output_pipe <- starwars %>%
   r_select(height, mass, species, sex) %>=%
   r_group_by(species, sex) %>=%
