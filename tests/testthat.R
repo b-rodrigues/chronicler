@@ -1,4 +1,4 @@
 library(testthat)
-library(loud)
+library(chronicler)
 
-test_check("loud")
+test_check("chronicler")

@@ -7,6 +7,7 @@
 #' @param end Ending time
 #' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
 #' @return A tibble containing the log.
+#' @importFrom tibble tibble
 make_log_df <- function(success,
                         fstring,
                         args,
@@ -16,8 +17,8 @@ make_log_df <- function(success,
                         .g = (\(x) NA)){
 
   outcome <- ifelse(success == 1,
-                    "✔ Success",
-                    "✖ Caution - ERROR")
+                    "\u2714 Success",
+                    "\u2718 Caution - ERROR")
 
   tibble::tibble(
             "outcome" = outcome,
@@ -64,11 +65,10 @@ read_log <- function(.c){
   success_symbol <- function(log_df, i){
 
     ifelse(grepl("Success", log_df$outcome[i]),
-           "✔",
-           "✖")
+           "\u2714",
+           "\u2718")
 
   }
-
 
   make_sentence <- function(log_df, i){
 
@@ -106,25 +106,26 @@ read_log <- function(.c){
 
 
 #' Print method for chronicle objects
-#' @param .c A chronicle
+#' @param x A chronicle object
+#' @param ... Unused.
 #' @export
-print.chronicle <- function(.c, ...){
+print.chronicle <- function(x, ...){
 
-  if(all(grepl("Success", .c$log_df$outcome))){
+  if(all(grepl("Success", x$log_df$outcome))){
 
     succeed <- "successfully"
-    success_symbol <- "✔"
+    success_symbol <- "\u2714" #heavy check mark
 
   } else {
 
     succeed <- "unsuccessfully"
-    success_symbol <- "✖"
+    success_symbol <- "\u2718" # heavy ballot x
 
   }
 
   cat(paste0(success_symbol, " Value computed ", succeed, ":\n"))
   cat("---------------\n")
-  print(.c$value, ...)
+  print(x$value, ...)
   cat("\n")
   cat("---------------\n")
   cat("This is an object of type `chronicle`.\n")
@@ -320,8 +321,10 @@ flat_chronicle <- function(.c, .f, ...){
 
 #' Create a chronicle object
 #' @param .x Any object
+#' @param .log_df Used internally, the user does need to interact with it. Defaults to an empty data frame.
 #' @return Returns a chronicle object with the object as the $value
 #' @importFrom tibble tibble
+#' @importFrom dplyr bind_rows
 #' @examples
 #' as_chronicle(3)
 #' @export
@@ -354,7 +357,7 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 #' r_exp <- record(exp)
 #' 3 |> r_sqrt() %>=% r_exp()
 #' @export
-`%>=%` <- function(.c, .f, ...) {
+`%>=%` <- function(.c, .f) {
 
   f_quo <- rlang::enquo(.f)
   f_exp <- rlang::quo_get_expr(f_quo)
@@ -362,7 +365,6 @@ as_chronicle <- function(.x, .log_df = data.frame()){
   f_chr <- deparse(f_exp[[1]])
 
   f <- get(f_chr, envir = f_env)
-
 
   q_ex_std <- rlang::call_match(call = f_exp, fn = f)
   expr_ls <- as.list(q_ex_std)

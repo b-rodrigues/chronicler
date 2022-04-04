@@ -82,7 +82,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">chronicler</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: rlang</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: dplyr</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'dplyr'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -91,6 +91,8 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+<span class="co">#&gt; Loading required package: tibble</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span>
@@ -159,13 +161,13 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                           </span>
-<span class="co">#&gt; [2] "✔ select(1,contains(\"20\")) ran successfully at 2022-04-04 16:38:14"                                                    </span>
-<span class="co">#&gt; [3] "✔ pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-04-04 16:38:14"                          </span>
-<span class="co">#&gt; [4] "✔ separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-04-04 16:38:14"                   </span>
-<span class="co">#&gt; [5] "✔ filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-04-04 16:38:15"</span>
-<span class="co">#&gt; [6] "✔ mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-04-04 16:38:15"                                        </span>
-<span class="co">#&gt; [7] "✔ select(air_pr\\time,date,passengers) ran successfully at 2022-04-04 16:38:15"                                          </span>
-<span class="co">#&gt; [8] "Total running time: 1.79372668266296 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(1,contains(\"20\")) ran successfully at 2022-04-04 22:17:24"                                                    </span>
+<span class="co">#&gt; [3] "✔ pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-04-04 22:17:24"                          </span>
+<span class="co">#&gt; [4] "✔ separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-04-04 22:17:24"                   </span>
+<span class="co">#&gt; [5] "✔ filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-04-04 22:17:25"</span>
+<span class="co">#&gt; [6] "✔ mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-04-04 22:17:25"                                        </span>
+<span class="co">#&gt; [7] "✔ select(air_pr\\time,date,passengers) ran successfully at 2022-04-04 22:17:25"                                          </span>
+<span class="co">#&gt; [8] "Total running time: 1.87219643592834 secs"</span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code> gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People that then read this object, can read the log to know what happened and reproduce the steps if necessary.</p>
 <p>Let’s take a look at the final data set:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -192,12 +194,12 @@
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 8</span></span>
 <span class="co">#&gt;   outcome   `function` arguments message start_time          end_time           </span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>             </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> ✔ Success select     <span style="color: #949494;">"</span>1,conta… NA      2022-04-04 <span style="color: #949494;">16:38:14</span> 2022-04-04 <span style="color: #949494;">16:38:14</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ✔ Success pivot_lon… <span style="color: #949494;">"</span>-starts… NA      2022-04-04 <span style="color: #949494;">16:38:14</span> 2022-04-04 <span style="color: #949494;">16:38:14</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> ✔ Success separate   <span style="color: #949494;">"</span>1,c(\"u… NA      2022-04-04 <span style="color: #949494;">16:38:14</span> 2022-04-04 <span style="color: #949494;">16:38:15</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> ✔ Success filter     <span style="color: #949494;">"</span>tra_mea… NA      2022-04-04 <span style="color: #949494;">16:38:15</span> 2022-04-04 <span style="color: #949494;">16:38:15</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> ✔ Success mutate     <span style="color: #949494;">"</span>paste0(… NA      2022-04-04 <span style="color: #949494;">16:38:15</span> 2022-04-04 <span style="color: #949494;">16:38:15</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> ✔ Success select     <span style="color: #949494;">"</span>air_pr\… NA      2022-04-04 <span style="color: #949494;">16:38:15</span> 2022-04-04 <span style="color: #949494;">16:38:15</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> ✔ Success select     <span style="color: #949494;">"</span>1,conta… NA      2022-04-04 <span style="color: #949494;">22:17:24</span> 2022-04-04 <span style="color: #949494;">22:17:24</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> ✔ Success pivot_lon… <span style="color: #949494;">"</span>-starts… NA      2022-04-04 <span style="color: #949494;">22:17:24</span> 2022-04-04 <span style="color: #949494;">22:17:24</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> ✔ Success separate   <span style="color: #949494;">"</span>1,c(\"u… NA      2022-04-04 <span style="color: #949494;">22:17:24</span> 2022-04-04 <span style="color: #949494;">22:17:25</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> ✔ Success filter     <span style="color: #949494;">"</span>tra_mea… NA      2022-04-04 <span style="color: #949494;">22:17:25</span> 2022-04-04 <span style="color: #949494;">22:17:25</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> ✔ Success mutate     <span style="color: #949494;">"</span>paste0(… NA      2022-04-04 <span style="color: #949494;">22:17:25</span> 2022-04-04 <span style="color: #949494;">22:17:25</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> ✔ Success select     <span style="color: #949494;">"</span>air_pr\… NA      2022-04-04 <span style="color: #949494;">22:17:25</span> 2022-04-04 <span style="color: #949494;">22:17:25</span></span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 2 more variables: run_time &lt;drtn&gt;, g &lt;list&gt;</span></span></code></pre></div>
   </main>
 </div>

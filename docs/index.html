@@ -6,12 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="The functions provided by this package allow you to decorate your functions to provide logging.">
-<title>Add logging to functions • chronicler</title>
+<title>Add Logging to Functions • chronicler</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Add logging to functions">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Add Logging to Functions">
 <meta property="og:description" content="The functions provided by this package allow you to decorate your functions to provide logging.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -85,6 +85,16 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">chronicler</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: rlang</span>
+<span class="co">#&gt; Loading required package: dplyr</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
+<span class="co">#&gt; Loading required package: tibble</span>
 
 <span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
 
@@ -97,8 +107,8 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-04 16:37:54"</span>
-<span class="co">#&gt; [3] "Total running time: 0.00022578239440918 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-04 22:13:44"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000215768814086914 secs"</span></code></pre></div>
 <p>This is especially useful for objects that get created using multiple calls:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
@@ -112,10 +122,10 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-04 16:37:55"</span>
-<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-04-04 16:37:55" </span>
-<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-04-04 16:37:55"</span>
-<span class="co">#&gt; [5] "Total running time: 0.00788736343383789 secs"</span>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-04 22:13:44"</span>
+<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-04-04 22:13:44" </span>
+<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-04-04 22:13:44"</span>
+<span class="co">#&gt; [5] "Total running time: 0.0069127082824707 secs"</span>
 
 <span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">b</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 11.55345</span></code></pre></div>
@@ -127,14 +137,6 @@
 <p><code><a href="reference/record.html">record()</a></code> works with any function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 
 <span class="va">r_group_by</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">group_by</span><span class="op">)</span>
 <span class="va">r_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">select</span><span class="op">)</span>
@@ -151,11 +153,11 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-04 16:37:55"    </span>
-<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-04-04 16:37:55"              </span>
-<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-04-04 16:37:55"            </span>
-<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-04-04 16:37:55"</span>
-<span class="co">#&gt; [6] "Total running time: 0.105771064758301 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-04 22:13:44"    </span>
+<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-04-04 22:13:44"              </span>
+<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-04-04 22:13:44"            </span>
+<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-04-04 22:13:44"</span>
+<span class="co">#&gt; [6] "Total running time: 0.104939699172974 secs"</span></code></pre></div>
 <p>The value can then be accessed and worked on as usual using <code><a href="reference/pick.html">pick()</a></code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output</span>, <span class="st">"value"</span><span class="op">)</span>
@@ -230,7 +232,7 @@
   <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">errord_output</span>
-<span class="co">#&gt; ✖ Value computed unsuccessfully:</span>
+<span class="co">#&gt; ✘ Value computed unsuccessfully:</span>
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; [1] NA</span>
 <span class="co">#&gt; </span>
@@ -242,11 +244,11 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">errord_output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                           </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-04 16:37:55"                                                                                                               </span>
-<span class="co">#&gt; [3] "✖ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-04 16:37:55"                       </span>
-<span class="co">#&gt; [4] "✖ filter(sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-04 16:37:55"               </span>
-<span class="co">#&gt; [5] "✖ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-04 16:37:55"</span>
-<span class="co">#&gt; [6] "Total running time: 0.0497281551361084 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-04 22:13:44"                                                                                                               </span>
+<span class="co">#&gt; [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-04 22:13:44"                       </span>
+<span class="co">#&gt; [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-04 22:13:44"               </span>
+<span class="co">#&gt; [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-04 22:13:44"</span>
+<span class="co">#&gt; [6] "Total running time: 0.0494964122772217 secs"</span></code></pre></div>
 <p>It is also possible to only capture errors, or catpure errors, warnings and messages using the <code>strict</code> parameter of <code><a href="reference/record.html">record()</a></code></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Only errors:</span>
@@ -257,8 +259,8 @@
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Warning in .f(...): NaNs produced</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                  </span>
-<span class="co">#&gt; [2] "✖ sqrt() ran unsuccessfully with following exception: NA at 2022-04-04 16:37:55"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000248193740844727 secs"</span>
+<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NA at 2022-04-04 22:13:45"</span>
+<span class="co">#&gt; [3] "Total running time: 0.00025177001953125 secs"</span>
 
 <span class="co"># Errors and warnings:</span>
 
@@ -267,8 +269,8 @@
 <span class="fu">r_sqrt</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                             </span>
-<span class="co">#&gt; [2] "✖ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-04-04 16:37:55"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000203371047973633 secs"</span>
+<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-04-04 22:13:45"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000194311141967773 secs"</span>
 
 <span class="co"># Errors, warnings and messages</span>
 
@@ -280,8 +282,8 @@
 <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">my_f</span>, strict <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> |&gt;
                          <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                   </span>
-<span class="co">#&gt; [2] "✖ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-04-04 16:37:55"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000303268432617188 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-04-04 22:13:45"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000312328338623047 secs"</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="advanced-logging">Advanced logging<a class="anchor" aria-label="anchor" href="#advanced-logging"></a>
@@ -304,10 +306,10 @@
 <span class="co">#&gt; # A tibble: 4 × 8</span>
 <span class="co">#&gt;   outcome   `function` arguments message start_time          end_time           </span>
 <span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;   &lt;dttm&gt;              &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1 ✔ Success select     "height,… NA      2022-04-04 16:37:55 2022-04-04 16:37:55</span>
-<span class="co">#&gt; 2 ✔ Success group_by   "species… NA      2022-04-04 16:37:55 2022-04-04 16:37:55</span>
-<span class="co">#&gt; 3 ✔ Success filter     "sex != … NA      2022-04-04 16:37:55 2022-04-04 16:37:55</span>
-<span class="co">#&gt; 4 ✔ Success summarise  "mean(ma… NA      2022-04-04 16:37:55 2022-04-04 16:37:55</span>
+<span class="co">#&gt; 1 ✔ Success select     "height,… NA      2022-04-04 22:13:45 2022-04-04 22:13:45</span>
+<span class="co">#&gt; 2 ✔ Success group_by   "species… NA      2022-04-04 22:13:45 2022-04-04 22:13:45</span>
+<span class="co">#&gt; 3 ✔ Success filter     "sex != … NA      2022-04-04 22:13:45 2022-04-04 22:13:45</span>
+<span class="co">#&gt; 4 ✔ Success summarise  "mean(ma… NA      2022-04-04 22:13:45 2022-04-04 22:13:45</span>
 <span class="co">#&gt; # … with 2 more variables: run_time &lt;drtn&gt;, g &lt;list&gt;</span></code></pre></div>
 <p>It is thus possible to take a look at the output of the function provided (<code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code>):</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -336,8 +338,7 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small>GPL (&gt;= 3)</small></li>
+<li>GPL (&gt;= 3)</li>
 </ul>
 </div>
 

@@ -8,6 +8,8 @@ as_chronicle(.x, .log_df = data.frame())
 }
 \arguments{
 \item{.x}{Any object}
+
+\item{.log_df}{Used internally, the user does need to interact with it. Defaults to an empty data frame.}
 }
 \value{
 Returns a chronicle object with the object as the $value

@@ -4,10 +4,12 @@
 \alias{print.chronicle}
 \title{Print method for chronicle objects}
 \usage{
-\method{print}{chronicle}(.c, ...)
+\method{print}{chronicle}(x, ...)
 }
 \arguments{
-\item{.c}{A chronicle}
+\item{x}{A chronicle object}
+
+\item{...}{Unused.}
 }
 \description{
 Print method for chronicle objects

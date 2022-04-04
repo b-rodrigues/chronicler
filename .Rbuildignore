@@ -1,0 +1,9 @@
+^doc$
+^docs$
+^Meta$
+^_pkgdown.yml$
+^data-raw$
+^README.Rmd$
+^README.html$
+^LICENSE
+
