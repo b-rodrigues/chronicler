@@ -45,9 +45,9 @@ A log also gets generated and can be read using `read_log()`:
 
 ``` r
 read_log(a)
-#> [1] "Complete log:"                                      
-#> [2] "✔ sqrt(1:5) ran successfully at 2022-04-04 14:54:54"
-#> [3] "Total running time: 0.000220537185668945 secs"
+#> [1] "Complete log:"                                   
+#> [2] "✔ sqrt() ran successfully at 2022-04-04 16:37:54"
+#> [3] "Total running time: 0.00022578239440918 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -66,11 +66,11 @@ b <- 1:10 |>
 
 ``` r
 read_log(b)
-#> [1] "Complete log:"                                           
-#> [2] "✔ sqrt(1:10) ran successfully at 2022-04-04 14:54:54"    
-#> [3] "✔ exp(.c$value) ran successfully at 2022-04-04 14:54:54" 
-#> [4] "✔ mean(.c$value) ran successfully at 2022-04-04 14:54:54"
-#> [5] "Total running time: 0.0079505443572998 secs"
+#> [1] "Complete log:"                                   
+#> [2] "✔ sqrt() ran successfully at 2022-04-04 16:37:55"
+#> [3] "✔ exp() ran successfully at 2022-04-04 16:37:55" 
+#> [4] "✔ mean() ran successfully at 2022-04-04 16:37:55"
+#> [5] "Total running time: 0.00788736343383789 secs"
 
 pick(b, "value")
 #> [1] 11.55345
@@ -110,12 +110,12 @@ output <- starwars %>%
 
 ``` r
 read_log(output)
-#> [1] "Complete log:"                                                                         
-#> [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-04 14:54:54"           
-#> [3] "✔ group_by(.c$value,species,sex) ran successfully at 2022-04-04 14:54:54"              
-#> [4] "✔ filter(.c$value,sex != \"male\") ran successfully at 2022-04-04 14:54:54"            
-#> [5] "✔ summarise(.c$value,mean(mass, na.rm = TRUE)) ran successfully at 2022-04-04 14:54:54"
-#> [6] "Total running time: 0.105826616287231 secs"
+#> [1] "Complete log:"                                                                
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-04 16:37:55"    
+#> [3] "✔ group_by(species,sex) ran successfully at 2022-04-04 16:37:55"              
+#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-04-04 16:37:55"            
+#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-04-04 16:37:55"
+#> [6] "Total running time: 0.105771064758301 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`:
@@ -145,24 +145,24 @@ output_pipe <- starwars %>%
   r_select(height, mass, species, sex) %>=%
   r_group_by(species, sex) %>=%
   r_filter(sex != "male") %>=%
-  r_summarise(mass = mean(mass, na.rm = TRUE))
+  r_summarise(mean_mass = mean(mass, na.rm = TRUE))
 ```
 
 ``` r
 pick(output_pipe, "value")
 #> # A tibble: 9 × 3
 #> # Groups:   species [9]
-#>   species    sex              mass
-#>   <chr>      <chr>           <dbl>
-#> 1 Clawdite   female           55  
-#> 2 Droid      none             69.8
-#> 3 Human      female           56.3
-#> 4 Hutt       hermaphroditic 1358  
-#> 5 Kaminoan   female          NaN  
-#> 6 Mirialan   female           53.1
-#> 7 Tholothian female           50  
-#> 8 Togruta    female           57  
-#> 9 Twi'lek    female           55
+#>   species    sex            mean_mass
+#>   <chr>      <chr>              <dbl>
+#> 1 Clawdite   female              55  
+#> 2 Droid      none                69.8
+#> 3 Human      female              56.3
+#> 4 Hutt       hermaphroditic    1358  
+#> 5 Kaminoan   female             NaN  
+#> 6 Mirialan   female              53.1
+#> 7 Tholothian female              50  
+#> 8 Togruta    female              57  
+#> 9 Twi'lek    female              55
 ```
 
 Objects of class `chronicle` have their own print method:
@@ -173,17 +173,17 @@ output_pipe
 #> ---------------
 #> # A tibble: 9 × 3
 #> # Groups:   species [9]
-#>   species    sex              mass
-#>   <chr>      <chr>           <dbl>
-#> 1 Clawdite   female           55  
-#> 2 Droid      none             69.8
-#> 3 Human      female           56.3
-#> 4 Hutt       hermaphroditic 1358  
-#> 5 Kaminoan   female          NaN  
-#> 6 Mirialan   female           53.1
-#> 7 Tholothian female           50  
-#> 8 Togruta    female           57  
-#> 9 Twi'lek    female           55  
+#>   species    sex            mean_mass
+#>   <chr>      <chr>              <dbl>
+#> 1 Clawdite   female              55  
+#> 2 Droid      none                69.8
+#> 3 Human      female              56.3
+#> 4 Hutt       hermaphroditic    1358  
+#> 5 Kaminoan   female             NaN  
+#> 6 Mirialan   female              53.1
+#> 7 Tholothian female              50  
+#> 8 Togruta    female              57  
+#> 9 Twi'lek    female              55  
 #> 
 #> ---------------
 #> This is an object of type `chronicle`.
@@ -220,12 +220,12 @@ message:
 
 ``` r
 read_log(errord_output)
-#> [1] "Complete log:"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-#> [2] "✔ select(.,height,mass,species,sex) ran successfully at 2022-04-04 14:54:54"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> [3] "✖ group_by(list(height = c(172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 228, 180, 173, 175, 170, 180, 66, 170, 183, 200, 190, 177, 175, 180, 150, NA, 88, 160, 193, 191, 170, 196, 224, 206, 183, 137, 112, 183, 163, 175, 180, 178, 94, 122, 163, 188, 198, 196, 171, 184, 188, 264, 188, 196, 185, 157, 183, 183, 170, 166, 165, 193, 191, 183, 168, 198, 229, 213, 167, 79, 96, 193, 191, 178, 216, 234, 188, 178, 206, NA, NA, NA, NA, NA, 165), mass = c(77, 75, 32, 136, 49, 120, 75, 32, 84, 77, 84, NA, 112, \n80, 74, 1358, 77, 110, 17, 75, 78.2, 140, 113, 79, 79, 83, NA, NA, 20, 68, 89, 90, NA, 66, 82, NA, NA, NA, 40, NA, NA, 80, NA, 55, 45, NA, 65, 84, 82, 87, NA, 50, NA, NA, 80, NA, 85, NA, NA, 80, 56.2, 50, NA, 80, NA, 79, 55, 102, 88, NA, NA, 15, NA, 48, NA, 57, 159, 136, 79, 48, 80, NA, NA, NA, NA, NA, 45), species = c(\"Human\", \"Droid\", \"Droid\", \"Human\", \"Human\", \"Human\", \"Human\", \"Droid\", \"Human\", \"Human\", \"Human\", \"Human\", \"Wookiee\", \"Human\", \"Rodian\", \"Hutt\", \"Human\", \"Human\", \"Yoda's species\", \n\"Human\", \"Human\", \"Droid\", \"Trandoshan\", \"Human\", \"Human\", \"Mon Calamari\", \"Human\", \"Human\", \"Ewok\", \"Sullustan\", \"Human\", \"Neimodian\", \"Human\", \"Gungan\", \"Gungan\", \"Gungan\", NA, \"Toydarian\", \"Dug\", NA, \"Human\", \"Zabrak\", \"Twi'lek\", \"Twi'lek\", \"Vulptereen\", \"Xexto\", \"Toong\", \"Human\", \"Cerean\", \"Nautolan\", \"Zabrak\", \"Tholothian\", \"Iktotchi\", \"Quermian\", \"Kel Dor\", \"Chagrian\", \"Human\", \"Human\", \"Human\", \"Geonosian\", \"Mirialan\", \"Mirialan\", \"Human\", \"Human\", \"Human\", \"Human\", \"Clawdite\", \"Besalisk\", \n\"Kaminoan\", \"Kaminoan\", \"Human\", \"Aleena\", \"Droid\", \"Skakoan\", \"Muun\", \"Togruta\", \"Kaleesh\", \"Wookiee\", \"Human\", NA, \"Pau'an\", \"Human\", \"Human\", \"Human\", \"Droid\", NA, \"Human\"), sex = c(\"male\", \"none\", \"none\", \"male\", \"female\", \"male\", \"female\", \"none\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", \"hermaphroditic\", \"male\", \"male\", \"male\", \"male\", \"male\", \"none\", \"male\", \"male\", \"male\", \"male\", \"female\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", NA, \"male\", \n\"male\", NA, \"female\", \"male\", \"male\", \"female\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", \"male\", \"female\", \"male\", \"male\", \"male\", \"male\", \"male\", \"female\", \"male\", \"male\", \"female\", \"female\", \"female\", \"male\", \"male\", \"male\", \"female\", \"male\", \"male\", \"female\", \"female\", \"male\", \"none\", \"male\", \"male\", \"female\", \"male\", \"male\", \"male\", NA, \"male\", \"male\", \"female\", \"male\", \"none\", NA, \"female\")),species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-04 14:54:54"
-#> [4] "✖ filter(NA,sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-04 14:54:54"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-#> [5] "✖ summarise(NA,mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-04 14:54:54"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-#> [6] "Total running time: 0.0509049892425537 secs"
+#> [1] "Complete log:"                                                                                                                                                                           
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-04 16:37:55"                                                                                                               
+#> [3] "✖ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-04 16:37:55"                       
+#> [4] "✖ filter(sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-04 16:37:55"               
+#> [5] "✖ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-04 16:37:55"
+#> [6] "Total running time: 0.0497281551361084 secs"
 ```
 
 It is also possible to only capture errors, or catpure errors, warnings
@@ -239,9 +239,9 @@ r_sqrt <- record(sqrt, strict = 1)
 r_sqrt(-10) |>
   read_log()
 #> Warning in .f(...): NaNs produced
-#> [1] "Complete log:"                                                                     
-#> [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NA at 2022-04-04 14:54:54"
-#> [3] "Total running time: 0.000259160995483398 secs"
+#> [1] "Complete log:"                                                                  
+#> [2] "✖ sqrt() ran unsuccessfully with following exception: NA at 2022-04-04 16:37:55"
+#> [3] "Total running time: 0.000248193740844727 secs"
 
 # Errors and warnings:
 
@@ -249,9 +249,9 @@ r_sqrt <- record(sqrt, strict = 2)
 
 r_sqrt(-10) |>
   read_log()
-#> [1] "Complete log:"                                                                                
-#> [2] "✖ sqrt(-10) ran unsuccessfully with following exception: NaNs produced at 2022-04-04 14:54:54"
-#> [3] "Total running time: 0.000200033187866211 secs"
+#> [1] "Complete log:"                                                                             
+#> [2] "✖ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-04-04 16:37:55"
+#> [3] "Total running time: 0.000203371047973633 secs"
 
 # Errors, warnings and messages
 
@@ -262,9 +262,9 @@ my_f <- function(x){
 
 record(my_f, strict = 3)(10) |>
                          read_log()
-#> [1] "Complete log:"                                                                                     
-#> [2] "✖ my_f(10) ran unsuccessfully with following exception: this is a message\n at 2022-04-04 14:54:54"
-#> [3] "Total running time: 0.000330448150634766 secs"
+#> [1] "Complete log:"                                                                                   
+#> [2] "✖ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-04-04 16:37:55"
+#> [3] "Total running time: 0.000303268432617188 secs"
 ```
 
 ## Advanced logging
@@ -294,10 +294,10 @@ pick(output_pipe, "log_df")
 #> # A tibble: 4 × 8
 #>   outcome   `function` arguments message start_time          end_time           
 #>   <chr>     <chr>      <chr>     <chr>   <dttm>              <dttm>             
-#> 1 ✔ Success select     ".,heigh… NA      2022-04-04 14:54:54 2022-04-04 14:54:54
-#> 2 ✔ Success group_by   "list(he… NA      2022-04-04 14:54:54 2022-04-04 14:54:54
-#> 3 ✔ Success filter     "list(he… NA      2022-04-04 14:54:54 2022-04-04 14:54:54
-#> 4 ✔ Success summarise  "list(he… NA      2022-04-04 14:54:54 2022-04-04 14:54:54
+#> 1 ✔ Success select     "height,… NA      2022-04-04 16:37:55 2022-04-04 16:37:55
+#> 2 ✔ Success group_by   "species… NA      2022-04-04 16:37:55 2022-04-04 16:37:55
+#> 3 ✔ Success filter     "sex != … NA      2022-04-04 16:37:55 2022-04-04 16:37:55
+#> 4 ✔ Success summarise  "mean(ma… NA      2022-04-04 16:37:55 2022-04-04 16:37:55
 #> # … with 2 more variables: run_time <drtn>, g <list>
 ```
 

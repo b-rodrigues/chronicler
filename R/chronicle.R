@@ -177,12 +177,12 @@ errs_warn_mess <- function(.f, ...){
 #' @export
 purely <- function(.f, strict = 2){
 
-  function(..., .log_df = "Log start..."){
+  function(.value, ..., .log_df = "Log start..."){
 
     res <- switch(strict,
-                  only_errors(.f, ...),
-                  errors_and_warnings(.f, ...),
-                  errs_warn_mess(.f, ...))
+                  only_errors(.f, .value,  ...),
+                  errors_and_warnings(.f, .value, ...),
+                  errs_warn_mess(.f, .value, ...))
 
     final_result <- list(
       value = NULL,
@@ -226,14 +226,13 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
 
   fstring <- deparse1(substitute(.f))
 
-  function(..., .log_df = data.frame()){
+  function(.value, ..., .log_df = data.frame()){
 
     args <- paste0(rlang::enexprs(...), collapse = ",")
-    the_function_call <- paste0(fstring, "("  , args, ")")
 
     start <- Sys.time()
     pure_f <- purely(.f, strict = strict)
-    res_pure <- (pure_f(...))
+    res_pure <- (pure_f(.value, ...))
     end <- Sys.time()
 
     if(all(is.na(res_pure$value))){
@@ -349,7 +348,7 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 #' @param .c A value returned by record
 #' @param .f A chronicle function to apply to the returning value of .c
 #' @return A chronicle object.
-#' @importFrom stringr str_extract
+#' @importFrom rlang enquo quo_get_expr quo_get_env call_match call2 eval_tidy
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_exp <- record(exp)
@@ -368,8 +367,10 @@ as_chronicle <- function(.x, .log_df = data.frame()){
   q_ex_std <- rlang::call_match(call = f_exp, fn = f)
   expr_ls <- as.list(q_ex_std)
 
+  # need to set .value to empty, if not .value will be matched multiple times in call2
+  names(expr_ls)[names(expr_ls) == ".value"] <- ""
 
-  eval(call2(f, .c$value, !!!expr_ls[-1], .log_df = .c$log_df))
+  rlang::eval_tidy(rlang::call2(f, .value = .c$value, !!!expr_ls[-1], .log_df = .c$log_df))
 
 }
 

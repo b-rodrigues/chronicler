@@ -118,7 +118,7 @@ output_pipe <- starwars %>%
   r_select(height, mass, species, sex) %>=%
   r_group_by(species, sex) %>=%
   r_filter(sex != "male") %>=%
-  r_summarise(mass = mean(mass, na.rm = TRUE))
+  r_summarise(mean_mass = mean(mass, na.rm = TRUE))
 
 ```
 
