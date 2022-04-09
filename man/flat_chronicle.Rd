@@ -2,22 +2,22 @@
 % Please edit documentation in R/chronicle.R
 \name{flat_chronicle}
 \alias{flat_chronicle}
-\title{Evaluate a non-chronicle function on a chronicle object}
+\title{Evaluate a non-chronicle function on a chronicle object.}
 \usage{
 flat_chronicle(.c, .f, ...)
 }
 \arguments{
-\item{.c}{A chronicle object (a list of two elements)}
+\item{.c}{A chronicle object.}
 
-\item{.f}{A non-chronicle function}
+\item{.f}{A non-chronicle function.}
 
-\item{...}{Further parameters to pass to .f}
+\item{...}{Further parameters to pass to .f.}
 }
 \value{
-Returns the result of .f(.c$value)
+Returns the result of .f(.c$value) as a new chronicle object.
 }
 \description{
-Evaluate a non-chronicle function on a chronicle object
+Evaluate a non-chronicle function on a chronicle object.
 }
 \examples{
 as_chronicle(3) |> flat_chronicle(sqrt)

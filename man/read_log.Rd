@@ -2,18 +2,18 @@
 % Please edit documentation in R/chronicle.R
 \name{read_log}
 \alias{read_log}
-\title{Reads the log of a chronicle}
+\title{Reads the log of a chronicle.}
 \usage{
 read_log(.c)
 }
 \arguments{
-\item{.c}{A chronicle}
+\item{.c}{A chronicle.}
 }
 \value{
-Strings containing the log
+Strings containing the log.
 }
 \description{
-Reads the log of a chronicle
+Reads the log of a chronicle.
 }
 \examples{
 \dontrun{

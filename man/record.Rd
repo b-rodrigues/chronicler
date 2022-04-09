@@ -7,19 +7,17 @@
 record(.f, .g = (function(x) NA), strict = 2)
 }
 \arguments{
-\item{.f}{A function to decorate}
+\item{.f}{A function to decorate.}
 
-\item{.g}{Optional. A function to apply to the intermediary results for monitoring purposes. Defaults
-to returning NA.}
+\item{.g}{Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.}
 
-\item{strict}{Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3)}
+\item{strict}{Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).}
 }
 \value{
 A function which returns objects of type \code{chronicle}. \code{chronicle} objects carry several
 elements: a \code{value} which is the result of the function evaluated on its inputs and a second
 object called \code{log_df}. \code{log_df} contains logging information, which can be read using
-\code{read_log()}. \code{log_df} is a data frame with
-colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.
+\code{read_log()}. \code{log_df} is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.
 }
 \description{
 Decorates a function to output objects of type \code{chronicle}.

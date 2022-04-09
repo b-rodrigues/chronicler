@@ -19,6 +19,8 @@ https://www.brodrigues.co/blog/2018-11-14-luxairport/
 but with some minor updates to reflect the current state of the `{tidyverse}` packages as well
 as logging using `{chronicler}`.
 
+Let's first load the required packages, and the `avia` dataset included in the `{chronicler}` package:
+
 ```{r setup}
 library(chronicler)
 library(dplyr)
@@ -27,27 +29,33 @@ library(stringr)
 library(lubridate)
 
 data("avia")
+```
 
+Now I need to define the needed functions for the analysis. To improve logging, I add the `dim()`
+function as the `.g` argument of each function below. This will make it possible to see how the 
+dimensions of the data change inside the pipeline:
+
+```{r}
 # Define required functions
 
-r_select <- record(select)
-r_pivot_longer <- record(pivot_longer)
-r_filter <- record(filter)
-r_mutate <- record(mutate)
-r_separate <- record(separate)
-r_group_by <- record(group_by)
-r_summarise <- record(summarise)
+r_select <- record(select, .g = dim)
+r_pivot_longer <- record(pivot_longer, .g = dim)
+r_filter <- record(filter, .g = dim)
+r_mutate <- record(mutate, .g = dim)
+r_separate <- record(separate, .g = dim)
+r_group_by <- record(group_by, .g = dim)
+r_summarise <- record(summarise, .g = dim)
 
 ```
 
 ```{r}
 avia_clean <- avia %>%
-  r_select(1, contains("20")) %>% # select the first column and every column starting with 10
+  r_select(1, contains("20")) %>% # select the first column and every column starting with 20
   bind_record(r_pivot_longer, -starts_with("unit"), names_to = "date", values_to = "passengers") %>%
   bind_record(r_separate,
               col = 1,
               into = c("unit", "tra_meas", "air_pr\\time"),
-              sep = ",") 
+              sep = ",")
 
 ```
 
@@ -67,7 +75,7 @@ avia_monthly <- avia_clean %>%
 
 ```
 
-`avia_monthly` is an object of class `loud`, but in essence, it is just a list, with its own
+`avia_monthly` is an object of class `chronicle`, but in essence, it is just a list, with its own
 print method:
 
 ```{r}
@@ -90,9 +98,13 @@ avia_monthly %>%
   pick("value")
 ```
 
-It is also possible to take a look at the underlying `.log_df` object that contains more details:
+It is also possible to take a look at the underlying `.log_df` object that contains more details,
+and see the output of the `.g` argument (which was defined in the beginning as the `dim()` function):
 
 ```{r}
-avia_monthly %>%
-  pick("log_df")
+as.data.frame(avia_monthly$log_df[, c("function", "g")])
 ```
+
+After `select()` the data has 509 rows and 231 columns, after the call to `pivot_longer()`
+117070 rows and 3 columns, `separate()` adds two columns, after `filter()` only 7632 rows
+remain (`mutate()` does not change the dimensions) and then `select()` is used to remove 2 columns.

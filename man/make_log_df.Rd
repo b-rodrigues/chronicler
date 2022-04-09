@@ -2,7 +2,7 @@
 % Please edit documentation in R/chronicle.R
 \name{make_log_df}
 \alias{make_log_df}
-\title{Creates the log_df element of a chronicle}
+\title{Creates the log_df element of a chronicle.}
 \usage{
 make_log_df(
   success,
@@ -15,17 +15,17 @@ make_log_df(
 )
 }
 \arguments{
-\item{success}{Did the operation succeed}
+\item{success}{Did the operation succeed.}
 
-\item{fstring}{The function call}
+\item{fstring}{The function call.}
 
-\item{args}{The arguments of the call}
+\item{args}{The arguments of the call.}
 
-\item{res_pure}{The result of the purely call}
+\item{res_pure}{The result of the purely call.}
 
-\item{start}{Starting time}
+\item{start}{Starting time.}
 
-\item{end}{Ending time}
+\item{end}{Ending time.}
 
 \item{.g}{Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.}
 }
@@ -33,5 +33,5 @@ make_log_df(
 A tibble containing the log.
 }
 \description{
-Creates the log_df element of a chronicle
+Creates the log_df element of a chronicle.
 }

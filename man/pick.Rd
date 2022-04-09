@@ -2,20 +2,20 @@
 % Please edit documentation in R/chronicle.R
 \name{pick}
 \alias{pick}
-\title{Retrieve an element from a chronicle object}
+\title{Retrieve an element from a chronicle object.}
 \usage{
 pick(.c, .e)
 }
 \arguments{
-\item{.c}{A chronicle object}
+\item{.c}{A chronicle object.}
 
-\item{.e}{Element of interest to retrieve, one of "value" or "log"}
+\item{.e}{Element of interest to retrieve, one of "value" or "log_df".}
 }
 \value{
-The \code{value} or \code{log} element of the chronicle object .c
+The \code{value} or \code{log_df} element of the chronicle object .c.
 }
 \description{
-Retrieve an element from a chronicle object
+Retrieve an element from a chronicle object.
 }
 \examples{
 r_sqrt <- record(sqrt)

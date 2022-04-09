@@ -2,22 +2,22 @@
 % Please edit documentation in R/chronicle.R
 \name{bind_record}
 \alias{bind_record}
-\title{Evaluate a decorated function}
+\title{Evaluate a decorated function; used to chain multiple decorated functions.}
 \usage{
 bind_record(.c, .f, ...)
 }
 \arguments{
-\item{.c}{A chronicle object (a list of two elements)}
+\item{.c}{A chronicle object.}
 
-\item{.f}{A chronicle function to apply to the returning value of .c}
+\item{.f}{A chronicle function to apply to the returning value of .c.}
 
-\item{...}{Further parameters to pass to .f}
+\item{...}{Further parameters to pass to .f.}
 }
 \value{
-A list with elements .f(.c$value) and concatenated logs.
+A chronicle object.
 }
 \description{
-Evaluate a decorated function
+Evaluate a decorated function; used to chain multiple decorated functions.
 }
 \examples{
 r_sqrt <- record(sqrt)

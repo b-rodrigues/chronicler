@@ -2,20 +2,20 @@
 % Please edit documentation in R/chronicle.R
 \name{\%>=\%}
 \alias{\%>=\%}
-\title{Pipe a chronicle object to a decorated function}
+\title{Pipe a chronicle object to a decorated function.}
 \usage{
 .c \%>=\% .f
 }
 \arguments{
-\item{.c}{A value returned by record}
+\item{.c}{A value returned by record.}
 
-\item{.f}{A chronicle function to apply to the returning value of .c}
+\item{.f}{A chronicle function to apply to the returning value of .c.}
 }
 \value{
 A chronicle object.
 }
 \description{
-Pipe a chronicle object to a decorated function
+Pipe a chronicle object to a decorated function.
 }
 \examples{
 r_sqrt <- record(sqrt)

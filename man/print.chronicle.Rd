@@ -2,15 +2,15 @@
 % Please edit documentation in R/chronicle.R
 \name{print.chronicle}
 \alias{print.chronicle}
-\title{Print method for chronicle objects}
+\title{Print method for chronicle objects.}
 \usage{
 \method{print}{chronicle}(x, ...)
 }
 \arguments{
-\item{x}{A chronicle object}
+\item{x}{A chronicle object.}
 
 \item{...}{Unused.}
 }
 \description{
-Print method for chronicle objects
+Print method for chronicle objects.
 }

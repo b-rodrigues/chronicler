@@ -1,10 +1,10 @@
-#' Creates the log_df element of a chronicle
-#' @param success Did the operation succeed
-#' @param fstring The function call
-#' @param args The arguments of the call
-#' @param res_pure The result of the purely call
-#' @param start Starting time
-#' @param end Ending time
+#' Creates the log_df element of a chronicle.
+#' @param success Did the operation succeed.
+#' @param fstring The function call.
+#' @param args The arguments of the call.
+#' @param res_pure The result of the purely call.
+#' @param start Starting time.
+#' @param end Ending time.
 #' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
 #' @return A tibble containing the log.
 #' @importFrom tibble tibble
@@ -34,9 +34,9 @@ make_log_df <- function(success,
 }
 
 
-#' Reads the log of a chronicle
-#' @param .c A chronicle
-#' @return Strings containing the log
+#' Reads the log of a chronicle.
+#' @param .c A chronicle.
+#' @return Strings containing the log.
 #' @examples
 #' \dontrun{
 #' read_log(chronicle_object)
@@ -105,8 +105,8 @@ read_log <- function(.c){
 }
 
 
-#' Print method for chronicle objects
-#' @param x A chronicle object
+#' Print method for chronicle objects.
+#' @param x A chronicle object.
 #' @param ... Unused.
 #' @export
 print.chronicle <- function(x, ...){
@@ -163,9 +163,9 @@ errs_warn_mess <- function(.f, ...){
            )
 }
 
-#' Capture all errors, warnings and messages
-#' @param .f A function to decorate
-#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3)
+#' Capture all errors, warnings and messages.
+#' @param .f A function to decorate.
+#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
 #' @return A function which returns a list. The first element of the list, $value, is the result of
 #' the original function .f applied to its inputs. The second element, $log is NULL in case everything
 #' goes well. In case of error/warning/message, $value is NA and $log holds the message.
@@ -209,15 +209,13 @@ purely <- function(.f, strict = 2){
 }
 
 #' Decorates a function to output objects of type `chronicle`.
-#' @param .f A function to decorate
-#' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults
-#' to returning NA.
-#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3)
+#' @param .f A function to decorate.
+#' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
+#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
 #' @return A function which returns objects of type `chronicle`. `chronicle` objects carry several
 #' elements: a `value` which is the result of the function evaluated on its inputs and a second
 #' object called `log_df`. `log_df` contains logging information, which can be read using
-#' `read_log()`. `log_df` is a data frame with
-#' colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.
+#' `read_log()`. `log_df` is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.
 #' @importFrom rlang enexprs
 #' @importFrom tibble tibble
 #' @examples
@@ -270,16 +268,16 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
       log_df = log_df
     )
 
-
     structure(list_result, class = "chronicle")
+
   }
 }
 
-#' Evaluate a decorated function
-#' @param .c A chronicle object (a list of two elements)
-#' @param .f A chronicle function to apply to the returning value of .c
-#' @param ... Further parameters to pass to .f
-#' @return A list with elements .f(.c$value) and concatenated logs.
+#' Evaluate a decorated function; used to chain multiple decorated functions.
+#' @param .c A chronicle object.
+#' @param .f A chronicle function to apply to the returning value of .c.
+#' @param ... Further parameters to pass to .f.
+#' @return A chronicle object.
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_exp <- record(exp)
@@ -292,11 +290,11 @@ bind_record <- function(.c, .f, ...){
 }
 
 
-#' Evaluate a non-chronicle function on a chronicle object
-#' @param .c A chronicle object (a list of two elements)
-#' @param .f A non-chronicle function
-#' @param ... Further parameters to pass to .f
-#' @return Returns the result of .f(.c$value)
+#' Evaluate a non-chronicle function on a chronicle object.
+#' @param .c A chronicle object.
+#' @param .f A non-chronicle function.
+#' @param ... Further parameters to pass to .f.
+#' @return Returns the result of .f(.c$value) as a new chronicle object.
 #' @examples
 #' as_chronicle(3) |> flat_chronicle(sqrt)
 #' @export
@@ -319,10 +317,10 @@ flat_chronicle <- function(.c, .f, ...){
   structure(class = "chronicle")
 }
 
-#' Create a chronicle object
-#' @param .x Any object
+#' Coerce an object to a chronicle object.
+#' @param .x Any object.
 #' @param .log_df Used internally, the user does need to interact with it. Defaults to an empty data frame.
-#' @return Returns a chronicle object with the object as the $value
+#' @return Returns a chronicle object with the object as the $value.
 #' @importFrom tibble tibble
 #' @importFrom dplyr bind_rows
 #' @examples
@@ -345,11 +343,12 @@ as_chronicle <- function(.x, .log_df = data.frame()){
        log_df = dplyr::bind_rows(.log_df,
                                  log_df)) |>
   structure(class = "chronicle")
+
 }
 
-#' Pipe a chronicle object to a decorated function
-#' @param .c A value returned by record
-#' @param .f A chronicle function to apply to the returning value of .c
+#' Pipe a chronicle object to a decorated function.
+#' @param .c A value returned by record.
+#' @param .f A chronicle function to apply to the returning value of .c.
 #' @return A chronicle object.
 #' @importFrom rlang enquo quo_get_expr quo_get_env call_match call2 eval_tidy
 #' @examples
@@ -377,10 +376,10 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 }
 
 
-#' Retrieve an element from a chronicle object
-#' @param .c A chronicle object
-#' @param .e Element of interest to retrieve, one of "value" or "log"
-#' @return The `value` or `log` element of the chronicle object .c
+#' Retrieve an element from a chronicle object.
+#' @param .c A chronicle object.
+#' @param .e Element of interest to retrieve, one of "value" or "log_df".
+#' @return The `value` or `log_df` element of the chronicle object .c.
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_exp <- record(exp)

@@ -225,3 +225,7 @@ after the call to `filter()` and finally (9, 3) after the call to `summarise()`.
 I’d like to thank [armcn](https://github.com/armcn), [Kupac](https://github.com/Kupac) for their
 blog posts ([here](https://kupac.gitlab.io/biofunctor/2019/05/25/maybe-monad-in-r/)) and 
 packages ([maybe](https://armcn.github.io/maybe/)) which inspired me to build this package.
+Thank you as well to [TimTeaFan](https://community.rstudio.com/t/help-with-writing-a-custom-pipe-and-environments/133447/2?u=brodriguesco)
+for his help with writing the `%>=%` infix operator, [nigrahamuk](https://community.rstudio.com/t/best-way-to-catch-rlang-errors-consistently/131632/5?u=brodriguesco)
+for showing me a nice way to catch errors, and finally [Mwavu](https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco)
+for pointing me towards the right direction with an issue I've had as I started working on this package.

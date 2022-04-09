@@ -1,8 +1,8 @@
 ---
-title: "Advanced topics"
+title: "An implementation of the logger monad"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Advanced topics}
+  %\VignetteIndexEntry{An implementation of the logger monad}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,23 +19,77 @@ library(chronicler)
 library(testthat)
 ```
 
-# Monadic laws
+# Introduction
 
-First draft: are we dealing with a monad?
+`{chronicler}` is an implementation of a logger monad. A monad is a computation device that offers
+three things:
 
-- First law
+- the possibility to embellish functions so they can provide additional output without having to touch the function's core implementation;
+- a way to compose these embellished functions;
+- a way to convert "normal" objects to "monadic" objects (monadic objects are the output of the embellished functions)
+
+Suppose for instance that you wish for your functions to provide a log when they're run. If your
+function looks like this:
 
 ```{r}
-a <- as_chronicle(10)
+my_function <- function(x){
 
-test_that("first monadic law", {
-  expect_equal(flat_chronicle(a, sqrt)$value, sqrt(a$value))
-})
+  sqrt(x)
 
+}
+```
+
+Then you would need to rewrite it like this:
+
+```{r}
+my_function <- function(x, log = ""){
+
+  list(sqrt(x),
+       c(log,
+         paste0("Running log with input ", x)))
+
+}
 
 ```
 
-- Second law
+You would need to create a global log variable, which would then be given as an argument to each
+function (and you would need to rewrite each function to use this log). The problems here are:
+
+- you need to rewrite the same code to handle logs over and over again for each function. It would be better to avoid repeating oneself;
+- the functions now do two things that are completely unrelated: they perform their computation but also handle logs. It easier to reason about functions that only perform one thing;
+- having a global variable (in this case the global log) that keeps getting accessed and modified by other functions is asking for trouble. Also parallelization would mess up the log.
+
+Enter the monad, a way to handle computations that would typically require running impure code (or 
+changing the implementation of the needed functions), purely.
+
+Monads need to satisfy the so-called "monadic laws".
+
+# Monadic laws
+
+The first law states that passing a monadic value to a monadic function using `bind()` 
+(or in the case of the `{chronicler}` package `bind_record()`) or passing a value to a monadic
+function is the same.
+
+## First law
+
+```{r}
+a <- as_chronicle(10)
+r_sqrt <- record(sqrt)
+
+test_that("first monadic law", {
+  expect_equal(bind_record(a, r_sqrt)$value, r_sqrt(10)$value)
+})
+
+```
+
+Turns out that this is not quite the case here; the logs of the two objects will be slightly 
+different. So I only check the value.
+
+## Second law
+
+The second law states that binding a monadic value to `return()` (called `as_chronicle()` in
+this package, in other words, the function that coerces values to chronicler objects) does
+nothing. Here again we have an issue with the log, that's why I focus on the value:
 
 ```{r}
 test_that("second monadic law", {
@@ -44,7 +98,10 @@ test_that("second monadic law", {
 
 ```
 
-- Third law
+## Third law
+
+The third law is about associativity; applying monadic functions successively or composing them
+first gives the same result.
 
 ```{r}
 a <- as_chronicle(10)

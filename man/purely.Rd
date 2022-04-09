@@ -2,14 +2,14 @@
 % Please edit documentation in R/chronicle.R
 \name{purely}
 \alias{purely}
-\title{Capture all errors, warnings and messages}
+\title{Capture all errors, warnings and messages.}
 \usage{
 purely(.f, strict = 2)
 }
 \arguments{
-\item{.f}{A function to decorate}
+\item{.f}{A function to decorate.}
 
-\item{strict}{Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3)}
+\item{strict}{Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).}
 }
 \value{
 A function which returns a list. The first element of the list, $value, is the result of
@@ -18,7 +18,7 @@ goes well. In case of error/warning/message, $value is NA and $log holds the mes
 purely() is used by record() to allow the latter to handle errors.
 }
 \description{
-Capture all errors, warnings and messages
+Capture all errors, warnings and messages.
 }
 \examples{
 purely(log)(10)

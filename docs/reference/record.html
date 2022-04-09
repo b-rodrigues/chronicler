@@ -24,7 +24,7 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/advanced-topics.html">Advanced topics</a>
+    <a class="dropdown-item" href="../articles/advanced-topics.html">An implementation of the logger monad</a>
     <a class="dropdown-item" href="../articles/real-world-example.html">A real world example</a>
   </div>
 </li>
@@ -61,20 +61,18 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>.f</dt>
-<dd><p>A function to decorate</p></dd>
+<dd><p>A function to decorate.</p></dd>
 <dt>.g</dt>
-<dd><p>Optional. A function to apply to the intermediary results for monitoring purposes. Defaults
-to returning NA.</p></dd>
+<dd><p>Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.</p></dd>
 <dt>strict</dt>
-<dd><p>Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3)</p></dd>
+<dd><p>Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A function which returns objects of type <code>chronicle</code>. <code>chronicle</code> objects carry several
 elements: a <code>value</code> which is the result of the function evaluated on its inputs and a second
 object called <code>log_df</code>. <code>log_df</code> contains logging information, which can be read using
-<code><a href="read_log.html">read_log()</a></code>. <code>log_df</code> is a data frame with
-colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.</p>
+<code><a href="read_log.html">read_log()</a></code>. <code>log_df</code> is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.</p>
     </div>
 
     <div class="section level2">

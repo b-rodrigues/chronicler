@@ -2,20 +2,20 @@
 % Please edit documentation in R/chronicle.R
 \name{as_chronicle}
 \alias{as_chronicle}
-\title{Create a chronicle object}
+\title{Coerce an object to a chronicle object.}
 \usage{
 as_chronicle(.x, .log_df = data.frame())
 }
 \arguments{
-\item{.x}{Any object}
+\item{.x}{Any object.}
 
 \item{.log_df}{Used internally, the user does need to interact with it. Defaults to an empty data frame.}
 }
 \value{
-Returns a chronicle object with the object as the $value
+Returns a chronicle object with the object as the $value.
 }
 \description{
-Create a chronicle object
+Coerce an object to a chronicle object.
 }
 \examples{
 as_chronicle(3)
