@@ -84,17 +84,6 @@
 <p>{chronicler} allows you to decorate functions to make them provide enhanced output:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">chronicler</span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: rlang</span>
-<span class="co">#&gt; Loading required package: dplyr</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="co">#&gt; Loading required package: tibble</span>
 
 <span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
 
@@ -107,8 +96,8 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000222682952880859 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000214576721191406 secs"</span></code></pre></div>
 <p>This is especially useful for objects that get created using multiple calls:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
@@ -122,21 +111,38 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-04-09 16:37:19" </span>
-<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [5] "Total running time: 0.00815558433532715 secs"</span>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-04-15 23:04:20" </span>
+<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [5] "Total running time: 0.00707364082336426 secs"</span>
 
 <span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">b</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 11.55345</span></code></pre></div>
+<p><code><a href="reference/record.html">record()</a></code> works with any function (as far as I know).</p>
+<p>To avoid having to define every function individually, like this:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
+<span class="va">r_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span>
+<span class="va">r_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span></code></pre></div>
+<p>you can use the <code><a href="reference/record_many.html">record_many()</a></code> function. <code><a href="reference/record_many.html">record_many()</a></code> takes a list of functions (as strings) as an input and puts generated code in your system’s clipboard. You can then paste the code into your text editor. The gif below illustrates how <code><a href="reference/record_many.html">record_many()</a></code> works:</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/b-rodrigues/chronicler/master/data-raw/record_many.gif" alt=""><p class="caption"><code><a href="reference/record_many.html">record_many()</a></code> in action</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="composing-decorated-functions">Composing decorated functions<a class="anchor" aria-label="anchor" href="#composing-decorated-functions"></a>
 </h2>
-<p><code><a href="reference/bind_record.html">bind_record()</a></code> is used to pass the output from one decorated function to the next.</p>
-<p><code><a href="reference/record.html">record()</a></code> works with any function:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p><code><a href="reference/bind_record.html">bind_record()</a></code> is used to pass the output from one decorated function to the next:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'dplyr'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     filter, lag</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 
 <span class="va">r_group_by</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">group_by</span><span class="op">)</span>
 <span class="va">r_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">select</span><span class="op">)</span>
@@ -150,16 +156,16 @@
   <span class="fu"><a href="reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_summarise</span>,
               mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
               <span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-09 16:37:19"    </span>
-<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-04-09 16:37:19"              </span>
-<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-04-09 16:37:19"            </span>
-<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [6] "Total running time: 0.140892744064331 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-15 23:04:20"    </span>
+<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-04-15 23:04:20"              </span>
+<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-04-15 23:04:20"            </span>
+<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [6] "Total running time: 0.105477333068848 secs"</span></code></pre></div>
 <p>The value can then be accessed and worked on as usual using <code><a href="reference/pick.html">pick()</a></code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 9 × 3</span>
 <span class="co">#&gt; # Groups:   species [9]</span>
@@ -175,13 +181,13 @@
 <span class="co">#&gt; 8 Togruta    female           57  </span>
 <span class="co">#&gt; 9 Twi'lek    female           55</span></code></pre></div>
 <p>This package also ships with a dedicated pipe, <code>%&gt;=%</code> which you can use instead of <code><a href="reference/bind_record.html">bind_record()</a></code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_pipe</span> <span class="op">&lt;-</span> <span class="va">starwars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">r_select</span><span class="op">(</span><span class="va">height</span>, <span class="va">mass</span>, <span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_group_by</span><span class="op">(</span><span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_summarise</span><span class="op">(</span>mean_mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output_pipe</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 9 × 3</span>
 <span class="co">#&gt; # Groups:   species [9]</span>
@@ -197,7 +203,7 @@
 <span class="co">#&gt; 8 Togruta    female              57  </span>
 <span class="co">#&gt; 9 Twi'lek    female              55</span></code></pre></div>
 <p>Objects of class <code>chronicle</code> have their own print method:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_pipe</span>
 <span class="co">#&gt; ✔ Value computed successfully:</span>
 <span class="co">#&gt; ---------------</span>
@@ -224,13 +230,13 @@
 <h2 id="condition-handling">Condition handling<a class="anchor" aria-label="anchor" href="#condition-handling"></a>
 </h2>
 <p>By default, errors and warnings get caught and composed in the log:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">errord_output</span> <span class="op">&lt;-</span> <span class="va">starwars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">r_select</span><span class="op">(</span><span class="va">height</span>, <span class="va">mass</span>, <span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span> 
   <span class="fu">r_group_by</span><span class="op">(</span><span class="va">species</span>, <span class="va">sx</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span> <span class="co"># typo, "sx" instead of "sex"</span>
   <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">errord_output</span>
 <span class="co">#&gt; ✘ Value computed unsuccessfully:</span>
 <span class="co">#&gt; ---------------</span>
@@ -241,16 +247,16 @@
 <span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span>
 <span class="co">#&gt; To read the log of this object, call read_log().</span></code></pre></div>
 <p>Reading the log tells you which function failed, and with which error message:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">errord_output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                           </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-09 16:37:19"                                                                                                               </span>
-<span class="co">#&gt; [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-09 16:37:19"                       </span>
-<span class="co">#&gt; [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-09 16:37:19"               </span>
-<span class="co">#&gt; [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [6] "Total running time: 0.0502040386199951 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-15 23:04:20"                                                                                                               </span>
+<span class="co">#&gt; [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-15 23:04:20"                       </span>
+<span class="co">#&gt; [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: no applicable method for 'filter' applied to an object of class \"logical\" at 2022-04-15 23:04:20"               </span>
+<span class="co">#&gt; [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: no applicable method for 'summarise' applied to an object of class \"logical\" at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [6] "Total running time: 0.0497806072235107 secs"</span></code></pre></div>
 <p>It is also possible to only capture errors, or catpure errors, warnings and messages using the <code>strict</code> parameter of <code><a href="reference/record.html">record()</a></code></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Only errors:</span>
 
 <span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span>, strict <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
@@ -259,8 +265,8 @@
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Warning in .f(...): NaNs produced</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                  </span>
-<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NA at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000254154205322266 secs"</span>
+<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NA at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000258922576904297 secs"</span>
 
 <span class="co"># Errors and warnings:</span>
 
@@ -269,8 +275,8 @@
 <span class="fu">r_sqrt</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                             </span>
-<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000196933746337891 secs"</span>
+<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000197410583496094 secs"</span>
 
 <span class="co"># Errors, warnings and messages</span>
 
@@ -282,14 +288,14 @@
 <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">my_f</span>, strict <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> |&gt;
                          <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                   </span>
-<span class="co">#&gt; [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-04-09 16:37:19"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000312089920043945 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-04-15 23:04:20"</span>
+<span class="co">#&gt; [3] "Total running time: 0.00031590461730957 secs"</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="advanced-logging">Advanced logging<a class="anchor" aria-label="anchor" href="#advanced-logging"></a>
 </h2>
 <p>You can provide a function to <code><a href="reference/record.html">record()</a></code>, which will be evaluated on the output. This makes it possible to, for example, monitor the size of a data frame throughout the pipeline:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r_group_by</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">group_by</span><span class="op">)</span>
 <span class="va">r_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">select</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span>
 <span class="va">r_summarise</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">summarise</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span>
@@ -301,18 +307,18 @@
   <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
   <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>The <code>$log_df</code> element of a <code>chronicle</code> object contains detailled information:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output_pipe</span>, <span class="st">"log_df"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 4 × 8</span>
 <span class="co">#&gt;   outcome   `function` arguments message start_time          end_time           </span>
 <span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;   &lt;dttm&gt;              &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1 ✔ Success select     "height,… NA      2022-04-09 16:37:19 2022-04-09 16:37:19</span>
-<span class="co">#&gt; 2 ✔ Success group_by   "species… NA      2022-04-09 16:37:19 2022-04-09 16:37:19</span>
-<span class="co">#&gt; 3 ✔ Success filter     "sex != … NA      2022-04-09 16:37:19 2022-04-09 16:37:19</span>
-<span class="co">#&gt; 4 ✔ Success summarise  "mean(ma… NA      2022-04-09 16:37:19 2022-04-09 16:37:19</span>
+<span class="co">#&gt; 1 ✔ Success select     "height,… NA      2022-04-15 23:04:20 2022-04-15 23:04:20</span>
+<span class="co">#&gt; 2 ✔ Success group_by   "species… NA      2022-04-15 23:04:20 2022-04-15 23:04:20</span>
+<span class="co">#&gt; 3 ✔ Success filter     "sex != … NA      2022-04-15 23:04:20 2022-04-15 23:04:20</span>
+<span class="co">#&gt; 4 ✔ Success summarise  "mean(ma… NA      2022-04-15 23:04:20 2022-04-15 23:04:20</span>
 <span class="co">#&gt; # … with 2 more variables: run_time &lt;drtn&gt;, g &lt;list&gt;</span></code></pre></div>
 <p>It is thus possible to take a look at the output of the function provided (<code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code>):</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">output_pipe</span><span class="op">$</span><span class="va">log_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"function"</span>, <span class="st">"g"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="co">#&gt;    function     g</span>
 <span class="co">#&gt; 1    select 87, 4</span>

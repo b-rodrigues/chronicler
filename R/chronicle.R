@@ -290,22 +290,42 @@ bind_record <- function(.c, .f, ...){
 }
 
 
+#' Flatten nested chronicle objects
+#' @param .c A nested chronicle object, where the $value element is itself a chronicle object
+#' @return Returns .c where value is the actual value, and logs are concatenated.
+#' @export
+#' @examples
+#' r_sqrt <- record(sqrt)
+#' r_log <- record(log)
+#' a <- as_chronicle(r_log(10))
+#' a
+#' read_log(join_record(a))
+join_record <- function(x){
+
+  list(value = x$value$value,
+       log_df = dplyr::bind_rows(x$value$log_df,
+                                 x$log_df)) |>
+    structure(class = "chronicle")
+
+}
+
+
 #' Evaluate a non-chronicle function on a chronicle object.
 #' @param .c A chronicle object.
 #' @param .f A non-chronicle function.
 #' @param ... Further parameters to pass to .f.
 #' @return Returns the result of .f(.c$value) as a new chronicle object.
 #' @examples
-#' as_chronicle(3) |> flat_chronicle(sqrt)
+#' as_chronicle(3) |> fmap_chronicle(sqrt)
 #' @export
-flat_chronicle <- function(.c, .f, ...){
+fmap_chronicle <- function(.c, .f, ...){
 
   res_pure <- list("log" = NA,
                    "value" = NA)
 
   log_df <- make_log_df(
     success = 1,
-    fstring = "flat_chronicle",
+    fstring = "fmap_chronicle",
     args = NA,
     res_pure = res_pure,
     start = Sys.time(),
@@ -398,7 +418,14 @@ pick <- function(.c, .e){
 #' @details
 #' Functions must be entered as strings of the form "function" or "package::function".
 #' The code gets generated and copied into the clipboard. The code can then be pasted
-#' into the text editor.
+#' into the text editor. On GNU/Linux systems, you might get the following error
+#' message on first use: "Error in : Clipboard on X11 requires that the DISPLAY envvar be configured".
+#' This is an error message from `clipr::write_clip()`, used by `record_many()` to put
+#' the generated code into the system's clipboard.
+#' To solve this issue, run `echo $DISPLAY` in the system's shell.
+#' This command should return a string like ":0". Take note of this string.
+#' In your .Rprofile, put the following command: Sys.setenv(DISPLAY = ":0") and restart
+#' the R session. `record_many()` should now work.
 #' @param list_funcs A list of function names, as strings.
 #' @param strict The strict parameter for record. Defaults to 2.
 #' @return Puts a string into the systems clipboard.

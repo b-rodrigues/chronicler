@@ -76,11 +76,26 @@ read_log(b)
 pick(b, "value")
 ```
 
+`record()` works with any function (as far as I know).
+
+To avoid having to define every function individually, like this:
+
+```{r}
+r_sqrt <- record(sqrt)
+r_exp <- record(exp)
+r_mean <- record(mean)
+```
+
+you can use the `record_many()` function. `record_many()` takes a list of functions (as strings)
+as an input and puts generated code in your system's clipboard. You can then paste the code
+into your text editor. The gif below illustrates how `record_many()` works:
+
+![`record_many()` in action](https://raw.githubusercontent.com/b-rodrigues/chronicler/master/data-raw/record_many.gif)
+
+
 ## Composing decorated functions
 
-`bind_record()` is used to pass the output from one decorated function to the next.
-
-`record()` works with any function:
+`bind_record()` is used to pass the output from one decorated function to the next:
 
 ```{r}
 library(dplyr)
