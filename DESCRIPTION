@@ -12,16 +12,18 @@ RoxygenNote: 7.1.2
 BugReports: https://github.com/b-rodrigues/chronicler/issues
 Depends:
     R (>= 4.0),
+Imports:
     rlang,
     dplyr,
-    tibble
+    tibble,
+    lubridate,
+    tidyr,
+    stringr,
+    clipr
 Suggests: 
     knitr,
     testthat (>= 3.0.0),
     rmarkdown,
-    tidyr,
-    lubridate,
-    stringr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 LazyData: true

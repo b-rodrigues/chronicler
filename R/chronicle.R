@@ -392,3 +392,32 @@ pick <- function(.c, .e){
   .c[[.e]]
 
 }
+
+
+#' Decorate a list of functions
+#' @details
+#' Functions must be entered as strings of the form "function" or "package::function".
+#' The code gets generated and copied into the clipboard. The code can then be pasted
+#' into the text editor.
+#' @param list_funcs A list of function names, as strings.
+#' @param strict The strict parameter for record. Defaults to 2.
+#' @return Puts a string into the systems clipboard.
+#' @importFrom stringr str_remove_all
+#' @importFrom clipr write_clip
+#' @export
+#' @examples
+#' \dontrun{
+#' list_funcs <- list("exp", "dplyr::select", "exp")
+#' record_many(list_funcs)
+#' }
+record_many <- function(list_funcs, strict = 2){
+
+  sanitized_list <- stringr::str_remove_all(list_funcs, "(.*?)\\:")
+
+  clipr::write_clip(
+           paste0("r_", sanitized_list, " <- ", "record(", list_funcs, ", strict = ", strict, ")")
+           )
+
+  message("Code copied to clipboard. You can now paste it into your text editor.")
+
+}

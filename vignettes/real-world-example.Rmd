@@ -36,7 +36,8 @@ function as the `.g` argument of each function below. This will make it possible
 dimensions of the data change inside the pipeline:
 
 ```{r}
-# Define required functions
+# Define required functions 
+# You can use `record_many()` to avoid having to write everything
 
 r_select <- record(select, .g = dim)
 r_pivot_longer <- record(pivot_longer, .g = dim)
