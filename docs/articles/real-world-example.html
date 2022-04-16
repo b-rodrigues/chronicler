@@ -161,13 +161,13 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                           </span>
-<span class="co">#&gt; [2] "✔ select(1,contains(\"20\")) ran successfully at 2022-04-15 23:28:25"                                                    </span>
-<span class="co">#&gt; [3] "✔ pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-04-15 23:28:25"                          </span>
-<span class="co">#&gt; [4] "✔ separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-04-15 23:28:25"                   </span>
-<span class="co">#&gt; [5] "✔ filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-04-15 23:28:26"</span>
-<span class="co">#&gt; [6] "✔ mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-04-15 23:28:26"                                        </span>
-<span class="co">#&gt; [7] "✔ select(air_pr\\time,date,passengers) ran successfully at 2022-04-15 23:28:26"                                          </span>
-<span class="co">#&gt; [8] "Total running time: 1.83562040328979 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(1,contains(\"20\")) ran successfully at 2022-04-16 18:28:28"                                                    </span>
+<span class="co">#&gt; [3] "✔ pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-04-16 18:28:28"                          </span>
+<span class="co">#&gt; [4] "✔ separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-04-16 18:28:28"                   </span>
+<span class="co">#&gt; [5] "✔ filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-04-16 18:28:30"</span>
+<span class="co">#&gt; [6] "✔ mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-04-16 18:28:30"                                        </span>
+<span class="co">#&gt; [7] "✔ select(air_pr\\time,date,passengers) ran successfully at 2022-04-16 18:28:30"                                          </span>
+<span class="co">#&gt; [8] "Total running time: 1.83539891242981 secs"</span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code> gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People that then read this object, can read the log to know what happened and reproduce the steps if necessary.</p>
 <p>Let’s take a look at the final data set:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
