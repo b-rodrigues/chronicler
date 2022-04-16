@@ -171,6 +171,7 @@ errs_warn_mess <- function(.f, ...){
 #' goes well. In case of error/warning/message, $value is NA and $log holds the message.
 #' purely() is used by record() to allow the latter to handle errors.
 #' @importFrom rlang try_fetch eval_tidy cnd_message
+#' @importFrom maybe just nothing
 #' @examples
 #' purely(log)(10)
 #' purely(log)(-10)
@@ -191,9 +192,9 @@ purely <- function(.f, strict = 2){
     )
 
     final_result$value <- if(any(c("error", "warning", "message") %in% class(res))){
-                             NA
+                             maybe::nothing()
                            } else {
-                             res
+                             maybe::just(res)
                            }
 
     final_result$log_df <- if(any(c("error", "warning", "message") %in% class(res))){
@@ -234,7 +235,7 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
     res_pure <- (pure_f(.value, ...))
     end <- Sys.time()
 
-    if (any(grepl("Caution", .log_df))) {
+    if (maybe::is_nothing(res_pure$value)) {
 
       log_df <- make_log_df(
         success = 0,
@@ -300,7 +301,7 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
 #' @export
 bind_record <- function(.c, .f, ...){
 
-  .f(.c$value, ..., .log_df = .c$log_df)
+  .f(maybe::from_maybe(.c$value), ..., .log_df = .c$log_df)
 
 }
 
@@ -346,6 +347,8 @@ fmap_chronicle <- function(.c, .f, ...){
     start = Sys.time(),
     end = Sys.time())
 
+  .f <- maybe::maybe(.f)
+  
   list(value = .f(.c$value, ...),
        log_df = dplyr::bind_rows(.c$log_df,
                                  log_df)) |>
