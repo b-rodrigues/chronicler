@@ -234,7 +234,22 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
     res_pure <- (pure_f(.value, ...))
     end <- Sys.time()
 
-    if(all(is.na(res_pure$value))){
+    if (any(grepl("Caution", .log_df))) {
+
+      log_df <- make_log_df(
+        success = 0,
+        fstring = fstring,
+        args = args,
+        res_pure = list(
+          value = NULL,
+          log = "Pipeline failed upstream"
+        ),
+        start = start,
+        end = end,
+        .g = .g
+      )
+
+    } else if (all(is.na(res_pure$value))) {
 
       log_df <- make_log_df(
         success = 0,
