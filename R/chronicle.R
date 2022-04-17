@@ -8,7 +8,8 @@
 #' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
 #' @return A tibble containing the log.
 #' @importFrom tibble tibble
-make_log_df <- function(success,
+make_log_df <- function(ops_number = 1,
+                        success,
                         fstring,
                         args,
                         res_pure,
@@ -21,14 +22,16 @@ make_log_df <- function(success,
                     "\u2718 Caution - ERROR")
 
   tibble::tibble(
+            "ops_number" = ops_number,
             "outcome" = outcome,
             "function" = fstring,
             "arguments" = args,
-            "message" = paste0(res_pure$log, collapse = " "),
+            "message" = paste0(res_pure$log_df, collapse = " "),
             "start_time" = start,
             "end_time" = end,
             "run_time" = end - start,
-            "g" = list(.g(res_pure$value))
+            "g" = list(.g(res_pure$value)),
+            "lag_outcome" = NA
           )
 
 }
@@ -235,22 +238,7 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
     res_pure <- (pure_f(.value, ...))
     end <- Sys.time()
 
-    if (maybe::is_nothing(res_pure$value)) {
-
-      log_df <- make_log_df(
-        success = 0,
-        fstring = fstring,
-        args = args,
-        res_pure = list(
-          value = NULL,
-          log = "Pipeline failed upstream"
-        ),
-        start = start,
-        end = end,
-        .g = .g
-      )
-
-    } else if (all(is.na(res_pure$value))) {
+    if(maybe::is_nothing(res_pure$value)){
 
       log_df <- make_log_df(
         success = 0,
@@ -276,13 +264,31 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
 
     }
 
-    log_df <- rbind(.log_df,
-                    log_df)
+log_df <- dplyr::mutate(
+      rbind(.log_df,
+            log_df),
+      ops_number = dplyr::row_number(),
+      lag_outcome = dplyr::lag(outcome, 1)
+      )
+
+    # correct error message for first operation
+    # if there's only one ops which failed, we need to keep the error message
+    # if some ops where successful, but then one fails, we need to keep its error message
+    # the following failures can then all have a generic message
+    if(maybe::is_nothing(res_pure$value)
+       & tail(log_df, 1)$ops_number == 1){
+      log_df$message <- paste0(res_pure$log_df, collapse = " ")
+    } else if (maybe::is_nothing(res_pure$value)
+               & !grepl("Success", tail(log_df, 1)$lag_outcome)
+               & tail(log_df, 1)$ops_number > 1){
+      log_df[nrow(log_df), ]$message <- "Pipeline failed upstream"
+    }
 
     list_result <- list(
       value = res_pure$value,
       log_df = log_df
     )
+
 
     structure(list_result, class = "chronicle")
 
@@ -347,12 +353,17 @@ fmap_chronicle <- function(.c, .f, ...){
     start = Sys.time(),
     end = Sys.time())
 
-  .f <- maybe::maybe(.f)
-  
-  list(value = .f(.c$value, ...),
+  list(value = maybe::fmap(.c$value, .f, ...),
        log_df = dplyr::bind_rows(.c$log_df,
                                  log_df)) |>
   structure(class = "chronicle")
+}
+
+
+
+#' @export
+is_chronicle <- function(a) {
+  identical(class(a), "chronicle")
 }
 
 #' Coerce an object to a chronicle object.
