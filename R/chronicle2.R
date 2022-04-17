@@ -41,8 +41,7 @@ fmap <- function(.c, .f, ...) {
 bind <- function(.c, .f, ...) {
   if (maybe::is_just(.c$value)) {
     new_chronicle <-
-      maybe::fmap(.c$value, .f, ...) |>
-      maybe::from_just()
+      .f(maybe::from_just(.c$value), ...)
 
     new_log <-
       if (maybe::is_just(new_chronicle$value))
