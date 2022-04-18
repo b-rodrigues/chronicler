@@ -31,9 +31,9 @@ devtools::install_github("b-rodrigues/chronicler")
 
 ## Introduction
 
-{chronicler} provides the `record()` function, which allows you to decorate functions. These
+`{chronicler}` provides the `record()` function, which allows you to decorate functions. These
 decorated functions then work exactly the same as their undecorated counterparts, but they
-provide additional input. 
+provide additional output. 
 
 Let's first start with a simple example, by decorating the `sqrt()` function:
 
@@ -63,7 +63,7 @@ Just
 ```
 
 simply provides the result of `sqrt()` applied to `1:5` (let's ignore the word `Just` on the third
-line for now). The second part, tells you that there's more to it:
+line for now; for more details see the `Maybe Monad` vignette). The second part, tells you that there's more to it:
 
 ```
 ---------------
@@ -72,8 +72,8 @@ Retrieve the value of this object with pick(.c, "value").
 To read the log of this object, call read_log().
 ```
 
-The value of the `sqrt()` function applied to its
-arguments can be obtained using `pick()`:
+The value of the `sqrt()` function applied to its arguments can be obtained using `pick()`, as
+explained:
 
 ```{r}
 pick(a, "value")
@@ -84,6 +84,7 @@ A log also gets generated and can be read using `read_log()`:
 ```{r}
 read_log(a)
 ```
+
 This is especially useful for objects that get created using multiple calls:
 
 ```{r}
@@ -148,7 +149,7 @@ output <- starwars %>%
 read_log(output)
 ```
 
-The value can then be accessed and worked on as usual using `pick()`:
+The value can then be accessed and worked on as usual using `pick()`, as explained above:
 
 ```{r}
 pick(output, "value")
@@ -157,7 +158,6 @@ pick(output, "value")
 This package also ships with a dedicated pipe, `%>=%` which you can use instead of `bind_record()`:
 
 ```{r}
-
 output_pipe <- starwars %>%
   r_select(height, mass, species, sex) %>=%
   r_group_by(species, sex) %>=%
@@ -170,11 +170,6 @@ output_pipe <- starwars %>%
 pick(output_pipe, "value")
 ```
 
-Objects of class `chronicle` have their own print method:
-
-```{r}
-output_pipe
-```
 
 ## Condition handling
 
@@ -263,6 +258,7 @@ as.data.frame(output_pipe$log_df[, c("function", "g")])
 
 We can see that the dimension of the dataframe was (87, 4) after the call to `select()`, (23, 4)
 after the call to `filter()` and finally (9, 3) after the call to `summarise()`.
+
 
 ## Thanks
 
