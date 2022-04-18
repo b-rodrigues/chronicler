@@ -31,8 +31,11 @@ devtools::install_github("b-rodrigues/chronicler")
 
 ## Introduction
 
-{chronicler} allows you to decorate functions to make them provide enhanced output:
+{chronicler} provides the `record()` function, which allows you to decorate functions. These
+decorated functions then work exactly the same as their undecorated counterparts, but they
+provide additional input. 
 
+Let's first start with a simple example, by decorating the `sqrt()` function:
 
 ```{r example}
 library(chronicler)
@@ -43,8 +46,34 @@ a <- r_sqrt(1:5)
 
 ```
 
-Object `a` is now an object of class `chronicle`. The value of the `sqrt()` function applied to its arguments
-can be obtained using `pick()`:
+Object `a` is now an object of class `chronicle`. Let's see what `a` is:
+
+```{r}
+a
+```
+
+`a` is now made up of several parts. The first part:
+
+```
+✔ Value computed successfully:
+---------------
+Just
+[1] 1.000000 1.414214 1.732051 2.000000 2.236068
+
+```
+
+simply provides the result of `sqrt()` applied to `1:5` (let's ignore the word `Just` on the third
+line for now). The second part, tells you that there's more to it:
+
+```
+---------------
+This is an object of type `chronicle`.
+Retrieve the value of this object with pick(.c, "value").
+To read the log of this object, call read_log().
+```
+
+The value of the `sqrt()` function applied to its
+arguments can be obtained using `pick()`:
 
 ```{r}
 pick(a, "value")

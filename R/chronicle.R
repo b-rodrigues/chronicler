@@ -307,7 +307,7 @@ log_df <- dplyr::mutate(
 #' @export
 bind_record <- function(.c, .f, ...){
 
-  .f(maybe::from_maybe(.c$value), ..., .log_df = .c$log_df)
+  .f(maybe::from_maybe(.c$value, default = maybe::nothing()), ..., .log_df = .c$log_df)
 
 }
 
@@ -388,7 +388,7 @@ as_chronicle <- function(.x, .log_df = data.frame()){
     start = Sys.time(),
     end = Sys.time())
 
-  list(value = .x,
+  list(value = maybe::just(.x),
        log_df = dplyr::bind_rows(.log_df,
                                  log_df)) |>
   structure(class = "chronicle")
@@ -420,7 +420,10 @@ as_chronicle <- function(.x, .log_df = data.frame()){
   # need to set .value to empty, if not .value will be matched multiple times in call2
   names(expr_ls)[names(expr_ls) == ".value"] <- ""
 
-  rlang::eval_tidy(rlang::call2(f, .value = .c$value, !!!expr_ls[-1], .log_df = .c$log_df))
+  rlang::eval_tidy(rlang::call2(f,
+                                .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
+                                !!!expr_ls[-1],
+                                .log_df = .c$log_df))
 
 }
 
@@ -438,7 +441,12 @@ pick <- function(.c, .e){
 
   stopifnot('.e must be either "value", "log_df"' = .e %in% c("value", "log_df"))
 
-  .c[[.e]]
+  if(.e == "value"){
+    maybe::from_maybe(.c[[.e]], default = maybe::nothing())
+    } else {
+      .c[[.e]]
+    }
+
 
 }
 

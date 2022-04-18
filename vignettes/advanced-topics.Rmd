@@ -75,7 +75,7 @@ function is the same.
 ```{r}
 a <- as_chronicle(10)
 r_sqrt <- record(sqrt)
-
+ 
 test_that("first monadic law", {
   expect_equal(bind_record(a, r_sqrt)$value, r_sqrt(10)$value)
 })

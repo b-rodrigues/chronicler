@@ -37,6 +37,7 @@ Object `a` is now an object of class `chronicle`. The value of the
 
 ``` r
 pick(a, "value")
+#> Just
 #> [1] 1.000000 1.414214 1.732051 2.000000 2.236068
 ```
 
@@ -45,8 +46,8 @@ A log also gets generated and can be read using `read_log()`:
 ``` r
 read_log(a)
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-04-16 18:27:24"
-#> [3] "Total running time: 0.000216245651245117 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-04-18 18:36:54"
+#> [3] "Total running time: 0.00196528434753418 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -66,12 +67,13 @@ b <- 1:10 |>
 ``` r
 read_log(b)
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-04-16 18:27:24"
-#> [3] "✔ exp() ran successfully at 2022-04-16 18:27:24" 
-#> [4] "✔ mean() ran successfully at 2022-04-16 18:27:24"
-#> [5] "Total running time: 0.00710415840148926 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-04-18 18:36:54"
+#> [3] "✔ exp() ran successfully at 2022-04-18 18:36:54" 
+#> [4] "✔ mean() ran successfully at 2022-04-18 18:36:54"
+#> [5] "Total running time: 0.0249757766723633 secs"
 
 pick(b, "value")
+#> Just
 #> [1] 11.55345
 ```
 
@@ -126,17 +128,18 @@ output <- starwars %>%
 ``` r
 read_log(output)
 #> [1] "Complete log:"                                                                
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-16 18:27:24"    
-#> [3] "✔ group_by(species,sex) ran successfully at 2022-04-16 18:27:24"              
-#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-04-16 18:27:24"            
-#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-04-16 18:27:24"
-#> [6] "Total running time: 0.247532606124878 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-18 18:36:54"    
+#> [3] "✔ group_by(species,sex) ran successfully at 2022-04-18 18:36:54"              
+#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-04-18 18:36:54"            
+#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-04-18 18:36:54"
+#> [6] "Total running time: 0.131339550018311 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`:
 
 ``` r
 pick(output, "value")
+#> Just
 #> # A tibble: 9 × 3
 #> # Groups:   species [9]
 #>   species    sex              mass
@@ -165,6 +168,7 @@ output_pipe <- starwars %>%
 
 ``` r
 pick(output_pipe, "value")
+#> Just
 #> # A tibble: 9 × 3
 #> # Groups:   species [9]
 #>   species    sex            mean_mass
@@ -186,6 +190,7 @@ Objects of class `chronicle` have their own print method:
 output_pipe
 #> ✔ Value computed successfully:
 #> ---------------
+#> Just
 #> # A tibble: 9 × 3
 #> # Groups:   species [9]
 #>   species    sex            mean_mass
@@ -222,8 +227,7 @@ errord_output <- starwars %>%
 errord_output
 #> ✘ Value computed unsuccessfully:
 #> ---------------
-#> [1] NA
-#> 
+#> Nothing
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
@@ -236,11 +240,11 @@ message:
 ``` r
 read_log(errord_output)
 #> [1] "Complete log:"                                                                                                                                                    
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-16 18:27:24"                                                                                        
-#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-16 18:27:24"
-#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-04-16 18:27:24"                                           
-#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-04-16 18:27:24"                               
-#> [6] "Total running time: 0.0768611431121826 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-04-18 18:36:55"                                                                                        
+#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-04-18 18:36:55"
+#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-04-18 18:36:55"                                           
+#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-04-18 18:36:55"                               
+#> [6] "Total running time: 0.0529687404632568 secs"
 ```
 
 It is also possible to only capture errors, or catpure errors, warnings
@@ -254,9 +258,9 @@ r_sqrt <- record(sqrt, strict = 1)
 r_sqrt(-10) |>
   read_log()
 #> Warning in .f(...): NaNs produced
-#> [1] "Complete log:"                                                                  
-#> [2] "✘ sqrt() ran unsuccessfully with following exception: NA at 2022-04-16 18:27:24"
-#> [3] "Total running time: 0.000259876251220703 secs"
+#> [1] "Complete log:"                                   
+#> [2] "✔ sqrt() ran successfully at 2022-04-18 18:36:55"
+#> [3] "Total running time: 0.000271081924438477 secs"
 
 # Errors and warnings:
 
@@ -265,8 +269,8 @@ r_sqrt <- record(sqrt, strict = 2)
 r_sqrt(-10) |>
   read_log()
 #> [1] "Complete log:"                                                                             
-#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-04-16 18:27:24"
-#> [3] "Total running time: 0.000203609466552734 secs"
+#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-04-18 18:36:55"
+#> [3] "Total running time: 0.000240087509155273 secs"
 
 # Errors, warnings and messages
 
@@ -278,8 +282,8 @@ my_f <- function(x){
 record(my_f, strict = 3)(10) |>
                          read_log()
 #> [1] "Complete log:"                                                                                   
-#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-04-16 18:27:24"
-#> [3] "Total running time: 0.000312566757202148 secs"
+#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-04-18 18:36:55"
+#> [3] "Total running time: 0.000342369079589844 secs"
 ```
 
 ## Advanced logging
@@ -306,14 +310,15 @@ information:
 
 ``` r
 pick(output_pipe, "log_df")
-#> # A tibble: 4 × 8
-#>   outcome   `function` arguments message start_time          end_time           
-#>   <chr>     <chr>      <chr>     <chr>   <dttm>              <dttm>             
-#> 1 ✔ Success select     "height,… NA      2022-04-16 18:27:24 2022-04-16 18:27:24
-#> 2 ✔ Success group_by   "species… NA      2022-04-16 18:27:24 2022-04-16 18:27:24
-#> 3 ✔ Success filter     "sex != … NA      2022-04-16 18:27:24 2022-04-16 18:27:24
-#> 4 ✔ Success summarise  "mean(ma… NA      2022-04-16 18:27:24 2022-04-16 18:27:24
-#> # … with 2 more variables: run_time <drtn>, g <list>
+#> # A tibble: 4 × 10
+#>   ops_number outcome   `function` arguments          message start_time         
+#>        <int> <chr>     <chr>      <chr>              <chr>   <dttm>             
+#> 1          1 ✔ Success select     "height,mass,spec… NA      2022-04-18 18:36:55
+#> 2          2 ✔ Success group_by   "species,sex"      NA      2022-04-18 18:36:55
+#> 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-04-18 18:36:55
+#> 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-04-18 18:36:55
+#> # … with 4 more variables: end_time <dttm>, run_time <drtn>, g <list>,
+#> #   lag_outcome <chr>
 ```
 
 It is thus possible to take a look at the output of the function
@@ -321,11 +326,11 @@ provided (`dim()`):
 
 ``` r
 as.data.frame(output_pipe$log_df[, c("function", "g")])
-#>    function     g
-#> 1    select 87, 4
-#> 2  group_by    NA
-#> 3    filter 23, 4
-#> 4 summarise  9, 3
+#>    function    g
+#> 1    select NULL
+#> 2  group_by   NA
+#> 3    filter NULL
+#> 4 summarise NULL
 ```
 
 We can see that the dimension of the dataframe was (87, 4) after the

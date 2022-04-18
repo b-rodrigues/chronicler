@@ -15,6 +15,7 @@ test_that("test that pipe and bind_loud give same results", {
     bind_record(r_mean)
 
   expect_equal(result_pipe$value, result_bind$value)
+
 })
 
 
@@ -56,4 +57,5 @@ test_that("test that pipe and bind_loud give same results for dplyr functions", 
     bind_record(r_summarise, mean_cyl = mean(cyl))
 
   expect_equal(result_pipe$value, result_bind$value)
+
 })
