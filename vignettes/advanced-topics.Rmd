@@ -52,8 +52,9 @@ my_function <- function(x, log = ""){
 
 ```
 
-You would need to create a global log variable, which would then be given as an argument to each
-function (and you would need to rewrite each function to use this log). The problems here are:
+Then, to keep track of all the logs from all your function, you would need to create a global log 
+variable, which would then be given as an argument to each function (and you would need to rewrite
+each function to use this log). The problems here are:
 
 - you need to rewrite the same code to handle logs over and over again for each function. It would be better to avoid repeating oneself;
 - the functions now do two things that are completely unrelated: they perform their computation but also handle logs. It easier to reason about functions that only perform one thing;
@@ -61,6 +62,7 @@ function (and you would need to rewrite each function to use this log). The prob
 
 Enter the monad, a way to handle computations that would typically require running impure code (or 
 changing the implementation of the needed functions), purely.
+
 
 Monads need to satisfy the so-called "monadic laws".
 
@@ -119,5 +121,29 @@ test_that("third monadic law", {
   tolerance = .01
   )
 })
+
+```
+
+## flatmap and bind
+
+```{r}
+
+r_sqrt <- record(sqrt)
+r_exp <- record(exp)
+r_mean <- record(mean)
+
+a <- 1:10 |>
+  r_sqrt() |>
+  bind_record(r_exp) |>
+  bind_record(r_mean)
+
+flatmap_record <- purrr::compose(join_record, fmap_record)
+
+b <- 1:10 |>
+  r_sqrt() |>
+  flatmap_record(r_exp) |>
+  flatmap_record(r_mean)
+
+identical(a$value, b$value)
 
 ```

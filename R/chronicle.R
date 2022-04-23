@@ -341,7 +341,7 @@ bind_record <- function(.c, .f, ...){
 #' read_log(join_record(a))
 join_record <- function(x){
 
-  list(value = x$value$value,
+  list(value = x$value$content$value,
        log_df = dplyr::bind_rows(x$value$log_df,
                                  x$log_df)) |>
     structure(class = "chronicle")
@@ -357,9 +357,9 @@ join_record <- function(x){
 #' @importFrom dplyr bind_rows
 #' @return Returns the result of .f(.c$value) as a new chronicle object.
 #' @examples
-#' as_chronicle(3) |> fmap_chronicle(sqrt)
+#' as_chronicle(3) |> fmap_record(sqrt)
 #' @export
-fmap_chronicle <- function(.c, .f, ...){
+fmap_record <- function(.c, .f, ...){
 
   res_pure <- list("log" = NA,
                    "value" = NA)
