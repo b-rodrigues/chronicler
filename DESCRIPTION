@@ -13,13 +13,14 @@ BugReports: https://github.com/b-rodrigues/chronicler/issues
 Depends:
     R (>= 4.0),
 Imports:
-    rlang,
+    clipr,
     dplyr,
-    tibble,
     lubridate,
-    tidyr,
+    maybe,
+    rlang,
     stringr,
-    clipr
+    tibble,
+    tidyr
 Suggests: 
     knitr,
     testthat (>= 3.0.0),

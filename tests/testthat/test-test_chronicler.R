@@ -59,3 +59,51 @@ test_that("test that pipe and bind_loud give same results for dplyr functions", 
   expect_equal(result_pipe$value, result_bind$value)
 
 })
+
+
+test_that("first and only error message is ok", {
+
+  r_select <- record(dplyr::select)
+
+  result_pipe <- mtcars |>
+    r_select(bm)
+
+
+  expect_true(grepl("Can't subset columns that don't exist", result_pipe$log_df$message))
+
+})
+
+
+test_that("if multiple error messages, next ones are 'pipe failed'", {
+
+  r_select <- record(dplyr::select)
+  r_filter <- record(dplyr::filter)
+  r_mutate <- record(dplyr::mutate)
+
+  result_pipe <- mtcars |>
+    r_select(bm) %>=%
+    r_filter(bm == 1) %>=%
+    r_mutate(bm = 3)
+
+
+  expect_true(grepl("Can't subset columns that don't exist", result_pipe$log_df$message[1]))
+  expect_true(grepl("Pipeline failed upstream", result_pipe$log_df$message[2]))
+  expect_true(grepl("Pipeline failed upstream", result_pipe$log_df$message[3]))
+
+})
+
+
+test_that("test check_g", {
+
+  r_select <- record(dplyr::select, .g = dim)
+
+  result_pipe <- mtcars |>
+    r_select(am)
+
+  expected_result <- tibble::tribble(~ops_number, ~`function`, ~g,
+                                     1, "dplyr::select", c(32, 1)
+                                     ) |> as.data.frame()
+
+  expect_equal(expected_result, check_g(result_pipe))
+
+})

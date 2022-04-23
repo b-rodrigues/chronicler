@@ -6,8 +6,9 @@
 #' @param start Starting time.
 #' @param end Ending time.
 #' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
-#' @return A tibble containing the log.
 #' @importFrom tibble tibble
+#' @importFrom maybe from_maybe nothing
+#' @return A tibble containing the log.
 make_log_df <- function(ops_number = 1,
                         success,
                         fstring,
@@ -30,7 +31,8 @@ make_log_df <- function(ops_number = 1,
             "start_time" = start,
             "end_time" = end,
             "run_time" = end - start,
-            "g" = list(.g(res_pure$value)),
+            "g" = list(.g(maybe::from_maybe(res_pure$value,
+                                            default = maybe::nothing()))),
             "lag_outcome" = NA
           )
 
@@ -174,7 +176,7 @@ errs_warn_mess <- function(.f, ...){
 #' goes well. In case of error/warning/message, $value is NA and $log holds the message.
 #' purely() is used by record() to allow the latter to handle errors.
 #' @importFrom rlang try_fetch eval_tidy cnd_message
-#' @importFrom maybe just nothing
+#' @importFrom maybe just nothing is_nothing
 #' @examples
 #' purely(log)(10)
 #' purely(log)(-10)
@@ -184,30 +186,41 @@ purely <- function(.f, strict = 2){
 
   function(.value, ..., .log_df = "Log start..."){
 
-    res <- switch(strict,
-                  only_errors(.f, .value,  ...),
-                  errors_and_warnings(.f, .value, ...),
-                  errs_warn_mess(.f, .value, ...))
+    if(maybe::is_nothing(.value)){
 
-    final_result <- list(
-      value = NULL,
-      log_df = NULL
-    )
+      final_result <- list(
+        value = maybe::nothing(),
+        log_df = "A `Nothing` was given as input."
+      )
 
-    final_result$value <- if(any(c("error", "warning", "message") %in% class(res))){
-                             maybe::nothing()
-                           } else {
-                             maybe::just(res)
-                           }
+    } else {
 
-    final_result$log_df <- if(any(c("error", "warning", "message") %in% class(res))){
-                          rlang::cnd_message(res)
-                           } else {
-                             NA
-                           }
+      res <- switch(strict,
+                    only_errors(.f, .value,  ...),
+                    errors_and_warnings(.f, .value, ...),
+                    errs_warn_mess(.f, .value, ...))
+
+      final_result <- list(
+        value = NULL,
+        log_df = NULL
+      )
+
+      final_result$value <- if(any(c("error", "warning", "message") %in% class(res))){
+                              maybe::nothing()
+                            } else {
+                              maybe::just(res)
+                            }
+
+      final_result$log_df <- if(any(c("error", "warning", "message") %in% class(res))){
+                               rlang::cnd_message(res)
+                             } else {
+                               NA
+                             }
+
+
+    }
 
     final_result
-
 
   }
 }
@@ -222,6 +235,8 @@ purely <- function(.f, strict = 2){
 #' `read_log()`. `log_df` is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.
 #' @importFrom rlang enexprs
 #' @importFrom tibble tibble
+#' @importFrom dplyr mutate lag row_number select
+#' @importFrom maybe is_nothing
 #' @examples
 #' record(sqrt)(10)
 #' @export
@@ -264,12 +279,14 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
 
     }
 
-log_df <- dplyr::mutate(
-      rbind(.log_df,
-            log_df),
-      ops_number = dplyr::row_number(),
-      lag_outcome = dplyr::lag(outcome, 1)
-      )
+    # Columns ops_number and lag_outcome
+    # help with writing meaningful error message
+    log_df <- dplyr::mutate(
+          rbind(.log_df,
+                log_df),
+          ops_number = dplyr::row_number(),
+          lag_outcome = dplyr::lag(outcome, 1)
+          )
 
     # correct error message for first operation
     # if there's only one ops which failed, we need to keep the error message
@@ -289,7 +306,6 @@ log_df <- dplyr::mutate(
       log_df = log_df
     )
 
-
     structure(list_result, class = "chronicle")
 
   }
@@ -300,6 +316,7 @@ log_df <- dplyr::mutate(
 #' @param .f A chronicle function to apply to the returning value of .c.
 #' @param ... Further parameters to pass to .f.
 #' @return A chronicle object.
+#' @importFrom maybe from_maybe nothing
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_exp <- record(exp)
@@ -336,6 +353,8 @@ join_record <- function(x){
 #' @param .c A chronicle object.
 #' @param .f A non-chronicle function.
 #' @param ... Further parameters to pass to .f.
+#' @importFrom maybe fmap
+#' @importFrom dplyr bind_rows
 #' @return Returns the result of .f(.c$value) as a new chronicle object.
 #' @examples
 #' as_chronicle(3) |> fmap_chronicle(sqrt)
@@ -372,6 +391,7 @@ is_chronicle <- function(a) {
 #' @return Returns a chronicle object with the object as the $value.
 #' @importFrom tibble tibble
 #' @importFrom dplyr bind_rows
+#' @importFrom maybe just
 #' @examples
 #' as_chronicle(3)
 #' @export
@@ -400,6 +420,7 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 #' @param .f A chronicle function to apply to the returning value of .c.
 #' @return A chronicle object.
 #' @importFrom rlang enquo quo_get_expr quo_get_env call_match call2 eval_tidy
+#' @importFrom maybe from_maybe nothing
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_exp <- record(exp)
@@ -432,6 +453,7 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 #' @param .c A chronicle object.
 #' @param .e Element of interest to retrieve, one of "value" or "log_df".
 #' @return The `value` or `log_df` element of the chronicle object .c.
+#' @importFrom maybe from_maybe nothing
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_exp <- record(exp)
@@ -485,3 +507,24 @@ record_many <- function(list_funcs, strict = 2){
   message("Code copied to clipboard. You can now paste it into your text editor.")
 
 }
+
+
+#' Check the output of the .g function
+#' @details
+#' `.g` is an option argument to the `record()` function. Providing this optional
+#' function allows you, at each step of a pipeline, to monitor interesting characteristics
+#' of the `value` object. See the package's Readme file for an example with data frames.
+#' @param .c A chronicle object.
+#' @param columns Columns to select for the output. Defaults to c("ops_number", "function").
+#' @return A data.frame with the selected columns and column "g".
+#' @examples
+#' r_subset <- record(subset, .g = dim)
+#' result <- r_subset(mtcars, select = am)
+#' check_g(result)
+#' @export
+check_g <- function(.c, columns = c("ops_number", "function")){
+
+  as.data.frame(.c$log_df[, c(columns, "g")])
+
+}
+

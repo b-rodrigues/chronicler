@@ -5,6 +5,7 @@
 \title{Creates the log_df element of a chronicle.}
 \usage{
 make_log_df(
+  ops_number = 1,
   success,
   fstring,
   args,
