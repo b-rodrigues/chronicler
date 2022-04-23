@@ -28,23 +28,44 @@ three things:
 - a way to compose these embellished functions;
 - a way to convert "normal" objects to "monadic" objects (monadic objects are the output of the embellished functions)
 
+To understand what a monad is, I believe it is useful to explain what sort of problem monads solve.
+
 Suppose for instance that you wish for your functions to provide a log when they're run. If your
 function looks like this:
 
 ```{r}
-my_function <- function(x){
+my_sqrt <- function(x){
 
   sqrt(x)
 
 }
+
 ```
 
 Then you would need to rewrite it like this:
 
 ```{r}
-my_function <- function(x, log = ""){
+my_sqrt <- function(x, log = ""){
 
   list(sqrt(x),
+       c(log,
+         paste0("Running sqrt with input ", x)))
+
+}
+
+```
+
+There are two problems with such an implementation:
+
+- we need to rewrite every function;
+- these functions don't compose:
+
+What do I mean with "these functions don't compose"? Consider another such function `my_log()`:
+
+```{r}
+my_log <- function(x, log = ""){
+
+  list(log(x),
        c(log,
          paste0("Running log with input ", x)))
 
@@ -52,7 +73,51 @@ my_function <- function(x, log = ""){
 
 ```
 
-Then, to keep track of all the logs from all your function, you would need to create a global log 
+`sqrt()` and `log()` compose, or rather, they can be chained:
+
+```{r}
+10 |>
+  sqrt() |>
+  log()
+
+```
+
+while this is not true for `my_sqrt()` and `my_log()`:
+
+```{r, eval = FALSE}
+10 |>
+  my_sqrt() |>
+  my_log()
+
+```
+
+```
+Error in log(x) (from #3) : non-numeric argument to mathematical function
+```
+
+This is because `my_log()` expects a number, not a list which is what `my_sqrt()` returns.
+
+A "monad" is what we need to solve these two problems. The first problem, not having to rewrite
+every function, can be tackled using [function factories](https://adv-r.hadley.nz/function-factories.html).
+Let's write one for our problem:
+
+```{r}
+logit <- function(.f, ..., log = NULL){
+
+  fstring <- deparse(substitute(.f))
+
+  function(..., .log = log){
+
+    list(result = .f(...),
+         log = c(paste0("Running ", fstring, " with argument ", ...),
+                 .log))
+  }
+}
+
+```
+
+
+Then, to keep track of all the logs from all your functions, you would need to create a global log 
 variable, which would then be given as an argument to each function (and you would need to rewrite
 each function to use this log). The problems here are:
 
