@@ -338,8 +338,8 @@ bind_record <- function(.c, .f, ...){
 #' r_log <- record(log)
 #' a <- as_chronicle(r_log(10))
 #' a
-#' read_log(join_record(a))
-join_record <- function(x){
+#' read_log(flatten_record(a))
+flatten_record <- function(x){
 
   list(value = x$value$content$value,
        log_df = dplyr::bind_rows(x$value$log_df,

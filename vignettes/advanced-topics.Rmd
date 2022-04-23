@@ -1,8 +1,8 @@
 ---
-title: "An implementation of the logger monad"
+title: "A non-mathematician's introduction to monads"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An implementation of the logger monad}
+  %\VignetteIndexEntry{A non-mathematician's introduction to monads}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -22,11 +22,10 @@ library(testthat)
 # Introduction
 
 `{chronicler}` is an implementation of a logger monad. A monad is a computation device that offers
-three things:
+two things:
 
-- the possibility to embellish functions so they can provide additional output without having to touch the function's core implementation;
-- a way to compose these embellished functions;
-- a way to convert "normal" objects to "monadic" objects (monadic objects are the output of the embellished functions)
+- the possibility to decorate functions so they can provide additional output without having to touch the function's core implementation;
+- a way to compose these decorated functions;
 
 To understand what a monad is, I believe it is useful to explain what sort of problem monads solve.
 
@@ -58,7 +57,7 @@ my_sqrt <- function(x, log = ""){
 There are two problems with such an implementation:
 
 - we need to rewrite every function;
-- these functions don't compose:
+- these functions don't compose.
 
 What do I mean with "these functions don't compose"? Consider another such function `my_log()`:
 
@@ -102,42 +101,226 @@ every function, can be tackled using [function factories](https://adv-r.hadley.n
 Let's write one for our problem:
 
 ```{r}
-logit <- function(.f, ..., log = NULL){
+log_it <- function(.f, ..., log = NULL){
 
   fstring <- deparse(substitute(.f))
 
   function(..., .log = log){
 
     list(result = .f(...),
-         log = c(paste0("Running ", fstring, " with argument ", ...),
-                 .log))
+         log = c(.log,
+                 paste0("Running ", fstring, " with argument ", ...)))
   }
 }
 
 ```
 
+We can now create our functions easily:
 
-Then, to keep track of all the logs from all your functions, you would need to create a global log 
-variable, which would then be given as an argument to each function (and you would need to rewrite
-each function to use this log). The problems here are:
+```{r}
+l_sqrt <- log_it(sqrt)
 
-- you need to rewrite the same code to handle logs over and over again for each function. It would be better to avoid repeating oneself;
-- the functions now do two things that are completely unrelated: they perform their computation but also handle logs. It easier to reason about functions that only perform one thing;
-- having a global variable (in this case the global log) that keeps getting accessed and modified by other functions is asking for trouble. Also parallelization would mess up the log.
+l_sqrt(10)
 
-Enter the monad, a way to handle computations that would typically require running impure code (or 
-changing the implementation of the needed functions), purely.
+l_log <- log_it(log)
 
+l_log(10)
 
-Monads need to satisfy the so-called "monadic laws".
+```
+
+We can call `l_sqrt()` and `l_log()` *decorated* functions and the values they return *monadic* values.
+
+The second issue remains though; `l_sqrt()` and `l_log()` can't be composed/chained. To solve
+this issue, we need another function, called `bind()`:
+
+```{r}
+bind <- function(.l, .f, ...){
+
+  .f(.l$result, ..., .log = .l$log)
+
+}
+```
+
+It is now possible to compose `l_sqrt()` and `l_log()`:
+
+```{r}
+10 |>
+  l_sqrt() |>
+  bind(l_log)
+
+```
+
+We can check that the result is correct by running the `sqrt()` and `log()`:
+
+```{r}
+log(sqrt(10))
+```
+
+This solution of using a function factory and defining a helper function to make the decorated
+functions compose is what constitutes a monad, but strictly speaking, this is not precisely correct.
+It can be interesting to see the actual definition from the programming language Haskell, which
+is a pure functional programming language where monads *must* be used to solve certain issues:
+
+*Monads can be viewed as a standard programming interface to various data or control structures, which is captured by Haskell's <code>Monad</code> class. All the common monads are members of it:*
+<div class="mw-highlight mw-content-ltr" dir="ltr"><pre><span class="kr">class</span> <span class="kt">Monad</span> <span class="n">m</span> <span class="kr">where</span>
+  <span class="p">(</span><span class="o">&gt;&gt;=</span><span class="p">)</span>  <span class="ow">::</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span>  <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span>
+  <span class="p">(</span><span class="o">&gt;&gt;</span><span class="p">)</span>   <span class="ow">::</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">-&gt;</span>  <span class="n">m</span> <span class="n">b</span>         <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">b</span>
+  <span class="n">return</span> <span class="ow">::</span>   <span class="n">a</span>                 <span class="ow">-&gt;</span> <span class="n">m</span> <span class="n">a</span>
+</pre></div>
+
+(Source: [Monad](https://wiki.haskell.org/Monad))
+
+This definition is quite cryptic, especially if you don't know Haskell, but what this means is that
+a `Monad` (in Haskell) comes with three methods:
+
+- `>>=` which is what we called `bind()`;
+- `>>` which I didn't bother implementing, because it's not really needed for understanding what a monad is;
+- and `return`. Don't be confused by the name, this has nothing to do with the `return()` we use inside functions to return a value. `return` is a function that coerces a value into a monadic value.
+
+While we didn't implement `return` (also called `unit`, which is also not a good name), our 
+function factory `log_it()` does `return`/`unit`'s job as it *returns* `m f(a)` instead of `m a` 
+(where `m` is our monad), so that is good enough. But I will implement `unit()` below.
+
+Finally, you might read sometimes that monads are objects that have a `flatmap()` method. I think
+that this as well is not strictly correct and very likely an oversimplification. But what is 
+`flatmap()` anyways? In practical terms, it is equivalent to `bind()`, but it is how you get there
+that's different. To implement `flatmap()` two additional functions are needed: `fmap()` and 
+`flatten()` (which is quite often called `join()`, but this has nothing to do with *joining*
+data frames, so I used `flatten()` instead).
+
+`fmap()` is a function that takes a monadic value as an argument and an undecorated function and
+applies this undecorated function to the monadic value:
+
+```{r}
+fmap <- function(m, f, ...){
+
+  fstring <- deparse(substitute(f))
+
+  list(result = f(m$result, ...),
+       log = c(m$log,
+               paste0("fmapping ", fstring, " with arguments ", paste0(m$result, ..., collapse = ","))))
+}
+
+```
+
+Let's first define a monadic value:
+
+```{r}
+# This is `unit()`'s implementation:
+unit <- log_it(identity)
+
+(m <- unit(10))
+```
+
+Let's now use `fmap()` to apply a non-decorated function to `m`:
+
+```{r}
+fmap(m, log)
+```
+
+Great, now what about `flatten()` (or `join()`)? Suppose that instead of `log()` we used `l_log()`
+with `fmap()`:
+
+```{r}
+fmap(m, l_log)
+```
+
+As you can see from the output, this produced a nested list. We would like `flatten()/join()` to take care 
+of this for us. So this could be an implementation of `flatten()`:
+
+```{r}
+flatten <- function(m){
+
+  list(result = m$result$result,
+       log = c(m$log))
+
+}
+
+```
+
+Let's try now:
+
+```{r}
+flatten(fmap(m, l_log))
+```
+
+Great! Now, as explained earlier, `flatmap()` and `bind()` are the same thing. But we have implemented
+`flatten()` and `fmap()`, how does these two functions related to `flatmap()`? It turns out that
+`flatmap()` is the composition of `flatten()` and `fmap()`:
+
+```{r}
+# I first define a composition operator
+composition <- function(f, g){
+
+  function(...){
+
+    f(g(...))
+
+  }
+
+}
+
+# I now compose flatten() an fmap()
+flatmap <- composition(flatten, fmap)
+
+```
+
+So this means that we can now replace:
+
+```{r}
+10 |>
+  l_sqrt() |>
+  bind(l_log)
+
+```
+
+by:
+
+```{r}
+10 |>
+  l_sqrt() |>
+  flatmap(l_log)
+
+```
+
+and we get the same result (well, not quite, since the log is different). I prefer explaining 
+monads using `bind()`, because `bind()` comes as a natural solution to the problem of decorated
+functions not composing. Not so with `flatmap()`.
+
+Before continuing with the final part of this introduction, I just want to share with you that
+lists are also monads. We have everything we need: `as.list()` is `unit()`, `purrr::map()` is `fmap()`
+and `purrr::flatten()` is `flatten()`. This means we can obtain `flatmap()` from composing
+`purrr::flatten()` and `purrr::map()`:
+
+```{r}
+# Since I'm using `{purrr}`, might as well use purrr::compose() instead of my own implementation
+flatmap_list <- purrr::compose(purrr::flatten, purrr::map)
+
+# Functions that return lists: they don't compose!
+# no worries, we implemented `flatmap_list()`
+list_sqrt <- \(x)(as.list(sqrt(x)))
+list_log <- \(x)(as.list(log(x)))
+
+10 |>
+  list_sqrt() |>
+  flatmap_list(list_log)
+
+```
+
+(thanks to [@armcn_](https://twitter.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw)
+for showing me this)
+
 
 # Monadic laws
+
+Monads need to satisfy the so-called "monadic laws". We're going to verify if the monad implemented
+in `{chronicler}` satisfies these monadic laws.
+
+## First law
 
 The first law states that passing a monadic value to a monadic function using `bind()` 
 (or in the case of the `{chronicler}` package `bind_record()`) or passing a value to a monadic
 function is the same.
-
-## First law
 
 ```{r}
 a <- as_chronicle(10)
@@ -189,7 +372,10 @@ test_that("third monadic law", {
 
 ```
 
-## flatmap and bind
+# flatmap() for `chronicle` objects 
+
+For exhaustivity's sake, I check that I can get `flatmap_record()` by composing `flatten_record()` and
+`fmap_record()`:
 
 ```{r}
 
@@ -202,7 +388,7 @@ a <- 1:10 |>
   bind_record(r_exp) |>
   bind_record(r_mean)
 
-flatmap_record <- purrr::compose(join_record, fmap_record)
+flatmap_record <- purrr::compose(flatten_record, fmap_record)
 
 b <- 1:10 |>
   r_sqrt() |>
