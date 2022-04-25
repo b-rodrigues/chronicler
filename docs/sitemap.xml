@@ -4,12 +4,6 @@
     <loc>https://b-rodrigues.github.io/chronicler/404.html</loc>
   </url>
   <url>
-    <loc>https://b-rodrigues.github.io/chronicler/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://b-rodrigues.github.io/chronicler/LICENSE.html</loc>
-  </url>
-  <url>
     <loc>https://b-rodrigues.github.io/chronicler/articles/advanced-topics.html</loc>
   </url>
   <url>
@@ -25,6 +19,12 @@
     <loc>https://b-rodrigues.github.io/chronicler/index.html</loc>
   </url>
   <url>
+    <loc>https://b-rodrigues.github.io/chronicler/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://b-rodrigues.github.io/chronicler/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>https://b-rodrigues.github.io/chronicler/reference/as_chronicle.html</loc>
   </url>
   <url>
@@ -37,10 +37,16 @@
     <loc>https://b-rodrigues.github.io/chronicler/reference/check_g.html</loc>
   </url>
   <url>
+    <loc>https://b-rodrigues.github.io/chronicler/reference/flatten_record.html</loc>
+  </url>
+  <url>
     <loc>https://b-rodrigues.github.io/chronicler/reference/flat_chronicle.html</loc>
   </url>
   <url>
     <loc>https://b-rodrigues.github.io/chronicler/reference/fmap_chronicle.html</loc>
+  </url>
+  <url>
+    <loc>https://b-rodrigues.github.io/chronicler/reference/fmap_record.html</loc>
   </url>
   <url>
     <loc>https://b-rodrigues.github.io/chronicler/reference/grapes-greater-than-equals-grapes.html</loc>
