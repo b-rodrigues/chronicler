@@ -27,6 +27,9 @@ two things:
 - the possibility to decorate functions so they can provide additional output without having to touch the function's core implementation;
 - a way to compose these decorated functions;
 
+(This definition is an oversimplification of the actual definition of a monad, but good enough for
+our purposes.)
+
 To understand what a monad is, I believe it is useful to explain what sort of problem monads solve.
 
 Suppose for instance that you wish for your functions to provide a log when they're run. If your
@@ -41,7 +44,7 @@ my_sqrt <- function(x){
 
 ```
 
-Then you would need to rewrite it like this:
+Then you would need to rewrite this function like this:
 
 ```{r}
 my_sqrt <- function(x, log = ""){
@@ -171,18 +174,19 @@ is a pure functional programming language where monads *must* be used to solve c
 (Source: [Monad](https://wiki.haskell.org/Monad))
 
 This definition is quite cryptic, especially if you don't know Haskell, but what this means is that
-a `Monad` (in Haskell) comes with three methods:
+a `Monad` (in Haskell) is *something* that has three methods:
 
 - `>>=` which is what we called `bind()`;
 - `>>` which I didn't bother implementing, because it's not really needed for understanding what a monad is;
-- and `return`. Don't be confused by the name, this has nothing to do with the `return()` we use inside functions to return a value. `return` is a function that coerces a value into a monadic value.
+- and `return`. Don't be confused by the name, this has nothing to do with the `return()` we use inside functions to return a value. `return` is a function that coerces a value into a monadic value, so if you consider any object `a`, `return` takes `a` as an input and *returns* the monadic value `m a`.
 
 While we didn't implement `return` (also called `unit`, which is also not a good name), our 
-function factory `log_it()` does `return`/`unit`'s job as it *returns* `m f(a)` instead of `m a` 
-(where `m` is our monad), so that is good enough. But I will implement `unit()` below.
+function factory `log_it()` does `return`/`unit`'s job but it *returns* `m f(a)` instead of `m a`.
+Using function factories comes more naturally to R users than using `return`/`unit`, hence why
+I did not focus on `return`/`unit`.
 
 Finally, you might read sometimes that monads are objects that have a `flatmap()` method. I think
-that this as well is not strictly correct and very likely an oversimplification. But what is 
+that this definition as well is not strictly correct and very likely an oversimplification. But what is 
 `flatmap()` anyways? In practical terms, it is equivalent to `bind()`, but it is how you get there
 that's different. To implement `flatmap()` two additional functions are needed: `fmap()` and 
 `flatten()` (which is quite often called `join()`, but this has nothing to do with *joining*
@@ -218,15 +222,16 @@ Let's now use `fmap()` to apply a non-decorated function to `m`:
 fmap(m, log)
 ```
 
-Great, now what about `flatten()` (or `join()`)? Suppose that instead of `log()` we used `l_log()`
-with `fmap()`:
+Great, now what about `flatten()` (or `join()`)? Why is that useful?
+Suppose that instead of `log()` we used `l_log()` with `fmap()`:
 
 ```{r}
 fmap(m, l_log)
 ```
 
-As you can see from the output, this produced a nested list. We would like `flatten()/join()` to take care 
-of this for us. So this could be an implementation of `flatten()`:
+As you can see from the output, this produced a nested list, a monadic value where the value is
+itself a monadic value. We would like `flatten()/join()` to take care of this for us. So this could
+be an implementation of `flatten()`:
 
 ```{r}
 flatten <- function(m){
@@ -245,7 +250,7 @@ flatten(fmap(m, l_log))
 ```
 
 Great! Now, as explained earlier, `flatmap()` and `bind()` are the same thing. But we have implemented
-`flatten()` and `fmap()`, how does these two functions related to `flatmap()`? It turns out that
+`flatten()` and `fmap()`, so how do these two functions relate to `flatmap()`? It turns out that
 `flatmap()` is the composition of `flatten()` and `fmap()`:
 
 ```{r}
@@ -310,6 +315,9 @@ list_log <- \(x)(as.list(log(x)))
 (thanks to [@armcn_](https://twitter.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw)
 for showing me this)
 
+In sum, monads are useful when you need values to also carry something more with them as shown here, 
+a log for instance. For another example of a monad implemented as an R package, see the 
+[maybe monad](https://armcn.github.io/maybe/).
 
 # Monadic laws
 
