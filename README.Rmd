@@ -13,7 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# chronicler
+# chronicler <img src="man/figures/hex.png" align="right" style="width: 25%;"/>
+
 
 <!-- badges: start -->
 <!-- badges: end -->

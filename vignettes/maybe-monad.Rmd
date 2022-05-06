@@ -1,8 +1,8 @@
 ---
-title: "The *Maybe* monad"
+title: "The Maybe monad"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{The Maybe Monad}
+  %\VignetteIndexEntry{The Maybe monad}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
