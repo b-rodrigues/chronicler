@@ -21,8 +21,10 @@ library(testthat)
 
 # Introduction
 
-`{chronicler}` is an implementation of a logger monad. A monad is a computation device that offers
-two things:
+This vignette introduces the functional programming concept of *monad*, without going into
+much technical detail. `{chronicler}` is an implementation of a logger monad, but in truth, 
+it is not necessary to know what monads are to use this package. However, if you are curious,
+read on. A monad is a computation device that offers two things:
 
 - the possibility to decorate functions so they can provide additional output without having to touch the function's core implementation;
 - a way to compose these decorated functions;
@@ -60,7 +62,7 @@ my_sqrt <- function(x, log = ""){
 
 There are two problems with such an implementation:
 
-- we need to rewrite every function;
+- we need to rewrite every function we need to use so that they provide logs;
 - these functions don't compose.
 
 What do I mean with "these functions don't compose"? Consider another such function `my_log()`:
@@ -156,6 +158,7 @@ Using `bind()`, it is now possible to compose `l_sqrt()` and `l_log()`:
 
 ```
 
+`bind()` takes care of providing the right arguments to the underlying function.
 We can check that the result is correct by comparing it the `$result` value
 from the returned object to `log(sqrt(10))`:
 
@@ -182,7 +185,7 @@ this means is that a `Monad` (in Haskell) is *something* that has three methods:
 
 - `>>=` which is what we called `bind()`;
 - `>>` which I didn't bother implementing, because it's not really needed for understanding what a monad is;
-- and `return`. Don't be confused by the name, this has nothing to do with the `return()` we use inside functions to return a value. `return` is a function that coerces a value into a monadic value, so if you consider any object `a`, `return` takes `a` as an input and *returns* the monadic value `m a`.
+- and `return`. Don't be confused by the name, this has nothing to do with the `return()` we use inside functions to return a value. `return` is a function that wraps (or converts) a value into a monadic value, so if you consider any object `a`, `return` takes `a` as an input and *returns* the monadic value `m a`.
 
 While we didn't implement `return` (also called `unit`, which is also not a good name), our 
 function factory `log_it()` does `return`/`unit`'s job but it *returns* `m f(a)` instead of `m a`.
@@ -194,7 +197,8 @@ to implement `return/unit`:
 unit <- log_it(identity)
 ```
 
-so `unit()` is just the `identity()` function that went through the function factory.
+so `return/unit` is just the `identity()` function that went through the function factory. In a sense, the function
+factory is even more necessary for defining a monad than `return/unit`.
 
 Finally, you might read sometimes that monads are objects that have a `flatmap()` method. I think
 that this definition as well is not strictly correct and very likely an oversimplification. But what is 
@@ -233,7 +237,8 @@ fmap(m, log)
 ```
 
 Great, now what about `flatten()` (or `join()`)? Why is that useful?
-Suppose that instead of `log()` we used `l_log()` with `fmap()`:
+Suppose that instead of `log()` we used `l_log()` with `fmap()` 
+(so we’re using a decorated function instead of an undecorated one):
 
 ```{r}
 fmap(m, l_log)
@@ -291,9 +296,11 @@ by:
 
 ```
 
-and we get the same result (well, not quite, since the log is different). I prefer explaining 
+and we get the same result (well, not quite, since the log is different). I prefer introducing 
 monads using `bind()`, because `bind()` comes as a natural solution to the problem of decorated
-functions not composing. Not so with `flatmap()`.
+functions not composing. Not so with `flatmap()`, but in some applications it might be easier
+to first define `flatten()` and `join()` and get `flatmap()` instead of trying to write `bind()`
+directly, so it’s good to know both approaches.
 
 Before continuing with the final part of this introduction, I just want to share with you that
 lists are also monads. We have everything we need: `as.list()` is `unit()`, `purrr::map()` is `fmap()`
@@ -318,9 +325,13 @@ list_log <- \(x)(as.list(log(x)))
 (thanks to [@armcn_](https://twitter.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw)
 for showing me this)
 
-In sum, monads are useful when you need values to also carry something more with them as shown here, 
-a log for instance. For another example of a monad implemented as an R package, see the 
-[maybe monad](https://armcn.github.io/maybe/).
+In sum, monads are useful when you need values to also carry something more with them.
+This *something* can be a log, as shown here, but there are many examples.
+For another example of a monad implemented as an R package, see the 
+[maybe monad](https://armcn.github.io/maybe/). `{chronicle}` actually takes advantage of the 
+`{maybe}` package and uses the maybe monad to handle cases where functions fail.
+I provide a short introduction to the maybe monad in the 
+[Maybe monad vignette](https://b-rodrigues.github.io/chronicler/articles/maybe-monad.html).
 
 # Monadic laws
 
@@ -336,14 +347,14 @@ function is the same.
 ```{r}
 a <- as_chronicle(10)
 r_sqrt <- record(sqrt)
- 
+
 test_that("first monadic law", {
   expect_equal(bind_record(a, r_sqrt)$value, r_sqrt(10)$value)
 })
 
 ```
 
-Turns out that this is not quite the case here; the logs of the two objects will be slightly 
+Turns out that this is not quite the case here; the logs of the two objects will be slightly
 different. So I only check the value.
 
 ## Second law
