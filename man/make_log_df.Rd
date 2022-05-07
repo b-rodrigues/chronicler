@@ -12,7 +12,8 @@ make_log_df(
   res_pure,
   start = Sys.time(),
   end = Sys.time(),
-  .g = (function(x) NA)
+  .g = (function(x) NA),
+  diff_obj = NULL
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ make_log_df(
 \item{end}{Ending time.}
 
 \item{.g}{Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.}
+
+\item{diff_obj}{Optional. Output of the \code{diff} parameter in \code{record()}.}
 }
 \value{
 A tibble containing the log.

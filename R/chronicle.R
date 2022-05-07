@@ -6,6 +6,7 @@
 #' @param start Starting time.
 #' @param end Ending time.
 #' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
+#' @param diff_obj Optional. Output of the `diff` parameter in `record()`.
 #' @importFrom tibble tibble
 #' @importFrom maybe from_maybe nothing
 #' @return A tibble containing the log.
@@ -16,7 +17,8 @@ make_log_df <- function(ops_number = 1,
                         res_pure,
                         start = Sys.time(),
                         end = Sys.time(),
-                        .g = (\(x) NA)){
+                        .g = (\(x) NA),
+                        diff_obj = NULL){
 
   outcome <- ifelse(success == 1,
                     "\u2714 Success",
@@ -33,6 +35,7 @@ make_log_df <- function(ops_number = 1,
             "run_time" = end - start,
             "g" = list(.g(maybe::from_maybe(res_pure$value,
                                             default = maybe::nothing()))),
+            "diff_obj" = list(diff_obj),
             "lag_outcome" = NA
           )
 
@@ -135,7 +138,7 @@ print.chronicle <- function(x, ...){
   cat("---------------\n")
   cat("This is an object of type `chronicle`.\n")
   cat("Retrieve the value of this object with pick(.c, \"value\").\n")
-  cat("To read the log of this object, call read_log().\n")
+  cat("To read the log of this object, call read_log(.c).\n")
   cat("\n")
 
 }
@@ -229,10 +232,16 @@ purely <- function(.f, strict = 2){
 #' @param .f A function to decorate.
 #' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
 #' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
+#' @param diff Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)
 #' @return A function which returns objects of type `chronicle`. `chronicle` objects carry several
 #' elements: a `value` which is the result of the function evaluated on its inputs and a second
 #' object called `log_df`. `log_df` contains logging information, which can be read using
-#' `read_log()`. `log_df` is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.
+#' `read_log()`. `log_df` is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
+#' @details
+#' To chain multiple decorated function, use `bind_record()` or `%>=%`.
+#' If the `diff` parameter is set to "full", diffobj::diffObj() (or diffobj::summary(diffobj::diffObj(), if diff is set to "summary")
+#' gets used to provide the diff between the input and the output. This diff can be found in the `log_df` element of the result.
+#' @importFrom diffobj diffObj summary
 #' @importFrom rlang enexprs
 #' @importFrom tibble tibble
 #' @importFrom dplyr mutate lag row_number select
@@ -240,7 +249,7 @@ purely <- function(.f, strict = 2){
 #' @examples
 #' record(sqrt)(10)
 #' @export
-record <- function(.f, .g = (\(x) NA), strict = 2){
+record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none"){
 
   fstring <- deparse1(substitute(.f))
 
@@ -252,6 +261,14 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
     pure_f <- purely(.f, strict = strict)
     res_pure <- (pure_f(.value, ...))
     end <- Sys.time()
+
+    input <- .value
+    output <- maybe::from_maybe(res_pure$value, default = maybe::nothing())
+    diff_obj <- switch(diff,
+                       "none" = NULL,
+                       "summary" = diffobj::summary(diffobj::diffObj(input, output)),
+                       "full" = diffobj::diffObj(input, output)
+                       )
 
     if(maybe::is_nothing(res_pure$value)){
 
@@ -274,7 +291,8 @@ record <- function(.f, .g = (\(x) NA), strict = 2){
         res_pure = res_pure,
         start = start,
         end = end,
-        .g = .g
+        .g = .g,
+        diff_obj = diff_obj
       )
 
     }

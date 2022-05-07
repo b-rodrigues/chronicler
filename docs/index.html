@@ -101,7 +101,7 @@
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; This is an object of type `chronicle`.</span>
 <span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span>
-<span class="co">#&gt; To read the log of this object, call read_log().</span></code></pre></div>
+<span class="co">#&gt; To read the log of this object, call read_log(.c).</span></code></pre></div>
 <p><code>a</code> is now made up of several parts. The first part:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>✔ Value computed successfully<span class="sc">:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="sc">---------------</span></span>
@@ -120,8 +120,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-06 18:35:37"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000416278839111328 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000390052795410156 secs"</span></code></pre></div>
 <p>This is especially useful for objects that get created using multiple calls:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
@@ -135,10 +135,10 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-06 18:35:37"</span>
-<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-05-06 18:35:37" </span>
-<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-05-06 18:35:37"</span>
-<span class="co">#&gt; [5] "Total running time: 0.0179414749145508 secs"</span>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"</span>
+<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-05-07 14:57:12" </span>
+<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-05-07 14:57:12"</span>
+<span class="co">#&gt; [5] "Total running time: 0.0219151973724365 secs"</span>
 
 <span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">b</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 11.55345</span></code></pre></div>
@@ -183,11 +183,11 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-06 18:35:37"    </span>
-<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-05-06 18:35:37"              </span>
-<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-06 18:35:37"            </span>
-<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-06 18:35:37"</span>
-<span class="co">#&gt; [6] "Total running time: 0.27592134475708 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:12"    </span>
+<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-05-07 14:57:12"              </span>
+<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-07 14:57:12"            </span>
+<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-07 14:57:12"</span>
+<span class="co">#&gt; [6] "Total running time: 0.125004291534424 secs"</span></code></pre></div>
 <p>The value can then be accessed and worked on as usual using <code><a href="reference/pick.html">pick()</a></code>, as explained above:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output</span>, <span class="st">"value"</span><span class="op">)</span>
@@ -245,16 +245,16 @@
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; This is an object of type `chronicle`.</span>
 <span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span>
-<span class="co">#&gt; To read the log of this object, call read_log().</span></code></pre></div>
+<span class="co">#&gt; To read the log of this object, call read_log(.c).</span></code></pre></div>
 <p>Reading the log tells you which function failed, and with which error message:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">errord_output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                                                                    </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-06 18:35:38"                                                                                        </span>
-<span class="co">#&gt; [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-06 18:35:38"</span>
-<span class="co">#&gt; [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-06 18:35:38"                                           </span>
-<span class="co">#&gt; [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-06 18:35:38"                               </span>
-<span class="co">#&gt; [6] "Total running time: 0.0765666961669922 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:13"                                                                                        </span>
+<span class="co">#&gt; [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-07 14:57:13"</span>
+<span class="co">#&gt; [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                                           </span>
+<span class="co">#&gt; [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                               </span>
+<span class="co">#&gt; [6] "Total running time: 0.0510673522949219 secs"</span></code></pre></div>
 <p>It is also possible to only capture errors, or catpure errors, warnings and messages using the <code>strict</code> parameter of <code><a href="reference/record.html">record()</a></code></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Only errors:</span>
@@ -265,8 +265,8 @@
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Warning in .f(...): NaNs produced</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-06 18:35:38"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000298738479614258 secs"</span>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:13"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000293731689453125 secs"</span>
 
 <span class="co"># Errors and warnings:</span>
 
@@ -275,8 +275,8 @@
 <span class="fu">r_sqrt</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                             </span>
-<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-06 18:35:38"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000358819961547852 secs"</span>
+<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-07 14:57:13"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000282526016235352 secs"</span>
 
 <span class="co"># Errors, warnings and messages</span>
 
@@ -288,8 +288,8 @@
 <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">my_f</span>, strict <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> |&gt;
                          <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                   </span>
-<span class="co">#&gt; [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-06 18:35:38"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000391006469726562 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-07 14:57:13"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000349521636962891 secs"</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="advanced-logging">Advanced logging<a class="anchor" aria-label="anchor" href="#advanced-logging"></a>
@@ -309,15 +309,15 @@
 <p>The <code>$log_df</code> element of a <code>chronicle</code> object contains detailled information:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output_pipe</span>, <span class="st">"log_df"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 4 × 10</span>
+<span class="co">#&gt; # A tibble: 4 × 11</span>
 <span class="co">#&gt;   ops_number outcome   `function` arguments          message start_time         </span>
 <span class="co">#&gt;        &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;   &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-06 18:35:38</span>
-<span class="co">#&gt; 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-06 18:35:38</span>
-<span class="co">#&gt; 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-06 18:35:38</span>
-<span class="co">#&gt; 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-06 18:35:38</span>
-<span class="co">#&gt; # … with 4 more variables: end_time &lt;dttm&gt;, run_time &lt;drtn&gt;, g &lt;list&gt;,</span>
-<span class="co">#&gt; #   lag_outcome &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt; 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-07 14:57:13</span>
+<span class="co">#&gt; 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-07 14:57:13</span>
+<span class="co">#&gt; 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-07 14:57:13</span>
+<span class="co">#&gt; 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-07 14:57:13</span>
+<span class="co">#&gt; # … with 5 more variables: end_time &lt;dttm&gt;, run_time &lt;drtn&gt;, g &lt;list&gt;,</span>
+<span class="co">#&gt; #   diff_obj &lt;list&gt;, lag_outcome &lt;chr&gt;</span></code></pre></div>
 <p>It is thus possible to take a look at the output of the function provided (<code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code>) using <code><a href="reference/check_g.html">check_g()</a></code>:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/check_g.html">check_g</a></span><span class="op">(</span><span class="va">output_pipe</span><span class="op">)</span>
@@ -327,6 +327,72 @@
 <span class="co">#&gt; 3          3    filter 23, 4</span>
 <span class="co">#&gt; 4          4 summarise  9, 3</span></code></pre></div>
 <p>We can see that the dimension of the dataframe was (87, 4) after the call to <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, (23, 4) after the call to <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code> and finally (9, 3) after the call to <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise()</a></code>.</p>
+<p>Another possibility for advanced logging is to use the <code>diff</code> argument in record, which defaults to “none”. Setting it to “full” provides, at each step of a workflow, the diff between the input and the output:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r_group_by</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">group_by</span><span class="op">)</span>
+<span class="va">r_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">select</span>, diff <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span>
+<span class="va">r_summarise</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">summarise</span>, diff <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span>
+<span class="va">r_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">filter</span>, diff <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span>
+
+<span class="va">output_pipe</span> <span class="op">&lt;-</span> <span class="va">starwars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">r_select</span><span class="op">(</span><span class="va">height</span>, <span class="va">mass</span>, <span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_group_by</span><span class="op">(</span><span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>Let’s compare the input and the output to <code>r_filter(sex != "male")</code>:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">diff_filter</span> <span class="op">&lt;-</span> <span class="va">output_pipe</span><span class="op">$</span><span class="va">log_df</span><span class="op">$</span><span class="va">diff_obj</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>
+
+<span class="va">diff_filter</span>
+<span class="co">#&gt; &lt; input                                 </span>
+<span class="co">#&gt; &gt; output                                </span>
+<span class="co">#&gt; @@ 1,15 / 1,15 @@                       </span>
+<span class="co">#&gt; &lt; # A tibble: 87 × 4                    </span>
+<span class="co">#&gt; &gt; # A tibble: 23 × 4                    </span>
+<span class="co">#&gt; &lt; # Groups:   species, sex [41]         </span>
+<span class="co">#&gt; &gt; # Groups:   species, sex [9]          </span>
+<span class="co">#&gt;      height  mass species sex           </span>
+<span class="co">#&gt;       &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;         </span>
+<span class="co">#&gt; &lt;  1    172    77 Human   male          </span>
+<span class="co">#&gt;    2    167    75 Droid   none          </span>
+<span class="co">#&gt;    3     96    32 Droid   none          </span>
+<span class="co">#&gt; &lt;  4    202   136 Human   male          </span>
+<span class="co">#&gt;    5    150    49 Human   female        </span>
+<span class="co">#&gt; &lt;  6    178   120 Human   male          </span>
+<span class="co">#&gt;    7    165    75 Human   female        </span>
+<span class="co">#&gt;    8     97    32 Droid   none          </span>
+<span class="co">#&gt; &gt;  6    175  1358 Hutt    hermaphroditic</span>
+<span class="co">#&gt; &gt;  7    200   140 Droid   none          </span>
+<span class="co">#&gt; &lt;  9    183    84 Human   male          </span>
+<span class="co">#&gt; &gt;  8    150    NA Human   female        </span>
+<span class="co">#&gt; &lt; 10    182    77 Human   male          </span>
+<span class="co">#&gt; &gt;  9    163    NA Human   female        </span>
+<span class="co">#&gt; &gt; 10    178    55 Twi'lek female        </span>
+<span class="co">#&gt; &lt; # … with 77 more rows                 </span>
+<span class="co">#&gt; &gt; # … with 13 more rows</span></code></pre></div>
+<p>If you are familiar with the version control software <code>Git</code>, you should have no problem reading this output. The input was a data frame of 87 rows and 4 columns, and the output only had 23 rows. Rows that were in the input, and got removed from the output, are highlighted (in the terminal, but not here, due to the color scheme). If <code>diff</code> is set to “summary”, then only a summary is provided:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r_group_by</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">group_by</span><span class="op">)</span>
+<span class="va">r_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">select</span>, diff <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span>
+<span class="va">r_summarise</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">summarise</span>, diff <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span>
+<span class="va">r_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">filter</span>, diff <span class="op">=</span> <span class="st">"summary"</span><span class="op">)</span>
+
+<span class="va">output_pipe</span> <span class="op">&lt;-</span> <span class="va">starwars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">r_select</span><span class="op">(</span><span class="va">height</span>, <span class="va">mass</span>, <span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_group_by</span><span class="op">(</span><span class="va">species</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_filter</span><span class="op">(</span><span class="va">sex</span> <span class="op">!=</span> <span class="st">"male"</span><span class="op">)</span> <span class="op"><a href="reference/grapes-greater-than-equals-grapes.html">%&gt;=%</a></span>
+  <span class="fu">r_summarise</span><span class="op">(</span>mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">diff_filter</span> <span class="op">&lt;-</span> <span class="va">output_pipe</span><span class="op">$</span><span class="va">log_df</span><span class="op">$</span><span class="va">diff_obj</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>
+
+<span class="va">diff_filter</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Found differences in 5 hunks:</span>
+<span class="co">#&gt;   8 insertions, 8 deletions, 7 matches (lines)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Diff map (line:char scale is 1:1 for single chars, 1:1 for char seqs):</span>
+<span class="co">#&gt;   DDII..D..D.D..DDDIIIIII</span></code></pre></div>
+<p>By combining <code>.g</code> and <code>diff</code>, it is possible to have a very clear overview of what happened to the very first input to the final output.</p>
 </div>
 <div class="section level2">
 <h2 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>

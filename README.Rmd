@@ -261,6 +261,62 @@ check_g(output_pipe)
 We can see that the dimension of the dataframe was (87, 4) after the call to `select()`, (23, 4)
 after the call to `filter()` and finally (9, 3) after the call to `summarise()`.
 
+Another possibility for advanced logging is to use the `diff` argument in record, which defaults
+to "none". Setting it to "full" provides, at each step of a workflow, the diff between the input
+and the output:
+
+```{r}
+r_group_by <- record(group_by)
+r_select <- record(select, diff = "full")
+r_summarise <- record(summarise, diff = "full")
+r_filter <- record(filter, diff = "full")
+
+output_pipe <- starwars %>%
+  r_select(height, mass, species, sex) %>=%
+  r_group_by(species, sex) %>=%
+  r_filter(sex != "male") %>=%
+  r_summarise(mass = mean(mass, na.rm = TRUE))
+
+```
+
+Let's compare the input and the output to `r_filter(sex != "male")`:
+
+```{r}
+diff_filter <- output_pipe$log_df$diff_obj[[3]]
+
+diff_filter
+```
+
+If you are familiar with the version control software `Git`, you should have no problem reading
+this output. The input was a data frame of 87 rows and 4 columns, and the output only had 23 rows.
+Rows that were in the input, and got removed from the output, are highlighted (in the terminal,
+but not here, due to the color scheme).
+If `diff` is set to "summary", then only a summary is provided:
+
+```{r}
+r_group_by <- record(group_by)
+r_select <- record(select, diff = "summary")
+r_summarise <- record(summarise, diff = "summary")
+r_filter <- record(filter, diff = "summary")
+
+output_pipe <- starwars %>%
+  r_select(height, mass, species, sex) %>=%
+  r_group_by(species, sex) %>=%
+  r_filter(sex != "male") %>=%
+  r_summarise(mass = mean(mass, na.rm = TRUE))
+
+diff_filter <- output_pipe$log_df$diff_obj[[3]]
+
+diff_filter
+
+```
+
+
+By combining `.g` and `diff`, it is possible to have a very clear overview of what happened to the very
+first input to the final output.
+diff functionality is provided by the `{diffobj}` package.
+
+
 
 ## Thanks
 

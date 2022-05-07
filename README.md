@@ -47,7 +47,7 @@ a
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
-#> To read the log of this object, call read_log().
+#> To read the log of this object, call read_log(.c).
 ```
 
 `a` is now made up of several parts. The first part:
@@ -80,8 +80,8 @@ A log also gets generated and can be read using `read_log()`:
 ``` r
 read_log(a)
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-06 18:35:37"
-#> [3] "Total running time: 0.000416278839111328 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"
+#> [3] "Total running time: 0.000390052795410156 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -101,10 +101,10 @@ b <- 1:10 |>
 ``` r
 read_log(b)
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-06 18:35:37"
-#> [3] "✔ exp() ran successfully at 2022-05-06 18:35:37" 
-#> [4] "✔ mean() ran successfully at 2022-05-06 18:35:37"
-#> [5] "Total running time: 0.0179414749145508 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"
+#> [3] "✔ exp() ran successfully at 2022-05-07 14:57:12" 
+#> [4] "✔ mean() ran successfully at 2022-05-07 14:57:12"
+#> [5] "Total running time: 0.0219151973724365 secs"
 
 pick(b, "value")
 #> [1] 11.55345
@@ -161,11 +161,11 @@ output <- starwars %>%
 ``` r
 read_log(output)
 #> [1] "Complete log:"                                                                
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-06 18:35:37"    
-#> [3] "✔ group_by(species,sex) ran successfully at 2022-05-06 18:35:37"              
-#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-06 18:35:37"            
-#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-06 18:35:37"
-#> [6] "Total running time: 0.27592134475708 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:12"    
+#> [3] "✔ group_by(species,sex) ran successfully at 2022-05-07 14:57:12"              
+#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-07 14:57:12"            
+#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-07 14:57:12"
+#> [6] "Total running time: 0.125004291534424 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as
@@ -236,7 +236,7 @@ errord_output
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
-#> To read the log of this object, call read_log().
+#> To read the log of this object, call read_log(.c).
 ```
 
 Reading the log tells you which function failed, and with which error
@@ -245,11 +245,11 @@ message:
 ``` r
 read_log(errord_output)
 #> [1] "Complete log:"                                                                                                                                                    
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-06 18:35:38"                                                                                        
-#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-06 18:35:38"
-#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-06 18:35:38"                                           
-#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-06 18:35:38"                               
-#> [6] "Total running time: 0.0765666961669922 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:13"                                                                                        
+#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-07 14:57:13"
+#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                                           
+#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                               
+#> [6] "Total running time: 0.0510673522949219 secs"
 ```
 
 It is also possible to only capture errors, or catpure errors, warnings
@@ -264,8 +264,8 @@ r_sqrt(-10) |>
   read_log()
 #> Warning in .f(...): NaNs produced
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-06 18:35:38"
-#> [3] "Total running time: 0.000298738479614258 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:13"
+#> [3] "Total running time: 0.000293731689453125 secs"
 
 # Errors and warnings:
 
@@ -274,8 +274,8 @@ r_sqrt <- record(sqrt, strict = 2)
 r_sqrt(-10) |>
   read_log()
 #> [1] "Complete log:"                                                                             
-#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-06 18:35:38"
-#> [3] "Total running time: 0.000358819961547852 secs"
+#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-07 14:57:13"
+#> [3] "Total running time: 0.000282526016235352 secs"
 
 # Errors, warnings and messages
 
@@ -287,8 +287,8 @@ my_f <- function(x){
 record(my_f, strict = 3)(10) |>
                          read_log()
 #> [1] "Complete log:"                                                                                   
-#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-06 18:35:38"
-#> [3] "Total running time: 0.000391006469726562 secs"
+#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-07 14:57:13"
+#> [3] "Total running time: 0.000349521636962891 secs"
 ```
 
 ## Advanced logging
@@ -315,15 +315,15 @@ information:
 
 ``` r
 pick(output_pipe, "log_df")
-#> # A tibble: 4 × 10
+#> # A tibble: 4 × 11
 #>   ops_number outcome   `function` arguments          message start_time         
 #>        <int> <chr>     <chr>      <chr>              <chr>   <dttm>             
-#> 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-06 18:35:38
-#> 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-06 18:35:38
-#> 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-06 18:35:38
-#> 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-06 18:35:38
-#> # … with 4 more variables: end_time <dttm>, run_time <drtn>, g <list>,
-#> #   lag_outcome <chr>
+#> 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-07 14:57:13
+#> 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-07 14:57:13
+#> 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-07 14:57:13
+#> 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-07 14:57:13
+#> # … with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
+#> #   diff_obj <list>, lag_outcome <chr>
 ```
 
 It is thus possible to take a look at the output of the function
@@ -341,6 +341,90 @@ check_g(output_pipe)
 We can see that the dimension of the dataframe was (87, 4) after the
 call to `select()`, (23, 4) after the call to `filter()` and finally (9,
 3) after the call to `summarise()`.
+
+Another possibility for advanced logging is to use the `diff` argument
+in record, which defaults to “none”. Setting it to “full” provides, at
+each step of a workflow, the diff between the input and the output:
+
+``` r
+r_group_by <- record(group_by)
+r_select <- record(select, diff = "full")
+r_summarise <- record(summarise, diff = "full")
+r_filter <- record(filter, diff = "full")
+
+output_pipe <- starwars %>%
+  r_select(height, mass, species, sex) %>=%
+  r_group_by(species, sex) %>=%
+  r_filter(sex != "male") %>=%
+  r_summarise(mass = mean(mass, na.rm = TRUE))
+```
+
+Let’s compare the input and the output to `r_filter(sex != "male")`:
+
+``` r
+diff_filter <- output_pipe$log_df$diff_obj[[3]]
+
+diff_filter
+#> < input                                 
+#> > output                                
+#> @@ 1,15 / 1,15 @@                       
+#> < # A tibble: 87 × 4                    
+#> > # A tibble: 23 × 4                    
+#> < # Groups:   species, sex [41]         
+#> > # Groups:   species, sex [9]          
+#>      height  mass species sex           
+#>       <int> <dbl> <chr>   <chr>         
+#> <  1    172    77 Human   male          
+#>    2    167    75 Droid   none          
+#>    3     96    32 Droid   none          
+#> <  4    202   136 Human   male          
+#>    5    150    49 Human   female        
+#> <  6    178   120 Human   male          
+#>    7    165    75 Human   female        
+#>    8     97    32 Droid   none          
+#> >  6    175  1358 Hutt    hermaphroditic
+#> >  7    200   140 Droid   none          
+#> <  9    183    84 Human   male          
+#> >  8    150    NA Human   female        
+#> < 10    182    77 Human   male          
+#> >  9    163    NA Human   female        
+#> > 10    178    55 Twi'lek female        
+#> < # … with 77 more rows                 
+#> > # … with 13 more rows
+```
+
+If you are familiar with the version control software `Git`, you should
+have no problem reading this output. The input was a data frame of 87
+rows and 4 columns, and the output only had 23 rows. Rows that were in
+the input, and got removed from the output, are highlighted (in the
+terminal, but not here, due to the color scheme). If `diff` is set to
+“summary”, then only a summary is provided:
+
+``` r
+r_group_by <- record(group_by)
+r_select <- record(select, diff = "summary")
+r_summarise <- record(summarise, diff = "summary")
+r_filter <- record(filter, diff = "summary")
+
+output_pipe <- starwars %>%
+  r_select(height, mass, species, sex) %>=%
+  r_group_by(species, sex) %>=%
+  r_filter(sex != "male") %>=%
+  r_summarise(mass = mean(mass, na.rm = TRUE))
+
+diff_filter <- output_pipe$log_df$diff_obj[[3]]
+
+diff_filter
+#> 
+#> Found differences in 5 hunks:
+#>   8 insertions, 8 deletions, 7 matches (lines)
+#> 
+#> Diff map (line:char scale is 1:1 for single chars, 1:1 for char seqs):
+#>   DDII..D..D.D..DDDIIIIII
+```
+
+By combining `.g` and `diff`, it is possible to have a very clear
+overview of what happened to the very first input to the final output.
 
 ## Thanks
 

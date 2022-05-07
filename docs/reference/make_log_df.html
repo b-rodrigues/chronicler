@@ -64,7 +64,8 @@
   <span class="va">res_pure</span>,
   start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>,
   end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>,
-  .g <span class="op">=</span> <span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="cn">NA</span><span class="op">)</span>
+  .g <span class="op">=</span> <span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="cn">NA</span><span class="op">)</span>,
+  diff_obj <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -84,6 +85,8 @@
 <dd><p>Ending time.</p></dd>
 <dt>.g</dt>
 <dd><p>Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.</p></dd>
+<dt>diff_obj</dt>
+<dd><p>Optional. Output of the <code>diff</code> parameter in <code><a href="record.html">record()</a></code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

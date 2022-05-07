@@ -4,7 +4,7 @@
 \alias{record}
 \title{Decorates a function to output objects of type \code{chronicle}.}
 \usage{
-record(.f, .g = (function(x) NA), strict = 2)
+record(.f, .g = (function(x) NA), strict = 2, diff = "none")
 }
 \arguments{
 \item{.f}{A function to decorate.}
@@ -12,15 +12,22 @@ record(.f, .g = (function(x) NA), strict = 2)
 \item{.g}{Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.}
 
 \item{strict}{Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).}
+
+\item{diff}{Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)}
 }
 \value{
 A function which returns objects of type \code{chronicle}. \code{chronicle} objects carry several
 elements: a \code{value} which is the result of the function evaluated on its inputs and a second
 object called \code{log_df}. \code{log_df} contains logging information, which can be read using
-\code{read_log()}. \code{log_df} is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time and g.
+\code{read_log()}. \code{log_df} is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
 }
 \description{
 Decorates a function to output objects of type \code{chronicle}.
+}
+\details{
+To chain multiple decorated function, use \code{bind_record()} or \verb{\%>=\%}.
+If the \code{diff} parameter is set to "full", diffobj::diffObj() (or diffobj::summary(diffobj::diffObj(), if diff is set to "summary")
+gets used to provide the diff between the input and the output. This diff can be found in the \code{log_df} element of the result.
 }
 \examples{
 record(sqrt)(10)
