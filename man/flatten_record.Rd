@@ -4,7 +4,7 @@
 \alias{flatten_record}
 \title{Flatten nested chronicle objects}
 \usage{
-flatten_record(x)
+flatten_record(.c)
 }
 \arguments{
 \item{.c}{A nested chronicle object, where the $value element is itself a chronicle object}

@@ -17,6 +17,8 @@ make_log_df(
 )
 }
 \arguments{
+\item{ops_number}{Tracks the number of the operation in a chain of operations.}
+
 \item{success}{Did the operation succeed.}
 
 \item{fstring}{The function call.}

@@ -14,15 +14,17 @@ Depends:
     R (>= 4.0),
 Imports:
     clipr,
+    diffobj,
     dplyr,
-    lubridate,
     maybe,
+    purrr,
     rlang,
     stringr,
-    tibble,
-    tidyr
+    tibble
 Suggests: 
     knitr,
+    lubridate,
+    tidyr,
     testthat (>= 3.0.0),
     rmarkdown,
 VignetteBuilder: knitr

@@ -1,4 +1,5 @@
 #' Creates the log_df element of a chronicle.
+#' @param ops_number Tracks the number of the operation in a chain of operations.
 #' @param success Did the operation succeed.
 #' @param fstring The function call.
 #' @param args The arguments of the call.
@@ -242,10 +243,11 @@ purely <- function(.f, strict = 2){
 #' If the `diff` parameter is set to "full", diffobj::diffObj() (or diffobj::summary(diffobj::diffObj(), if diff is set to "summary")
 #' gets used to provide the diff between the input and the output. This diff can be found in the `log_df` element of the result.
 #' @importFrom diffobj diffObj summary
-#' @importFrom rlang enexprs
-#' @importFrom tibble tibble
 #' @importFrom dplyr mutate lag row_number select
 #' @importFrom maybe is_nothing
+#' @importFrom rlang enexprs
+#' @importFrom tibble tibble
+#' @importFrom utils tail
 #' @examples
 #' record(sqrt)(10)
 #' @export
@@ -357,11 +359,11 @@ bind_record <- function(.c, .f, ...){
 #' a <- as_chronicle(r_log(10))
 #' a
 #' read_log(flatten_record(a))
-flatten_record <- function(x){
+flatten_record <- function(.c){
 
-  list(value = x$value$content$value,
-       log_df = dplyr::bind_rows(x$value$log_df,
-                                 x$log_df)) |>
+  list(value = .c$value$content$value,
+       log_df = dplyr::bind_rows(.c$value$log_df,
+                                 .c$log_df)) |>
     structure(class = "chronicle")
 
 }
@@ -398,9 +400,11 @@ fmap_record <- function(.c, .f, ...){
 
 
 
+#' Checks whether an object is of class "chronicle"
+#' @param .x An object to test.
 #' @export
-is_chronicle <- function(a) {
-  identical(class(a), "chronicle")
+is_chronicle <- function(.x) {
+  identical(class(.x), "chronicle")
 }
 
 #' Coerce an object to a chronicle object.
