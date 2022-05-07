@@ -327,3 +327,4 @@ Thank you as well to [TimTeaFan](https://community.rstudio.com/t/help-with-writi
 for his help with writing the `%>=%` infix operator, [nigrahamuk](https://community.rstudio.com/t/best-way-to-catch-rlang-errors-consistently/131632/5?u=brodriguesco)
 for showing me a nice way to catch errors, and finally [Mwavu](https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco)
 for pointing me towards the right direction with an issue I've had as I started working on this package.
+Thanks to [Putosaure](https://twitter.com/putosaure) for designing the hex logo.

@@ -80,8 +80,8 @@ A log also gets generated and can be read using `read_log()`:
 ``` r
 read_log(a)
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"
-#> [3] "Total running time: 0.000390052795410156 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-07 15:03:08"
+#> [3] "Total running time: 0.000394821166992188 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -101,10 +101,10 @@ b <- 1:10 |>
 ``` r
 read_log(b)
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"
-#> [3] "✔ exp() ran successfully at 2022-05-07 14:57:12" 
-#> [4] "✔ mean() ran successfully at 2022-05-07 14:57:12"
-#> [5] "Total running time: 0.0219151973724365 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-07 15:03:08"
+#> [3] "✔ exp() ran successfully at 2022-05-07 15:03:08" 
+#> [4] "✔ mean() ran successfully at 2022-05-07 15:03:08"
+#> [5] "Total running time: 0.0233762264251709 secs"
 
 pick(b, "value")
 #> [1] 11.55345
@@ -161,11 +161,11 @@ output <- starwars %>%
 ``` r
 read_log(output)
 #> [1] "Complete log:"                                                                
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:12"    
-#> [3] "✔ group_by(species,sex) ran successfully at 2022-05-07 14:57:12"              
-#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-07 14:57:12"            
-#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-07 14:57:12"
-#> [6] "Total running time: 0.125004291534424 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 15:03:08"    
+#> [3] "✔ group_by(species,sex) ran successfully at 2022-05-07 15:03:08"              
+#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-07 15:03:08"            
+#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-07 15:03:08"
+#> [6] "Total running time: 0.130687236785889 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as
@@ -245,11 +245,11 @@ message:
 ``` r
 read_log(errord_output)
 #> [1] "Complete log:"                                                                                                                                                    
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:13"                                                                                        
-#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-07 14:57:13"
-#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                                           
-#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                               
-#> [6] "Total running time: 0.0510673522949219 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 15:03:08"                                                                                        
+#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-07 15:03:08"
+#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 15:03:08"                                           
+#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 15:03:08"                               
+#> [6] "Total running time: 0.0560233592987061 secs"
 ```
 
 It is also possible to only capture errors, or catpure errors, warnings
@@ -264,8 +264,8 @@ r_sqrt(-10) |>
   read_log()
 #> Warning in .f(...): NaNs produced
 #> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:13"
-#> [3] "Total running time: 0.000293731689453125 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-07 15:03:08"
+#> [3] "Total running time: 0.000463962554931641 secs"
 
 # Errors and warnings:
 
@@ -274,8 +274,8 @@ r_sqrt <- record(sqrt, strict = 2)
 r_sqrt(-10) |>
   read_log()
 #> [1] "Complete log:"                                                                             
-#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-07 14:57:13"
-#> [3] "Total running time: 0.000282526016235352 secs"
+#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-07 15:03:08"
+#> [3] "Total running time: 0.000290632247924805 secs"
 
 # Errors, warnings and messages
 
@@ -287,8 +287,8 @@ my_f <- function(x){
 record(my_f, strict = 3)(10) |>
                          read_log()
 #> [1] "Complete log:"                                                                                   
-#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-07 14:57:13"
-#> [3] "Total running time: 0.000349521636962891 secs"
+#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-07 15:03:08"
+#> [3] "Total running time: 0.00055694580078125 secs"
 ```
 
 ## Advanced logging
@@ -318,10 +318,10 @@ pick(output_pipe, "log_df")
 #> # A tibble: 4 × 11
 #>   ops_number outcome   `function` arguments          message start_time         
 #>        <int> <chr>     <chr>      <chr>              <chr>   <dttm>             
-#> 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-07 14:57:13
-#> 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-07 14:57:13
-#> 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-07 14:57:13
-#> 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-07 14:57:13
+#> 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-07 15:03:08
+#> 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-07 15:03:08
+#> 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-07 15:03:08
+#> 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-07 15:03:08
 #> # … with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
 #> #   diff_obj <list>, lag_outcome <chr>
 ```
@@ -425,6 +425,7 @@ diff_filter
 
 By combining `.g` and `diff`, it is possible to have a very clear
 overview of what happened to the very first input to the final output.
+diff functionality is provided by the `{diffobj}` package.
 
 ## Thanks
 
@@ -439,4 +440,5 @@ for his help with writing the `%>=%` infix operator,
 for showing me a nice way to catch errors, and finally
 [Mwavu](https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco)
 for pointing me towards the right direction with an issue I’ve had as I
-started working on this package.
+started working on this package. Thanks to
+[Putosaure](https://twitter.com/putosaure) for designing the hex logo.

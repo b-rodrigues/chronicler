@@ -120,8 +120,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000390052795410156 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000394821166992188 secs"</span></code></pre></div>
 <p>This is especially useful for objects that get created using multiple calls:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span>
@@ -135,10 +135,10 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"</span>
-<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-05-07 14:57:12" </span>
-<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-05-07 14:57:12"</span>
-<span class="co">#&gt; [5] "Total running time: 0.0219151973724365 secs"</span>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [3] "✔ exp() ran successfully at 2022-05-07 15:03:08" </span>
+<span class="co">#&gt; [4] "✔ mean() ran successfully at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [5] "Total running time: 0.0233762264251709 secs"</span>
 
 <span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">b</span>, <span class="st">"value"</span><span class="op">)</span>
 <span class="co">#&gt; [1] 11.55345</span></code></pre></div>
@@ -183,11 +183,11 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:12"    </span>
-<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-05-07 14:57:12"              </span>
-<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-07 14:57:12"            </span>
-<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-07 14:57:12"</span>
-<span class="co">#&gt; [6] "Total running time: 0.125004291534424 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 15:03:08"    </span>
+<span class="co">#&gt; [3] "✔ group_by(species,sex) ran successfully at 2022-05-07 15:03:08"              </span>
+<span class="co">#&gt; [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-07 15:03:08"            </span>
+<span class="co">#&gt; [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [6] "Total running time: 0.130687236785889 secs"</span></code></pre></div>
 <p>The value can then be accessed and worked on as usual using <code><a href="reference/pick.html">pick()</a></code>, as explained above:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/pick.html">pick</a></span><span class="op">(</span><span class="va">output</span>, <span class="st">"value"</span><span class="op">)</span>
@@ -250,11 +250,11 @@
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">errord_output</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                                                                    </span>
-<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:13"                                                                                        </span>
-<span class="co">#&gt; [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-07 14:57:13"</span>
-<span class="co">#&gt; [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                                           </span>
-<span class="co">#&gt; [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                               </span>
-<span class="co">#&gt; [6] "Total running time: 0.0510673522949219 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 15:03:08"                                                                                        </span>
+<span class="co">#&gt; [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 15:03:08"                                           </span>
+<span class="co">#&gt; [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 15:03:08"                               </span>
+<span class="co">#&gt; [6] "Total running time: 0.0560233592987061 secs"</span></code></pre></div>
 <p>It is also possible to only capture errors, or catpure errors, warnings and messages using the <code>strict</code> parameter of <code><a href="reference/record.html">record()</a></code></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Only errors:</span>
@@ -265,8 +265,8 @@
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; Warning in .f(...): NaNs produced</span>
 <span class="co">#&gt; [1] "Complete log:"                                   </span>
-<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:13"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000293731689453125 secs"</span>
+<span class="co">#&gt; [2] "✔ sqrt() ran successfully at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000463962554931641 secs"</span>
 
 <span class="co"># Errors and warnings:</span>
 
@@ -275,8 +275,8 @@
 <span class="fu">r_sqrt</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span> |&gt;
   <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                             </span>
-<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-07 14:57:13"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000282526016235352 secs"</span>
+<span class="co">#&gt; [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [3] "Total running time: 0.000290632247924805 secs"</span>
 
 <span class="co"># Errors, warnings and messages</span>
 
@@ -288,8 +288,8 @@
 <span class="fu"><a href="reference/record.html">record</a></span><span class="op">(</span><span class="va">my_f</span>, strict <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> |&gt;
                          <span class="fu"><a href="reference/read_log.html">read_log</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                   </span>
-<span class="co">#&gt; [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-07 14:57:13"</span>
-<span class="co">#&gt; [3] "Total running time: 0.000349521636962891 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-07 15:03:08"</span>
+<span class="co">#&gt; [3] "Total running time: 0.00055694580078125 secs"</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="advanced-logging">Advanced logging<a class="anchor" aria-label="anchor" href="#advanced-logging"></a>
@@ -312,10 +312,10 @@
 <span class="co">#&gt; # A tibble: 4 × 11</span>
 <span class="co">#&gt;   ops_number outcome   `function` arguments          message start_time         </span>
 <span class="co">#&gt;        &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;   &lt;dttm&gt;             </span>
-<span class="co">#&gt; 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-07 14:57:13</span>
-<span class="co">#&gt; 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-07 14:57:13</span>
-<span class="co">#&gt; 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-07 14:57:13</span>
-<span class="co">#&gt; 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-07 14:57:13</span>
+<span class="co">#&gt; 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-07 15:03:08</span>
+<span class="co">#&gt; 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-07 15:03:08</span>
+<span class="co">#&gt; 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-07 15:03:08</span>
+<span class="co">#&gt; 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-07 15:03:08</span>
 <span class="co">#&gt; # … with 5 more variables: end_time &lt;dttm&gt;, run_time &lt;drtn&gt;, g &lt;list&gt;,</span>
 <span class="co">#&gt; #   diff_obj &lt;list&gt;, lag_outcome &lt;chr&gt;</span></code></pre></div>
 <p>It is thus possible to take a look at the output of the function provided (<code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code>) using <code><a href="reference/check_g.html">check_g()</a></code>:</p>
@@ -392,12 +392,12 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Diff map (line:char scale is 1:1 for single chars, 1:1 for char seqs):</span>
 <span class="co">#&gt;   DDII..D..D.D..DDDIIIIII</span></code></pre></div>
-<p>By combining <code>.g</code> and <code>diff</code>, it is possible to have a very clear overview of what happened to the very first input to the final output.</p>
+<p>By combining <code>.g</code> and <code>diff</code>, it is possible to have a very clear overview of what happened to the very first input to the final output. diff functionality is provided by the <a href="https://github.com/brodieG/diffobj" class="external-link">diffobj</a> package.</p>
 </div>
 <div class="section level2">
 <h2 id="thanks">Thanks<a class="anchor" aria-label="anchor" href="#thanks"></a>
 </h2>
-<p>I’d like to thank <a href="https://github.com/armcn" class="external-link">armcn</a>, <a href="https://github.com/Kupac" class="external-link">Kupac</a> for their blog posts (<a href="https://kupac.gitlab.io/biofunctor/2019/05/25/maybe-monad-in-r/" class="external-link">here</a>) and packages (<a href="https://armcn.github.io/maybe/" class="external-link">maybe</a>) which inspired me to build this package. Thank you as well to <a href="https://community.rstudio.com/t/help-with-writing-a-custom-pipe-and-environments/133447/2?u=brodriguesco" class="external-link">TimTeaFan</a> for his help with writing the <code>%&gt;=%</code> infix operator, <a href="https://community.rstudio.com/t/best-way-to-catch-rlang-errors-consistently/131632/5?u=brodriguesco" class="external-link">nigrahamuk</a> for showing me a nice way to catch errors, and finally <a href="https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco" class="external-link">Mwavu</a> for pointing me towards the right direction with an issue I’ve had as I started working on this package.</p>
+<p>I’d like to thank <a href="https://github.com/armcn" class="external-link">armcn</a>, <a href="https://github.com/Kupac" class="external-link">Kupac</a> for their blog posts (<a href="https://kupac.gitlab.io/biofunctor/2019/05/25/maybe-monad-in-r/" class="external-link">here</a>) and packages (<a href="https://armcn.github.io/maybe/" class="external-link">maybe</a>) which inspired me to build this package. Thank you as well to <a href="https://community.rstudio.com/t/help-with-writing-a-custom-pipe-and-environments/133447/2?u=brodriguesco" class="external-link">TimTeaFan</a> for his help with writing the <code>%&gt;=%</code> infix operator, <a href="https://community.rstudio.com/t/best-way-to-catch-rlang-errors-consistently/131632/5?u=brodriguesco" class="external-link">nigrahamuk</a> for showing me a nice way to catch errors, and finally <a href="https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco" class="external-link">Mwavu</a> for pointing me towards the right direction with an issue I’ve had as I started working on this package. Thanks to <a href="https://twitter.com/putosaure" class="external-link">Putosaure</a> for designing the hex logo.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
