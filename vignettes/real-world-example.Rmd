@@ -103,7 +103,7 @@ It is also possible to take a look at the underlying `.log_df` object that conta
 and see the output of the `.g` argument (which was defined in the beginning as the `dim()` function):
 
 ```{r}
-as.data.frame(avia_monthly$log_df[, c("function", "g")])
+check_g(avia_monthly)
 ```
 
 After `select()` the data has 509 rows and 231 columns, after the call to `pivot_longer()`
