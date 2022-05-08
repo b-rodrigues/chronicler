@@ -470,6 +470,31 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 
 }
 
+#' @export
+`%>>>%` <- function(.c, .f) {
+
+  .f <- record(.f)
+
+  f_quo <- rlang::enquo(.f)
+  f_exp <- rlang::quo_get_expr(f_quo)
+  f_env <- rlang::quo_get_env(f_quo)
+  f_chr <- deparse(f_exp[[1]])
+
+  f <- get(f_chr, envir = f_env)
+
+  q_ex_std <- rlang::call_match(call = f_exp, fn = f)
+  expr_ls <- as.list(q_ex_std)
+
+  # need to set .value to empty, if not .value will be matched multiple times in call2
+  names(expr_ls)[names(expr_ls) == ".value"] <- ""
+
+  rlang::eval_tidy(rlang::call2(f,
+                                .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
+                                !!!expr_ls[-1],
+                                .log_df = .c$log_df))
+
+}
+
 
 #' Retrieve an element from a chronicle object.
 #' @param .c A chronicle object.
