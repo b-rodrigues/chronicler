@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">chronicler</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,6 +28,9 @@
     <a class="dropdown-item" href="../articles/maybe-monad.html">The Maybe monad</a>
     <a class="dropdown-item" href="../articles/real-world-example.html">A real world example</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -76,7 +79,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">r_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="record.html">record</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span class="r-in"><span class="fl">3</span> |&gt; <span class="fu">r_sqrt</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="grapes-greater-than-equals-grapes.html">%&gt;=%</a></span> <span class="fu">r_exp</span><span class="op">(</span><span class="op">)</span> |&gt; <span class="fu">pick</span><span class="op">(</span><span class="st">"value"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.652234</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in r_exp(.c$value, .log_df = .c$log_df):</span> could not find function "r_exp"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

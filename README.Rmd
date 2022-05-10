@@ -287,9 +287,9 @@ output_pipe <- starwars %>%
 Let's compare the input and the output to `r_filter(sex != "male")`:
 
 ```{r}
-diff_filter <- output_pipe$log_df$diff_obj[[3]]
+diff_pipe <- check_diff(output_pipe)
 
-diff_filter
+diff_pipe
 ```
 
 If you are familiar with the version control software `Git`, you should have no problem reading
@@ -310,16 +310,16 @@ output_pipe <- starwars %>%
   r_filter(sex != "male") %>=%
   r_summarise(mass = mean(mass, na.rm = TRUE))
 
-diff_filter <- output_pipe$log_df$diff_obj[[3]]
+diff_pipe <- check_diff(output_pipe)
 
-diff_filter
+diff_pipe
 
 ```
 
 
 By combining `.g` and `diff`, it is possible to have a very clear overview of what happened to the very
-first input to the final output.
-diff functionality is provided by the `{diffobj}` package.
+first input throughout the pipeline.
+`diff` functionality is provided by the `{diffobj}` package.
 
 
 

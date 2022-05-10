@@ -1,6 +1,6 @@
-#' Creates the log_df element of a chronicle.
+#' Creates the log_df element of a chronicle object.
 #' @param ops_number Tracks the number of the operation in a chain of operations.
-#' @param success Did the operation succeed.
+#' @param success Did the operation succeed?
 #' @param fstring The function call.
 #' @param args The arguments of the call.
 #' @param res_pure The result of the purely call.
@@ -44,8 +44,8 @@ make_log_df <- function(ops_number = 1,
 
 
 #' Reads the log of a chronicle.
-#' @param .c A chronicle.
-#' @return Strings containing the log.
+#' @param .c A chronicle object.
+#' @return The log of the object.
 #' @examples
 #' \dontrun{
 #' read_log(chronicle_object)
@@ -241,7 +241,8 @@ purely <- function(.f, strict = 2){
 #' @details
 #' To chain multiple decorated function, use `bind_record()` or `%>=%`.
 #' If the `diff` parameter is set to "full", diffobj::diffObj() (or diffobj::summary(diffobj::diffObj(), if diff is set to "summary")
-#' gets used to provide the diff between the input and the output. This diff can be found in the `log_df` element of the result.
+#' gets used to provide the diff between the input and the output. This diff can be found in the `log_df` element of the result, and can be
+#' viewed using `check_diff()`
 #' @importFrom diffobj diffObj summary
 #' @importFrom dplyr mutate lag row_number select
 #' @importFrom maybe is_nothing
@@ -330,6 +331,7 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none"){
 
   }
 }
+
 
 #' Evaluate a decorated function; used to chain multiple decorated functions.
 #' @param .c A chronicle object.
@@ -470,30 +472,6 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 
 }
 
-#' @export
-`%>>>%` <- function(.c, .f) {
-
-  .f <- record(.f)
-
-  f_quo <- rlang::enquo(.f)
-  f_exp <- rlang::quo_get_expr(f_quo)
-  f_env <- rlang::quo_get_env(f_quo)
-  f_chr <- deparse(f_exp[[1]])
-
-  f <- get(f_chr, envir = f_env)
-
-  q_ex_std <- rlang::call_match(call = f_exp, fn = f)
-  expr_ls <- as.list(q_ex_std)
-
-  # need to set .value to empty, if not .value will be matched multiple times in call2
-  names(expr_ls)[names(expr_ls) == ".value"] <- ""
-
-  rlang::eval_tidy(rlang::call2(f,
-                                .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
-                                !!!expr_ls[-1],
-                                .log_df = .c$log_df))
-
-}
 
 
 #' Retrieve an element from a chronicle object.
@@ -575,3 +553,23 @@ check_g <- function(.c, columns = c("ops_number", "function")){
 
 }
 
+
+
+#' Check the output of the diff column
+#' @details
+#' `diff` is an option argument to the `record()` function. When `diff` = "full",
+#' a diff of the input and output of the decorated function gets saved, and if
+#' `diff` = "summary" only a summary of the diff is saved.
+#' @param .c A chronicle object.
+#' @param columns Columns to select for the output. Defaults to c("ops_number", "function").
+#' @return A data.frame with the selected columns and column "diff_obj".
+#' @examples
+#' r_subset <- record(subset, diff = "full")
+#' result <- r_subset(mtcars, select = am)
+#' check_diff(result)
+#' @export
+check_diff <- function(.c, columns = c("ops_number", "function")){
+
+  as.data.frame(.c$log_df[, c(columns, "diff_obj")])
+
+}

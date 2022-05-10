@@ -7,10 +7,10 @@
 read_log(.c)
 }
 \arguments{
-\item{.c}{A chronicle.}
+\item{.c}{A chronicle object.}
 }
 \value{
-Strings containing the log.
+The log of the object.
 }
 \description{
 Reads the log of a chronicle.

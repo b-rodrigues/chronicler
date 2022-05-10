@@ -1,11 +1,11 @@
-pandoc: 2.16.1
+pandoc: '2.13'
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   advanced-topics: advanced-topics.html
   maybe-monad: maybe-monad.html
   real-world-example: real-world-example.html
-last_built: 2022-05-07T13:04Z
+last_built: 2022-05-10T07:49Z
 urls:
   reference: https://b-rodrigues.github.io/chronicler/reference
   article: https://b-rodrigues.github.io/chronicler/articles

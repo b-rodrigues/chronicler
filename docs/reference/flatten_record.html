@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">chronicler</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,6 +28,9 @@
     <a class="dropdown-item" href="../articles/maybe-monad.html">The Maybe monad</a>
     <a class="dropdown-item" href="../articles/real-world-example.html">A real world example</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -56,7 +59,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">flatten_record</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">flatten_record</span><span class="op">(</span><span class="va">.c</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,29 +78,25 @@
 <span class="r-in"><span class="va">r_log</span> <span class="op">&lt;-</span> <span class="fu"><a href="record.html">record</a></span><span class="op">(</span><span class="va">log</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_chronicle.html">as_chronicle</a></span><span class="op">(</span><span class="fu">r_log</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">a</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ✔ Value computed successfully:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;e2&gt;&lt;9c&gt;&lt;94&gt; Value computed successfully:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ✔ Value computed successfully:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;e2&gt;&lt;9c&gt;&lt;94&gt; Value computed successfully:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.302585</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> This is an object of type `chronicle`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Retrieve the value of this object with pick(.c, "value").</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log(.c).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log().</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> This is an object of type `chronicle`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Retrieve the value of this object with pick(.c, "value").</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log(.c).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log().</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="read_log.html">read_log</a></span><span class="op">(</span><span class="fu">flatten_record</span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Complete log:"                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "✔ as_chronicle(NA) ran successfully at 2022-05-07 15:04:43"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Total running time: 5.88893890380859e-05 secs"             </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in flatten_record(a):</span> could not find function "flatten_record"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
