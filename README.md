@@ -6,7 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Easily add logs to your functions.
+Easily add logs to your functions, without interfering with the global
+environment.
 
 ## Installation
 
@@ -41,11 +42,11 @@ a <- r_sqrt(1:5)
 ```
 
 Object `a` is now an object of class `chronicle`. Let’s take a closer
-look to `a`:
+look at `a`:
 
 ``` r
 a
-#> <U+2714> Value computed successfully:
+#> ✔ Value computed successfully:
 #> ---------------
 #> Just
 #> [1] 1.000000 1.414214 1.732051 2.000000 2.236068
@@ -65,7 +66,7 @@ a
 
 simply provides the result of `sqrt()` applied to `1:5` (let’s ignore
 the word `Just` on the third line for now; for more details see the
-`Maybe Monad` vignette). The second part, tells you that there’s more to
+`Maybe Monad` vignette). The second part tells you that there’s more to
 it:
 
     ---------------
@@ -86,8 +87,8 @@ A log also gets generated and can be read using `read_log()`:
 ``` r
 read_log(a)
 #> [1] "Complete log:"                                   
-#> [2] "<U+2714> sqrt() ran successfully at 2022-05-10 09:47:54"
-#> [3] "Total running time: 0 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-10 16:22:02"
+#> [3] "Total running time: 0.000392436981201172 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -110,16 +111,16 @@ be explained in detail in the next section.)
 ``` r
 read_log(b)
 #> [1] "Complete log:"                                   
-#> [2] "<U+2714> sqrt() ran successfully at 2022-05-10 09:47:54"
-#> [3] "<U+2714> exp() ran successfully at 2022-05-10 09:47:54"
-#> [4] "<U+2714> mean() ran successfully at 2022-05-10 09:47:54"
-#> [5] "Total running time: 0 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-10 16:22:02"
+#> [3] "✔ exp() ran successfully at 2022-05-10 16:22:02" 
+#> [4] "✔ mean() ran successfully at 2022-05-10 16:22:02"
+#> [5] "Total running time: 0.0219733715057373 secs"
 
 pick(b, "value")
 #> [1] 11.55345
 ```
 
-`record()` works with any function (as far as I know).
+`record()` works with any function, but not yet with `{ggplot2}`.
 
 To avoid having to define every function individually, like this:
 
@@ -170,11 +171,11 @@ output <- starwars %>%
 ``` r
 read_log(output)
 #> [1] "Complete log:"                                                                
-#> [2] "<U+2714> select(height,mass,species,sex) ran successfully at 2022-05-10 09:47:54"
-#> [3] "<U+2714> group_by(species,sex) ran successfully at 2022-05-10 09:47:54"       
-#> [4] "<U+2714> filter(sex != \"male\") ran successfully at 2022-05-10 09:47:54"     
-#> [5] "<U+2714> summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-10 09:47:54"
-#> [6] "Total running time: 0.183278560638428 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-10 16:22:02"    
+#> [3] "✔ group_by(species,sex) ran successfully at 2022-05-10 16:22:02"              
+#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-10 16:22:02"            
+#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-10 16:22:02"
+#> [6] "Total running time: 0.124542951583862 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as
@@ -182,7 +183,7 @@ explained above:
 
 ``` r
 pick(output, "value")
-#> # A tibble: 9 x 3
+#> # A tibble: 9 × 3
 #> # Groups:   species [9]
 #>   species    sex              mass
 #>   <chr>      <chr>           <dbl>
@@ -210,7 +211,7 @@ output_pipe <- starwars %>%
 
 ``` r
 pick(output_pipe, "value")
-#> # A tibble: 9 x 3
+#> # A tibble: 9 × 3
 #> # Groups:   species [9]
 #>   species    sex            mean_mass
 #>   <chr>      <chr>              <dbl>
@@ -239,10 +240,9 @@ errord_output <- starwars %>%
 
 ``` r
 errord_output
-#> <U+2718> Value computed unsuccessfully:
+#> ✘ Value computed unsuccessfully:
 #> ---------------
 #> Nothing
-#> 
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
@@ -255,11 +255,11 @@ message:
 ``` r
 read_log(errord_output)
 #> [1] "Complete log:"                                                                                                                                                    
-#> [2] "<U+2714> select(height,mass,species,sex) ran successfully at 2022-05-10 09:47:54"                                                                                 
-#> [3] "<U+2718> group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\nx Column `sx` is not found. at 2022-05-10 09:47:54"
-#> [4] "<U+2718> filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-10 09:47:54"                                    
-#> [5] "<U+2718> summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-10 09:47:54"                        
-#> [6] "Total running time: 0.0468711853027344 secs"
+#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-10 16:22:03"                                                                                        
+#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-10 16:22:03"
+#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-10 16:22:03"                                           
+#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-10 16:22:03"                               
+#> [6] "Total running time: 0.0509395599365234 secs"
 ```
 
 It is also possible to only capture errors, or catpure errors, warnings
@@ -274,8 +274,8 @@ r_sqrt(-10) |>
   read_log()
 #> Warning in .f(...): NaNs produced
 #> [1] "Complete log:"                                   
-#> [2] "<U+2714> sqrt() ran successfully at 2022-05-10 09:47:54"
-#> [3] "Total running time: 0 secs"
+#> [2] "✔ sqrt() ran successfully at 2022-05-10 16:22:03"
+#> [3] "Total running time: 0.000287055969238281 secs"
 
 # Errors and warnings:
 
@@ -284,8 +284,8 @@ r_sqrt <- record(sqrt, strict = 2)
 r_sqrt(-10) |>
   read_log()
 #> [1] "Complete log:"                                                                             
-#> [2] "<U+2718> sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-10 09:47:54"
-#> [3] "Total running time: 0 secs"
+#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-10 16:22:03"
+#> [3] "Total running time: 0.000281810760498047 secs"
 
 # Errors, warnings and messages
 
@@ -297,8 +297,8 @@ my_f <- function(x){
 record(my_f, strict = 3)(10) |>
                          read_log()
 #> [1] "Complete log:"                                                                                   
-#> [2] "<U+2718> my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-10 09:47:54"
-#> [3] "Total running time: 0 secs"
+#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-10 16:22:03"
+#> [3] "Total running time: 0.000345706939697266 secs"
 ```
 
 ## Advanced logging
@@ -325,14 +325,14 @@ information:
 
 ``` r
 pick(output_pipe, "log_df")
-#> # A tibble: 4 x 11
+#> # A tibble: 4 × 11
 #>   ops_number outcome   `function` arguments          message start_time         
 #>        <int> <chr>     <chr>      <chr>              <chr>   <dttm>             
-#> 1          1 <U+2714> Success select     "height,mass,spec~ NA      2022-05-10 09:47:54
-#> 2          2 <U+2714> Success group_by   "species,sex"      NA      2022-05-10 09:47:54
-#> 3          3 <U+2714> Success filter     "sex != \"male\""  NA      2022-05-10 09:47:54
-#> 4          4 <U+2714> Success summarise  "mean(mass, na.rm~ NA      2022-05-10 09:47:54
-#> # ... with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
+#> 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-10 16:22:03
+#> 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-10 16:22:03
+#> 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-10 16:22:03
+#> 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-10 16:22:03
+#> # … with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
 #> #   diff_obj <list>, lag_outcome <chr>
 ```
 
@@ -372,14 +372,40 @@ output_pipe <- starwars %>%
 Let’s compare the input and the output to `r_filter(sex != "male")`:
 
 ``` r
+# The following line generates a data frame with columns `ops_number`, `function` and `diff_obj`
+# it is possible to filter on the step of interest using the `ops_number` or the `function` column
 diff_pipe <- check_diff(output_pipe)
 
-diff_pipe
-#>   ops_number  function                                            diff_obj
-#> 1          1    select <S4 class 'Diff' [package "diffobj"] with 14 slots>
-#> 2          2  group_by                                                NULL
-#> 3          3    filter <S4 class 'Diff' [package "diffobj"] with 14 slots>
-#> 4          4 summarise <S4 class 'Diff' [package "diffobj"] with 14 slots>
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
+#> [[1]]
+#> < input                                 
+#> > output                                
+#> @@ 1,15 / 1,15 @@                       
+#> < # A tibble: 87 × 4                    
+#> > # A tibble: 23 × 4                    
+#> < # Groups:   species, sex [41]         
+#> > # Groups:   species, sex [9]          
+#>      height  mass species sex           
+#>       <int> <dbl> <chr>   <chr>         
+#> <  1    172    77 Human   male          
+#>    2    167    75 Droid   none          
+#>    3     96    32 Droid   none          
+#> <  4    202   136 Human   male          
+#>    5    150    49 Human   female        
+#> <  6    178   120 Human   male          
+#>    7    165    75 Human   female        
+#>    8     97    32 Droid   none          
+#> >  6    175  1358 Hutt    hermaphroditic
+#> >  7    200   140 Droid   none          
+#> <  9    183    84 Human   male          
+#> >  8    150    NA Human   female        
+#> < 10    182    77 Human   male          
+#> >  9    163    NA Human   female        
+#> > 10    178    55 Twi'lek female        
+#> < # … with 77 more rows                 
+#> > # … with 13 more rows
 ```
 
 If you are familiar with the version control software `Git`, you should
@@ -403,17 +429,16 @@ output_pipe <- starwars %>%
 
 diff_pipe <- check_diff(output_pipe)
 
-diff_pipe
-#>   ops_number  function
-#> 1          1    select
-#> 2          2  group_by
-#> 3          3    filter
-#> 4          4 summarise
-#>                                                    diff_obj
-#> 1 <S4 class 'DiffSummary' [package "diffobj"] with 6 slots>
-#> 2                                                      NULL
-#> 3 <S4 class 'DiffSummary' [package "diffobj"] with 6 slots>
-#> 4 <S4 class 'DiffSummary' [package "diffobj"] with 6 slots>
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
+#> [[1]]
+#> 
+#> Found differences in 5 hunks:
+#>   8 insertions, 8 deletions, 7 matches (lines)
+#> 
+#> Diff map (line:char scale is 1:1 for single chars, 1:1 for char seqs):
+#>   DDII..D..D.D..DDDIIIIII
 ```
 
 By combining `.g` and `diff`, it is possible to have a very clear

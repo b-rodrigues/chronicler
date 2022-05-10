@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">chronicler</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +45,9 @@
     <a class="dropdown-item" href="../articles/maybe-monad.html">The Maybe monad</a>
     <a class="dropdown-item" href="../articles/real-world-example.html">A real world example</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -163,13 +166,13 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                           </span>
-<span class="co">#&gt; [2] "✔ select(1,contains(\"20\")) ran successfully at 2022-05-07 15:05:03"                                                    </span>
-<span class="co">#&gt; [3] "✔ pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-05-07 15:05:03"                          </span>
-<span class="co">#&gt; [4] "✔ separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-05-07 15:05:03"                   </span>
-<span class="co">#&gt; [5] "✔ filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-05-07 15:05:04"</span>
-<span class="co">#&gt; [6] "✔ mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-05-07 15:05:04"                                        </span>
-<span class="co">#&gt; [7] "✔ select(air_pr\\time,date,passengers) ran successfully at 2022-05-07 15:05:04"                                          </span>
-<span class="co">#&gt; [8] "Total running time: 1.82655072212219 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "✔ select(1,contains(\"20\")) ran successfully at 2022-05-10 16:51:27"                                                    </span>
+<span class="co">#&gt; [3] "✔ pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-05-10 16:51:27"                          </span>
+<span class="co">#&gt; [4] "✔ separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-05-10 16:51:27"                   </span>
+<span class="co">#&gt; [5] "✔ filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-05-10 16:51:28"</span>
+<span class="co">#&gt; [6] "✔ mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-05-10 16:51:28"                                        </span>
+<span class="co">#&gt; [7] "✔ select(air_pr\\time,date,passengers) ran successfully at 2022-05-10 16:51:28"                                          </span>
+<span class="co">#&gt; [8] "Total running time: 1.7940776348114 secs"</span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code> gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People that then read this object, can read the log to know what happened and reproduce the steps if necessary.</p>
 <p>Let’s take a look at the final data set:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -191,14 +194,14 @@
 <span class="co">#&gt; <span style="color: #949494;"># … with 7,622 more rows</span></span></code></pre></div>
 <p>It is also possible to take a look at the underlying <code>.log_df</code> object that contains more details, and see the output of the <code>.g</code> argument (which was defined in the beginning as the <code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code> function):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">$</span><span class="va">log_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"function"</span>, <span class="st">"g"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="co">#&gt;       function         g</span>
-<span class="co">#&gt; 1       select  509, 231</span>
-<span class="co">#&gt; 2 pivot_longer 117070, 3</span>
-<span class="co">#&gt; 3     separate 117070, 5</span>
-<span class="co">#&gt; 4       filter   7632, 5</span>
-<span class="co">#&gt; 5       mutate   7632, 5</span>
-<span class="co">#&gt; 6       select   7632, 3</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/check_g.html">check_g</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span>
+<span class="co">#&gt;   ops_number     function         g</span>
+<span class="co">#&gt; 1          1       select  509, 231</span>
+<span class="co">#&gt; 2          2 pivot_longer 117070, 3</span>
+<span class="co">#&gt; 3          3     separate 117070, 5</span>
+<span class="co">#&gt; 4          4       filter   7632, 5</span>
+<span class="co">#&gt; 5          5       mutate   7632, 5</span>
+<span class="co">#&gt; 6          6       select   7632, 3</span></code></pre></div>
 <p>After <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> the data has 509 rows and 231 columns, after the call to <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer()</a></code> 117070 rows and 3 columns, <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code> adds two columns, after <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code> only 7632 rows remain (<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> does not change the dimensions) and then <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> is used to remove 2 columns.</p>
   </main>
 </div>

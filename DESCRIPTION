@@ -17,16 +17,16 @@ Imports:
     diffobj,
     dplyr,
     maybe,
-    purrr,
     rlang,
     stringr,
     tibble
 Suggests: 
     knitr,
     lubridate,
-    tidyr,
-    testthat (>= 3.0.0),
+    purrr,
     rmarkdown,
+    testthat (>= 3.0.0),
+    tidyr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 LazyData: true

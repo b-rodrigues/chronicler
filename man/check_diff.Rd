@@ -25,5 +25,6 @@ a diff of the input and output of the decorated function gets saved, and if
 \examples{
 r_subset <- record(subset, diff = "full")
 result <- r_subset(mtcars, select = am)
-check_diff(result)
+check_diff(result) # <- this is the data frame listing the operations and the accompanying diffs
+check_diff(result)$diff_obj # <- actually look at the diffs
 }

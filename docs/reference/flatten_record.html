@@ -69,7 +69,7 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns .c where value is the actual value, and logs are concatenated.</p>
+    <p>Returns <code>.c</code> where value is the actual value, and logs are concatenated.</p>
     </div>
 
     <div class="section level2">
@@ -78,25 +78,36 @@
 <span class="r-in"><span class="va">r_log</span> <span class="op">&lt;-</span> <span class="fu"><a href="record.html">record</a></span><span class="op">(</span><span class="va">log</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="as_chronicle.html">as_chronicle</a></span><span class="op">(</span><span class="fu">r_log</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">a</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;e2&gt;&lt;9c&gt;&lt;94&gt; Value computed successfully:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ✔ Value computed successfully:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;e2&gt;&lt;9c&gt;&lt;94&gt; Value computed successfully:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ✔ Value computed successfully:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.302585</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> This is an object of type `chronicle`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Retrieve the value of this object with pick(.c, "value").</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log().</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log(.c).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> This is an object of type `chronicle`.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Retrieve the value of this object with pick(.c, "value").</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log().</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log(.c).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu"><a href="read_log.html">read_log</a></span><span class="op">(</span><span class="fu">flatten_record</span><span class="op">(</span><span class="va">a</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in flatten_record(a):</span> could not find function "flatten_record"</span>
+<span class="r-in"><span class="fu">flatten_record</span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ✔ Value computed successfully:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.302585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> This is an object of type `chronicle`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Retrieve the value of this object with pick(.c, "value").</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log(.c).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

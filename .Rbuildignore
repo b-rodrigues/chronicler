@@ -6,4 +6,5 @@
 ^README.Rmd$
 ^README.html$
 ^LICENSE
+cran-comments.md
 

@@ -174,11 +174,12 @@ errs_warn_mess <- function(.f, ...){
 
 #' Capture all errors, warnings and messages.
 #' @param .f A function to decorate.
-#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
-#' @return A function which returns a list. The first element of the list, $value, is the result of
-#' the original function .f applied to its inputs. The second element, $log is NULL in case everything
-#' goes well. In case of error/warning/message, $value is NA and $log holds the message.
-#' purely() is used by record() to allow the latter to handle errors.
+#' @param strict Controls if the decorated function should catch only errors (1), errors and
+#'   warnings (2, the default) or errors, warnings and messages (3).
+#' @return A function which returns a list. The first element of the list, `$value`,
+#' is the result of the original function `.f` applied to its inputs. The second element, `$log` is
+#' `NULL` in case everything goes well. In case of error/warning/message, `$value` is NA and `$log`
+#' holds the message. `purely()` is used by `record()` to allow the latter to handle errors.
 #' @importFrom rlang try_fetch eval_tidy cnd_message
 #' @importFrom maybe just nothing is_nothing
 #' @examples
@@ -240,9 +241,11 @@ purely <- function(.f, strict = 2){
 #' `read_log()`. `log_df` is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
 #' @details
 #' To chain multiple decorated function, use `bind_record()` or `%>=%`.
-#' If the `diff` parameter is set to "full", diffobj::diffObj() (or diffobj::summary(diffobj::diffObj(), if diff is set to "summary")
-#' gets used to provide the diff between the input and the output. This diff can be found in the `log_df` element of the result, and can be
-#' viewed using `check_diff()`
+#' If the `diff` parameter is set to "full", `diffobj::diffObj()`
+#' (or `diffobj::summary(diffobj::diffObj()`, if diff is set to "summary")
+#' gets used to provide the diff between the input and the output.
+#' This diff can be found in the `log_df` element of the result, and can be
+#' viewed using `check_diff()`.
 #' @importFrom diffobj diffObj summary
 #' @importFrom dplyr mutate lag row_number select
 #' @importFrom maybe is_nothing
@@ -353,14 +356,14 @@ bind_record <- function(.c, .f, ...){
 
 #' Flatten nested chronicle objects
 #' @param .c A nested chronicle object, where the $value element is itself a chronicle object
-#' @return Returns .c where value is the actual value, and logs are concatenated.
+#' @return Returns `.c` where value is the actual value, and logs are concatenated.
 #' @export
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_log <- record(log)
 #' a <- as_chronicle(r_log(10))
 #' a
-#' read_log(flatten_record(a))
+#' flatten_record(a)
 flatten_record <- function(.c){
 
   list(value = .c$value$content$value,
@@ -374,10 +377,10 @@ flatten_record <- function(.c){
 #' Evaluate a non-chronicle function on a chronicle object.
 #' @param .c A chronicle object.
 #' @param .f A non-chronicle function.
-#' @param ... Further parameters to pass to .f.
+#' @param ... Further parameters to pass to `.f`.
 #' @importFrom maybe fmap
 #' @importFrom dplyr bind_rows
-#' @return Returns the result of .f(.c$value) as a new chronicle object.
+#' @return Returns the result of `.f(.c$value)` as a new chronicle object.
 #' @examples
 #' as_chronicle(3) |> fmap_record(sqrt)
 #' @export
@@ -511,7 +514,9 @@ pick <- function(.c, .e){
 #' In your .Rprofile, put the following command: Sys.setenv(DISPLAY = ":0") and restart
 #' the R session. `record_many()` should now work.
 #' @param list_funcs A list of function names, as strings.
-#' @param strict The strict parameter for record. Defaults to 2.
+#' @param .g Optional. Defaults to a function which returns NA.
+#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
+#' @param diff Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)
 #' @return Puts a string into the systems clipboard.
 #' @importFrom stringr str_remove_all
 #' @importFrom clipr write_clip
@@ -521,12 +526,20 @@ pick <- function(.c, .e){
 #' list_funcs <- list("exp", "dplyr::select", "exp")
 #' record_many(list_funcs)
 #' }
-record_many <- function(list_funcs, strict = 2){
+record_many <- function(list_funcs, .g = (function(x) NA), strict = 2, diff = "none"){
 
   sanitized_list <- stringr::str_remove_all(list_funcs, "(.*?)\\:")
 
   clipr::write_clip(
-           paste0("r_", sanitized_list, " <- ", "record(", list_funcs, ", strict = ", strict, ")")
+           paste0("r_", sanitized_list, " <- ", "record(",
+                  list_funcs,
+                  ", .g = ",
+                  deparse(substitute(.g)),
+                  ", strict = ",
+                  strict,
+                  ", diff = ",
+                  paste0("\"", diff, "\""),
+                  ")")
            )
 
   message("Code copied to clipboard. You can now paste it into your text editor.")
@@ -566,7 +579,8 @@ check_g <- function(.c, columns = c("ops_number", "function")){
 #' @examples
 #' r_subset <- record(subset, diff = "full")
 #' result <- r_subset(mtcars, select = am)
-#' check_diff(result)
+#' check_diff(result) # <- this is the data frame listing the operations and the accompanying diffs
+#' check_diff(result)$diff_obj # <- actually look at the diffs
 #' @export
 check_diff <- function(.c, columns = c("ops_number", "function")){
 

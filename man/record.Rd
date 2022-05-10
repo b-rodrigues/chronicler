@@ -26,9 +26,11 @@ Decorates a function to output objects of type \code{chronicle}.
 }
 \details{
 To chain multiple decorated function, use \code{bind_record()} or \verb{\%>=\%}.
-If the \code{diff} parameter is set to "full", diffobj::diffObj() (or diffobj::summary(diffobj::diffObj(), if diff is set to "summary")
-gets used to provide the diff between the input and the output. This diff can be found in the \code{log_df} element of the result, and can be
-viewed using \code{check_diff()}
+If the \code{diff} parameter is set to "full", \code{diffobj::diffObj()}
+(or \verb{diffobj::summary(diffobj::diffObj()}, if diff is set to "summary")
+gets used to provide the diff between the input and the output.
+This diff can be found in the \code{log_df} element of the result, and can be
+viewed using \code{check_diff()}.
 }
 \examples{
 record(sqrt)(10)

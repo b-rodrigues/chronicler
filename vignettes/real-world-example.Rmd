@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{A real world example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{dplyr, tidyr, stringr, lubridate}
 ---
 
 ```{r, include = FALSE}

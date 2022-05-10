@@ -10,7 +10,7 @@ flatten_record(.c)
 \item{.c}{A nested chronicle object, where the $value element is itself a chronicle object}
 }
 \value{
-Returns .c where value is the actual value, and logs are concatenated.
+Returns \code{.c} where value is the actual value, and logs are concatenated.
 }
 \description{
 Flatten nested chronicle objects
@@ -20,5 +20,5 @@ r_sqrt <- record(sqrt)
 r_log <- record(log)
 a <- as_chronicle(r_log(10))
 a
-read_log(flatten_record(a))
+flatten_record(a)
 }

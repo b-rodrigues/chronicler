@@ -384,17 +384,20 @@ r_mean <- record(mean)
 
 test_that("third monadic law", {
   expect_equal(
+  (
     (bind_record(a, r_sqrt)) |>
-      bind_record(r_exp),
+   bind_record(r_exp)
+  )$value,
+  (
     a |>
-    (\(x) bind_record(x, r_sqrt) |> bind_record(r_exp))(),
-  tolerance = .01
+    (\(x) bind_record(x, r_sqrt) |> bind_record(r_exp))()
+  )$value
   )
 })
 
 ```
 
-# flatmap() for `chronicle` objects 
+# flatmap() for `chronicle` objects
 
 For exhaustivity's sake, I check that I can get `flatmap_record()` by composing `flatten_record()` and
 `fmap_record()`:

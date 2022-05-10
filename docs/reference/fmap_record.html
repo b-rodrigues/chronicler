@@ -69,17 +69,26 @@
 <dt>.f</dt>
 <dd><p>A non-chronicle function.</p></dd>
 <dt>...</dt>
-<dd><p>Further parameters to pass to .f.</p></dd>
+<dd><p>Further parameters to pass to <code>.f</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Returns the result of .f(.c$value) as a new chronicle object.</p>
+    <p>Returns the result of <code>.f(.c$value)</code> as a new chronicle object.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="as_chronicle.html">as_chronicle</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> |&gt; <span class="fu">fmap_record</span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fmap_record(as_chronicle(3), sqrt):</span> could not find function "fmap_record"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ✔ Value computed successfully:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.732051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> This is an object of type `chronicle`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Retrieve the value of this object with pick(.c, "value").</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log(.c).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

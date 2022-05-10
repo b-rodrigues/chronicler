@@ -67,20 +67,21 @@
     <dl><dt>.f</dt>
 <dd><p>A function to decorate.</p></dd>
 <dt>strict</dt>
-<dd><p>Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).</p></dd>
+<dd><p>Controls if the decorated function should catch only errors (1), errors and
+warnings (2, the default) or errors, warnings and messages (3).</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A function which returns a list. The first element of the list, $value, is the result of
-the original function .f applied to its inputs. The second element, $log is NULL in case everything
-goes well. In case of error/warning/message, $value is NA and $log holds the message.
-purely() is used by record() to allow the latter to handle errors.</p>
+    <p>A function which returns a list. The first element of the list, <code>$value</code>,
+is the result of the original function <code>.f</code> applied to its inputs. The second element, <code>$log</code> is
+<code>NULL</code> in case everything goes well. In case of error/warning/message, <code>$value</code> is NA and <code>$log</code>holds the message. <code>purely()</code> is used by <code><a href="record.html">record()</a></code> to allow the latter to handle errors.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">purely</span><span class="op">(</span><span class="va">log</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.302585</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $log_df</span>
@@ -88,14 +89,14 @@ purely() is used by record() to allow the latter to handle errors.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu">purely</span><span class="op">(</span><span class="va">log</span><span class="op">)</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Nothing</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $log_df</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NaNs produced"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu">purely</span><span class="op">(</span><span class="va">log</span>, strict <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span> <span class="co"># This produces a warning, so with strict = 1 nothing gets captured.</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] NaN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $log_df</span>

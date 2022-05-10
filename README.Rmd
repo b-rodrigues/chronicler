@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-Easily add logs to your functions.
+Easily add logs to your functions, without interfering with the global environment.
 
 ## Installation
 
@@ -50,7 +50,7 @@ a <- r_sqrt(1:5)
 
 ```
 
-Object `a` is now an object of class `chronicle`. Let's take a closer look to `a`:
+Object `a` is now an object of class `chronicle`. Let's take a closer look at `a`:
 
 ```{r}
 a
@@ -67,7 +67,7 @@ Just
 ```
 
 simply provides the result of `sqrt()` applied to `1:5` (let's ignore the word `Just` on the third
-line for now; for more details see the `Maybe Monad` vignette). The second part, tells you that
+line for now; for more details see the `Maybe Monad` vignette). The second part tells you that
 there's more to it:
 
 ```
@@ -113,7 +113,7 @@ read_log(b)
 pick(b, "value")
 ```
 
-`record()` works with any function (as far as I know).
+`record()` works with any function, but not yet with `{ggplot2}`.
 
 To avoid having to define every function individually, like this:
 
@@ -287,9 +287,14 @@ output_pipe <- starwars %>%
 Let's compare the input and the output to `r_filter(sex != "male")`:
 
 ```{r}
+# The following line generates a data frame with columns `ops_number`, `function` and `diff_obj`
+# it is possible to filter on the step of interest using the `ops_number` or the `function` column
 diff_pipe <- check_diff(output_pipe)
 
-diff_pipe
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
+
 ```
 
 If you are familiar with the version control software `Git`, you should have no problem reading
@@ -312,7 +317,9 @@ output_pipe <- starwars %>%
 
 diff_pipe <- check_diff(output_pipe)
 
-diff_pipe
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
 
 ```
 
