@@ -238,7 +238,7 @@ purely <- function(.f, strict = 2){
 #' @return A function which returns objects of type `chronicle`. `chronicle` objects carry several
 #' elements: a `value` which is the result of the function evaluated on its inputs and a second
 #' object called `log_df`. `log_df` contains logging information, which can be read using
-#' `read_log()`. `log_df` is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
+#' `read_log()`. `log_df` is a data frame with columns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
 #' @details
 #' To chain multiple decorated function, use `bind_record()` or `%>=%`.
 #' If the `diff` parameter is set to "full", `diffobj::diffObj()`

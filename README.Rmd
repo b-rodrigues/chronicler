@@ -201,7 +201,7 @@ Reading the log tells you which function failed, and with which error message:
 read_log(errord_output)
 ```
 
-It is also possible to only capture errors, or catpure errors, warnings and messages using
+It is also possible to only capture errors, or capture errors, warnings and messages using
 the `strict` parameter of `record()`
 
 ```{r}
@@ -250,7 +250,7 @@ output_pipe <- starwars %>%
 
 ```
 
-The `$log_df` element of a `chronicle` object contains detailled information:
+The `$log_df` element of a `chronicle` object contains detailed information:
 
 ```{r}
 pick(output_pipe, "log_df")
