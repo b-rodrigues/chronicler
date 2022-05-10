@@ -2,9 +2,12 @@ Package: chronicler
 Title: Add Logging to Functions
 Version: 0.2.0
 Authors@R: 
-    person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre"),
+    person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689"))
-Description: Easily add logging to functions, without interfering with the global environment.
+Description: Decorate functions to make them return enhanced output. The enhanced output consists in an object of type
+  `chronicle` containing the result of the function applied to its arguments, as well as a log detailing when the function
+  was run, what were its inputs, what were the errors (if the function failed to run) and other useful information.
+  Tools to handle decorated functions are included, such as a forward pipe operator that makes chaining decorated functions possible.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -25,7 +28,7 @@ Suggests:
     lubridate,
     purrr,
     rmarkdown,
-    testthat (>= 3.0.0),
+    testthat (>= 3.1.4),
     tidyr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
