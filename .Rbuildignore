@@ -7,4 +7,4 @@
 ^README.html$
 ^LICENSE
 cran-comments.md
-
+pkgdown/
