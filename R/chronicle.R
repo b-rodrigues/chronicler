@@ -117,6 +117,7 @@ read_log <- function(.c){
 #' Print method for chronicle objects.
 #' @param x A chronicle object.
 #' @param ... Unused.
+#' @return No return value, called for side effects (printing the object on screen).
 #' @export
 print.chronicle <- function(x, ...){
 
@@ -408,6 +409,7 @@ fmap_record <- function(.c, .f, ...){
 #' Checks whether an object is of class "chronicle"
 #' @param .x An object to test.
 #' @export
+#' @return TRUE if .x is of class "chronicle", FALSE if not.
 is_chronicle <- function(.x) {
   identical(class(.x), "chronicle")
 }
