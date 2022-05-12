@@ -59,7 +59,7 @@ a
 `a` is now made up of several parts. The first part:
 
 ```
-✔ Value computed successfully:
+OK! Value computed successfully:
 ---------------
 Just
 [1] 1.000000 1.414214 1.732051 2.000000 2.236068
@@ -175,6 +175,9 @@ output_pipe <- starwars %>%
 ```{r}
 pick(output_pipe, "value")
 ```
+
+Using the `%>=%` is not recommended in non-interactive sessions and `bind_record()`
+is recommend in such settings.
 
 
 ## Condition handling

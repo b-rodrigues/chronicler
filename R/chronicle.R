@@ -22,8 +22,8 @@ make_log_df <- function(ops_number = 1,
                         diff_obj = NULL){
 
   outcome <- ifelse(success == 1,
-                    "\u2714 Success",
-                    "\u2718 Caution - ERROR")
+                    "OK! Success",
+                    "NOK! Caution - ERROR")
 
   tibble::tibble(
             "ops_number" = ops_number,
@@ -74,8 +74,8 @@ read_log <- function(.c){
   success_symbol <- function(log_df, i){
 
     ifelse(grepl("Success", log_df$outcome[i]),
-           "\u2714",
-           "\u2718")
+           "OK!",
+           "NOK!")
 
   }
 
@@ -118,18 +118,26 @@ read_log <- function(.c){
 #' @param x A chronicle object.
 #' @param ... Unused.
 #' @return No return value, called for side effects (printing the object on screen).
+#' @details
+#' `chronicle` object are, at their core, lists with the following elements:
+#' * "$value": a an object of type `maybe` containing the result of the computation (see the "Maybe monad" vignette for more details on `maybe`s).
+#' * "$log_df": a `data.frame` object containing the printed object’s log information.
+#'
+#' `print.chronicle()` prints the object on screen and shows:
+#' * the value using its `print()` method (for example, if the value is a data.frame, `print.data.frame()` will be used)
+#' * a message indicating to the user how to recuperate the value inside the `chronicle` object and how to read the object’s log
 #' @export
 print.chronicle <- function(x, ...){
 
   if(all(grepl("Success", x$log_df$outcome))){
 
     succeed <- "successfully"
-    success_symbol <- "\u2714" #heavy check mark
+    success_symbol <- "OK!"
 
   } else {
 
     succeed <- "unsuccessfully"
-    success_symbol <- "\u2718" # heavy ballot x
+    success_symbol <- "NOK!"
 
   }
 

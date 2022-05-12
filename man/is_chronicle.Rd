@@ -9,6 +9,9 @@ is_chronicle(.x)
 \arguments{
 \item{.x}{An object to test.}
 }
+\value{
+TRUE if .x is of class "chronicle", FALSE if not.
+}
 \description{
 Checks whether an object is of class "chronicle"
 }

@@ -7,6 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="chronicler">
 <title>A non-mathematician's introduction to monads • chronicler</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -316,7 +322,7 @@
   <span class="fu">flatmap_list</span><span class="op">(</span><span class="va">list_log</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; [1] 1.151293</span></code></pre></div>
-<p>(thanks to <a href="https://twitter.com/armcn_/status/1511705262935011330?s=20&amp;t=UfwIjsqyOX7-UbTMBHOCuw" class="external-link"><span class="citation">@armcn_</span></a> for showing me this)</p>
+<p>(thanks to <span class="citation">[@armcn_]</span>(<a href="https://twitter.com/armcn_/status/1511705262935011330?s=20&amp;t=UfwIjsqyOX7-UbTMBHOCuw" class="external-link uri">https://twitter.com/armcn_/status/1511705262935011330?s=20&amp;t=UfwIjsqyOX7-UbTMBHOCuw</a>) for showing me this)</p>
 <p>In sum, monads are useful when you need values to also carry something more with them. This <em>something</em> can be a log, as shown here, but there are many examples. For another example of a monad implemented as an R package, see the <a href="https://armcn.github.io/maybe/" class="external-link">maybe monad</a>. <code>{chronicle}</code> actually takes advantage of the <a href="https://github.com/armcn/maybe" class="external-link">maybe</a> package and uses the maybe monad to handle cases where functions fail. I provide a short introduction to the maybe monad in the <a href="https://b-rodrigues.github.io/chronicler/articles/maybe-monad.html">Maybe monad vignette</a>.</p>
 </div>
 <div class="section level2">
@@ -334,7 +340,7 @@
 <span class="fu">test_that</span><span class="op">(</span><span class="st">"first monadic law"</span>, <span class="op">{</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">r_sqrt</span><span class="op">)</span><span class="op">$</span><span class="va">value</span>, <span class="fu">r_sqrt</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="va">value</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🥇</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BB00;">Test passed</span></span></code></pre></div>
 <p>Turns out that this is not quite the case here; the logs of the two objects will be slightly different. So I only check the value.</p>
 </div>
 <div class="section level3">
@@ -345,7 +351,7 @@
 <code class="sourceCode R"><span class="fu">test_that</span><span class="op">(</span><span class="st">"second monadic law"</span>, <span class="op">{</span>
   <span class="fu">expect_equal</span><span class="op">(</span><span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">as_chronicle</span><span class="op">)</span><span class="op">$</span><span class="va">value</span>, <span class="va">a</span><span class="op">$</span><span class="va">value</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🥇</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BB00;">Test passed</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="third-law">Third law<a class="anchor" aria-label="anchor" href="#third-law"></a>
@@ -370,7 +376,7 @@
   <span class="op">)</span><span class="op">$</span><span class="va">value</span>
   <span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 😀</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BB00;">Test passed</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
