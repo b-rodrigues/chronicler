@@ -577,7 +577,6 @@ check_g <- function(.c, columns = c("ops_number", "function")){
 }
 
 
-
 #' Check the output of the diff column
 #' @details
 #' `diff` is an option argument to the `record()` function. When `diff` = "full",
@@ -595,5 +594,30 @@ check_g <- function(.c, columns = c("ops_number", "function")){
 check_diff <- function(.c, columns = c("ops_number", "function")){
 
   as.data.frame(.c$log_df[, c(columns, "diff_obj")])
+
+}
+
+
+#' @export
+ggrecord <- function(.f){
+
+  function(...){
+
+    list("gg" = .f(...),
+         "log" = paste0(deparse(substitute(.f)), " success"))
+
+  }
+
+}
+
+#' @export
+`%+=>%` <- function(e1, e2){
+
+  structure(
+    list("gg" = ggplot2::`%+%`(e1$gg, e2$gg),
+         "log" = rbind(e1$log,
+                          e2$log)),
+    class = "chronicle"
+  )
 
 }
