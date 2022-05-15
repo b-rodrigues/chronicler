@@ -141,7 +141,11 @@ print.chronicle <- function(x, ...){
 
   }
 
-  cat(paste0(success_symbol, " Value computed ", succeed, ":\n"))
+  graph_or_value <- ifelse(
+    ggplot2::is.ggplot(
+               maybe::from_maybe(x$value)), "Ggplot", "Value")
+
+  cat(paste0(success_symbol, " ", graph_or_value, " computed ", succeed, ":\n"))
   cat("---------------\n")
   print(x$value, ...)
   cat("\n")
@@ -597,89 +601,3 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 
 }
 
-
-#' @export
-ggrecord <- function(.f, .g = (\(x) NA), strict = 2){
-
-  fstring <- deparse1(substitute(.f))
-
-  function(..., .log_df = data.frame()){
-
-    args <- paste0(rlang::enexprs(...), collapse = ",")
-
-    start <- Sys.time()
-    pure_f <- purely(.f, strict = strict)
-    res_pure <- (pure_f(...))
-    end <- Sys.time()
-
-    if(maybe::is_nothing(res_pure$value)){
-
-      log_df <- make_log_df(
-        success = 0,
-        fstring = fstring,
-        args = args,
-        res_pure = res_pure,
-        start = start,
-        end = end,
-        .g = .g
-      )
-
-    } else {
-
-      log_df <- make_log_df(
-        success = 1,
-        fstring = fstring,
-        args = args,
-        res_pure = res_pure,
-        start = start,
-        end = end,
-        .g = .g,
-        diff_obj = NULL,
-      )
-
-    }
-
-    log_df <- dplyr::mutate(
-                       rbind(.log_df,
-                             log_df),
-                       ops_number = dplyr::row_number(),
-                       lag_outcome = dplyr::lag(outcome, 1)
-                     )
-
-    if(maybe::is_nothing(res_pure$value)
-       & tail(log_df, 1)$ops_number == 1){
-      log_df$message <- paste0(res_pure$log_df, collapse = " ")
-    } else if (maybe::is_nothing(res_pure$value)
-               & !grepl("Success", tail(log_df, 1)$lag_outcome)
-               & tail(log_df, 1)$ops_number > 1){
-      log_df[nrow(log_df), ]$message <- "Pipeline failed upstream"
-    }
-
-    list_result <- list(
-      gg = res_pure$value,
-      log_df = log_df
-    )
-
-    structure(list_result, class = "chronicle")
-
-  }
-
-}
-
-maybe_ggadd <- function(e1, e2){
-
-  maybe::maybe(ggplot2::`%+%`)(e1, e2)
-
-}
-
-#' @export
-`%>+%` <- function(e1, e2){
-
-  structure(
-    list("gg" =  maybe_ggadd(e1$gg, e2$gg),
-         "log" = rbind(e1$log_df,
-                       e2$log_df)),
-    class = "chronicle"
-  )
-
-}
