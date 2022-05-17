@@ -23,6 +23,13 @@ Easily add logs to your functions, without interfering with the global environme
 
 ## Installation
 
+The package is available on [CRAN](https://cran.r-project.org/web/packages/chronicler/).
+Install it with:
+
+```{r, eval = FALSE}
+install.packages("chronicler")
+```
+
 You can install the development version from [GitHub](https://github.com/) with:
 
 ```{r, eval = FALSE}

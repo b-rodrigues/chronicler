@@ -601,3 +601,62 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 
 }
 
+
+#' Save 'chronicle' objects where the value is a data.frame to disk
+#' @details
+#' 'chronicle' objects where the "$value" is a data.frame can be saved with
+#' their log in either the '.csv' or '.xlsx' format to disk. In case
+#' the data is saved in the '.csv' format, the first *n* lines will contain
+#' the log. The number of lines that should be skipped to read in the data are
+#' indicated. In case the data gets saved in the '.xlsx' format, the data
+#' is written on the first sheet, and the log on the second sheet. `read.table()`
+#' with `row.names = FALSE` and `sep = ","` is used to save to the '.csv' format,
+#' and `openxlsx::write.xlsx()` is used to save to the '.xlsx' format.
+#' @param .c A chronicle object.
+#' @param path Path to the file. The extension (one of '.csv' or '.xlsx') determines the format of the file.
+#' @param row.names Should row names be saved? Defaults to FALSE.
+#' @param sep The separator for '.csv' files. Defaults to ",".
+#' @param ... Further arguments passed down to `read.table()` or `openxlsx::write.xlsx()`.
+#' @importFrom stringr str_extract
+#' @importFrom openxlsx write.xlsx
+#' @return No return value, called for side effects (writing data to disk).
+#' @export
+write_chronicle <- function(.c, path, row.names = FALSE, sep = ",", ...){
+
+  stopifnot("Only provide one path" = {length(path) == 1})
+
+  value <- pick(.c, "value")
+
+  stopifnot("Value must be of class data.frame!" = is.data.frame(value))
+
+  ext <- stringr::str_extract(path,
+                              "\\.([0-9a-z]+)(?=[?#])|(\\.)(?:[\\w]+)$")
+
+  stopifnot("write_chronicle() can only save data as either .csv or .xlsx. Change the extension of the output." = (any(c(".csv", ".xlsx") %in% ext)))
+
+  log <- chronicler::read_log(.c)
+
+  if(ext == ".csv"){
+
+    logcsv <- c(paste0("The first ", length(log) + 2, " lines of this .csv file constitute a log."),
+             paste0("Skip the first ", length(log) + 2, " lines to read in the data."),
+             log)
+
+    write(logcsv, file = path)
+    suppressWarnings(
+      write.table(value, file = path, sep = sep, append = TRUE, row.names = row.names, ...)
+    )
+
+  } else {
+
+    logxlsx <- c("This sheet contains a log of the operations used to create the dataset in the 'value' sheet.",
+             log)
+
+    xlsx_output <- list("value" = value,
+                        "log" = logxlsx)
+
+    openxlsx::write.xlsx(xlsx_output, file = path, ...)
+
+  }
+
+}
