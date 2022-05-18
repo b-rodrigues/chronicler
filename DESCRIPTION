@@ -1,6 +1,6 @@
 Package: chronicler
 Title: Add Logging to Functions
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689"))
