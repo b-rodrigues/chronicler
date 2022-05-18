@@ -227,13 +227,21 @@ purely <- function(.f, strict = 2){
       )
 
       final_result$value <- if(any(c("error", "warning", "message") %in% class(res))){
-                              maybe::nothing()
+                              if(strict != 3){
+                                maybe::nothing()
+                              } else {
+                                maybe::just(res$result)
+                              }
                             } else {
                               maybe::just(res)
                             }
 
       final_result$log_df <- if(any(c("error", "warning", "message") %in% class(res))){
-                               rlang::cnd_message(res)
+                               if(strict != 3){
+                                 rlang::cnd_message(res)
+                               } else {
+                                 rlang::cnd_message(res$warn)
+                               }
                              } else {
                                NA
                              }
