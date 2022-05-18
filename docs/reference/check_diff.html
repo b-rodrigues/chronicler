@@ -86,7 +86,7 @@ a diff of the input and output of the decorated function gets saved, and if
 <span class="r-in"><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">r_subset</span><span class="op">(</span><span class="va">mtcars</span>, select <span class="op">=</span> <span class="va">am</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">check_diff</span><span class="op">(</span><span class="va">result</span><span class="op">)</span> <span class="co"># &lt;- this is the data frame listing the operations and the accompanying diffs</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ops_number function                                            diff_obj</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1   subset &lt;S4 class 'Diff' [package "diffobj"] with 14 slots&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          1   subset &lt;S4 class ‘Diff’ [package “diffobj”] with 14 slots&gt;</span>
 <span class="r-in"><span class="fu">check_diff</span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">$</span><span class="va">diff_obj</span> <span class="co"># &lt;- actually look at the diffs</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">&lt;</span> <span style="color: #BBBB00;">str(input)</span>                             <span style="color: #0000BB;">&gt;</span> <span style="color: #0000BB;">str(output)</span>                          </span>
