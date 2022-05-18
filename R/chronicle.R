@@ -175,7 +175,7 @@ errors_and_warnings <- function(.f, ...){
            )
 }
 
-errors_and_innoffensive_warnings <- function(.f, ...){
+errors_and_inoffensive_warnings <- function(.f, ...){
 
   suppressWarnings(
     rlang::try_fetch(
@@ -232,7 +232,7 @@ purely <- function(.f, strict = 2){
       res <- switch(strict,
                     only_errors(.f, .value,  ...),
                     errors_and_warnings(.f, .value, ...),
-                    errors_and_innoffensive_warnings(.f, .value, ...){
+                    errors_and_inoffensive_warnings(.f, .value, ...),
                     errs_warn_mess(.f, .value, ...))
 
       final_result <- list(
@@ -240,26 +240,15 @@ purely <- function(.f, strict = 2){
         log_df = NULL
       )
 
-      final_result$value <- if(any(c("error", "warning", "message") %in% class(res))){
-                              if(strict != 3){
-                                maybe::nothing()
-                              } else {
-                                maybe::just(res$result)
-                              }
-                            } else {
-                              maybe::just(res)
-                            }
+      final_result$value <- dplyr::case_when(
+           strict == 3 & "warning" %in% class(res$result) ~ maybe::just(res$result),
+           any(c("error", "warning", "message") %in% class(res)) ~ maybe::nothing(),
+           TRUE ~ maybe::just(res))
 
-      final_result$log_df <- if(any(c("error", "warning", "message") %in% class(res))){
-                               if(strict != 3){
-                                 rlang::cnd_message(res)
-                               } else {
-                                 rlang::cnd_message(res$warn)
-                               }
-                             } else {
-                               NA
-                             }
-
+      final_result$log_df <- dplyr::case_when(
+           strict == 3 & "warning" %in% class(res$result) ~ rlang::cnd_message(res$warn),
+           any(c("error", "warning", "message") %in% class(res)) ~ rlang::cnd_message(res),
+           TRUE ~ NA)
 
     }
 

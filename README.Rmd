@@ -211,7 +211,16 @@ Reading the log tells you which function failed, and with which error message:
 read.log(errord_output)
 ```
 
-It is also possible to only capture errors, or capture errors, warnings and messages using
+`{chronicler}` can capture other conditions than just errors. "Capturing" here means
+failing and returning the condition. `{chronicler}` can capture:
+
+- only errors, or
+- only errors and warnings, or
+- errors and warnings, but in the case of warning, still return the result (useful in cases where the warning is inoffensive), or
+- errors, warnings, and messages.
+
+It is also possible to only capture errors, errors and warnings, errors and warnings but
+without or capture errors, warnings and messages using
 the `strict` parameter of `record()`
 
 ```{r}
@@ -229,6 +238,12 @@ r_sqrt <- record(sqrt, strict = 2)
 r_sqrt(-10) |>
   read.log()
 
+# Errors and warnings, but return the result as well
+r_sqrt <- record(sqrt, strict = 3)
+
+r_sqrt(-10) |>
+  read.log()
+
 # Errors, warnings and messages
 
 my_f <- function(x){
@@ -236,7 +251,7 @@ my_f <- function(x){
   10
 }
 
-record(my_f, strict = 3)(10) |>
+record(my_f, strict = 4)(10) |>
                          read.log()
 
 ```
