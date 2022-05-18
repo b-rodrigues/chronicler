@@ -4,12 +4,16 @@
 \alias{record_many}
 \title{Decorate a list of functions}
 \usage{
-record_many(list_funcs, strict = 2)
+record_many(list_funcs, .g = (function(x) NA), strict = 2, diff = "none")
 }
 \arguments{
 \item{list_funcs}{A list of function names, as strings.}
 
-\item{strict}{The strict parameter for record. Defaults to 2.}
+\item{.g}{Optional. Defaults to a function which returns NA.}
+
+\item{strict}{Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).}
+
+\item{diff}{Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)}
 }
 \value{
 Puts a string into the systems clipboard.

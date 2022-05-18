@@ -1,5 +1,6 @@
-#' Creates the log_df element of a chronicle.
-#' @param success Did the operation succeed.
+#' Creates the log_df element of a chronicle object.
+#' @param ops_number Tracks the number of the operation in a chain of operations.
+#' @param success Did the operation succeed?
 #' @param fstring The function call.
 #' @param args The arguments of the call.
 #' @param res_pure The result of the purely call.
@@ -21,8 +22,8 @@ make_log_df <- function(ops_number = 1,
                         diff_obj = NULL){
 
   outcome <- ifelse(success == 1,
-                    "\u2714 Success",
-                    "\u2718 Caution - ERROR")
+                    "OK! Success",
+                    "NOK! Caution - ERROR")
 
   tibble::tibble(
             "ops_number" = ops_number,
@@ -43,14 +44,14 @@ make_log_df <- function(ops_number = 1,
 
 
 #' Reads the log of a chronicle.
-#' @param .c A chronicle.
-#' @return Strings containing the log.
+#' @param .c A chronicle object.
+#' @return The log of the object.
 #' @examples
 #' \dontrun{
-#' read_log(chronicle_object)
+#' read.log(chronicle_object)
 #' }
 #' @export
-read_log <- function(.c){
+read.log <- function(.c){
 
   log_df <- .c$log_df
 
@@ -73,8 +74,8 @@ read_log <- function(.c){
   success_symbol <- function(log_df, i){
 
     ifelse(grepl("Success", log_df$outcome[i]),
-           "\u2714",
-           "\u2718")
+           "OK!",
+           "NOK!")
 
   }
 
@@ -116,29 +117,42 @@ read_log <- function(.c){
 #' Print method for chronicle objects.
 #' @param x A chronicle object.
 #' @param ... Unused.
+#' @return No return value, called for side effects (printing the object on screen).
+#' @details
+#' `chronicle` object are, at their core, lists with the following elements:
+#' * "$value": a an object of type `maybe` containing the result of the computation (see the "Maybe monad" vignette for more details on `maybe`s).
+#' * "$log_df": a `data.frame` object containing the printed object’s log information.
+#'
+#' `print.chronicle()` prints the object on screen and shows:
+#' * the value using its `print()` method (for example, if the value is a data.frame, `print.data.frame()` will be used)
+#' * a message indicating to the user how to recuperate the value inside the `chronicle` object and how to read the object’s log
 #' @export
 print.chronicle <- function(x, ...){
 
   if(all(grepl("Success", x$log_df$outcome))){
 
     succeed <- "successfully"
-    success_symbol <- "\u2714" #heavy check mark
+    success_symbol <- "OK!"
 
   } else {
 
     succeed <- "unsuccessfully"
-    success_symbol <- "\u2718" # heavy ballot x
+    success_symbol <- "NOK!"
 
   }
 
-  cat(paste0(success_symbol, " Value computed ", succeed, ":\n"))
+  graph_or_value <- ifelse(
+    ggplot2::is.ggplot(
+               maybe::from_maybe(x$value, default = maybe::nothing())), "Ggplot", "Value")
+
+  cat(paste0(success_symbol, " ", graph_or_value, " computed ", succeed, ":\n"))
   cat("---------------\n")
   print(x$value, ...)
   cat("\n")
   cat("---------------\n")
   cat("This is an object of type `chronicle`.\n")
   cat("Retrieve the value of this object with pick(.c, \"value\").\n")
-  cat("To read the log of this object, call read_log(.c).\n")
+  cat("To read the log of this object, call read.log(.c).\n")
   cat("\n")
 
 }
@@ -262,16 +276,20 @@ purely <- function(.f, strict = 2){
 #' @return A function which returns objects of type `chronicle`. `chronicle` objects carry several
 #' elements: a `value` which is the result of the function evaluated on its inputs and a second
 #' object called `log_df`. `log_df` contains logging information, which can be read using
-#' `read_log()`. `log_df` is a data frame with colmuns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
+#' `read.log()`. `log_df` is a data frame with columns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
 #' @details
 #' To chain multiple decorated function, use `bind_record()` or `%>=%`.
-#' If the `diff` parameter is set to "full", diffobj::diffObj() (or diffobj::summary(diffobj::diffObj(), if diff is set to "summary")
-#' gets used to provide the diff between the input and the output. This diff can be found in the `log_df` element of the result.
+#' If the `diff` parameter is set to "full", `diffobj::diffObj()`
+#' (or `diffobj::summary(diffobj::diffObj()`, if diff is set to "summary")
+#' gets used to provide the diff between the input and the output.
+#' This diff can be found in the `log_df` element of the result, and can be
+#' viewed using `check_diff()`.
 #' @importFrom diffobj diffObj summary
-#' @importFrom rlang enexprs
-#' @importFrom tibble tibble
 #' @importFrom dplyr mutate lag row_number select
 #' @importFrom maybe is_nothing
+#' @importFrom rlang enexprs
+#' @importFrom tibble tibble
+#' @importFrom utils tail
 #' @examples
 #' record(sqrt)(10)
 #' @export
@@ -355,6 +373,7 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none"){
   }
 }
 
+
 #' Evaluate a decorated function; used to chain multiple decorated functions.
 #' @param .c A chronicle object.
 #' @param .f A chronicle function to apply to the returning value of .c.
@@ -375,19 +394,19 @@ bind_record <- function(.c, .f, ...){
 
 #' Flatten nested chronicle objects
 #' @param .c A nested chronicle object, where the $value element is itself a chronicle object
-#' @return Returns .c where value is the actual value, and logs are concatenated.
+#' @return Returns `.c` where value is the actual value, and logs are concatenated.
 #' @export
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_log <- record(log)
 #' a <- as_chronicle(r_log(10))
 #' a
-#' read_log(flatten_record(a))
-flatten_record <- function(x){
+#' flatten_record(a)
+flatten_record <- function(.c){
 
-  list(value = x$value$content$value,
-       log_df = dplyr::bind_rows(x$value$log_df,
-                                 x$log_df)) |>
+  list(value = .c$value$content$value,
+       log_df = dplyr::bind_rows(.c$value$log_df,
+                                 .c$log_df)) |>
     structure(class = "chronicle")
 
 }
@@ -396,10 +415,10 @@ flatten_record <- function(x){
 #' Evaluate a non-chronicle function on a chronicle object.
 #' @param .c A chronicle object.
 #' @param .f A non-chronicle function.
-#' @param ... Further parameters to pass to .f.
+#' @param ... Further parameters to pass to `.f`.
 #' @importFrom maybe fmap
 #' @importFrom dplyr bind_rows
-#' @return Returns the result of .f(.c$value) as a new chronicle object.
+#' @return Returns the result of `.f(.c$value)` as a new chronicle object.
 #' @examples
 #' as_chronicle(3) |> fmap_record(sqrt)
 #' @export
@@ -424,9 +443,12 @@ fmap_record <- function(.c, .f, ...){
 
 
 
+#' Checks whether an object is of class "chronicle"
+#' @param .x An object to test.
 #' @export
-is_chronicle <- function(a) {
-  identical(class(a), "chronicle")
+#' @return TRUE if .x is of class "chronicle", FALSE if not.
+is_chronicle <- function(.x) {
+  identical(class(.x), "chronicle")
 }
 
 #' Coerce an object to a chronicle object.
@@ -493,6 +515,7 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 }
 
 
+
 #' Retrieve an element from a chronicle object.
 #' @param .c A chronicle object.
 #' @param .e Element of interest to retrieve, one of "value" or "log_df".
@@ -530,7 +553,9 @@ pick <- function(.c, .e){
 #' In your .Rprofile, put the following command: Sys.setenv(DISPLAY = ":0") and restart
 #' the R session. `record_many()` should now work.
 #' @param list_funcs A list of function names, as strings.
-#' @param strict The strict parameter for record. Defaults to 2.
+#' @param .g Optional. Defaults to a function which returns NA.
+#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
+#' @param diff Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)
 #' @return Puts a string into the systems clipboard.
 #' @importFrom stringr str_remove_all
 #' @importFrom clipr write_clip
@@ -540,12 +565,20 @@ pick <- function(.c, .e){
 #' list_funcs <- list("exp", "dplyr::select", "exp")
 #' record_many(list_funcs)
 #' }
-record_many <- function(list_funcs, strict = 2){
+record_many <- function(list_funcs, .g = (function(x) NA), strict = 2, diff = "none"){
 
   sanitized_list <- stringr::str_remove_all(list_funcs, "(.*?)\\:")
 
   clipr::write_clip(
-           paste0("r_", sanitized_list, " <- ", "record(", list_funcs, ", strict = ", strict, ")")
+           paste0("r_", sanitized_list, " <- ", "record(",
+                  list_funcs,
+                  ", .g = ",
+                  deparse(substitute(.g)),
+                  ", strict = ",
+                  strict,
+                  ", diff = ",
+                  paste0("\"", diff, "\""),
+                  ")")
            )
 
   message("Code copied to clipboard. You can now paste it into your text editor.")
@@ -572,3 +605,83 @@ check_g <- function(.c, columns = c("ops_number", "function")){
 
 }
 
+
+#' Check the output of the diff column
+#' @details
+#' `diff` is an option argument to the `record()` function. When `diff` = "full",
+#' a diff of the input and output of the decorated function gets saved, and if
+#' `diff` = "summary" only a summary of the diff is saved.
+#' @param .c A chronicle object.
+#' @param columns Columns to select for the output. Defaults to c("ops_number", "function").
+#' @return A data.frame with the selected columns and column "diff_obj".
+#' @examples
+#' r_subset <- record(subset, diff = "full")
+#' result <- r_subset(mtcars, select = am)
+#' check_diff(result) # <- this is the data frame listing the operations and the accompanying diffs
+#' check_diff(result)$diff_obj # <- actually look at the diffs
+#' @export
+check_diff <- function(.c, columns = c("ops_number", "function")){
+
+  as.data.frame(.c$log_df[, c(columns, "diff_obj")])
+
+}
+
+
+#' Save 'chronicle' objects where the value is a data.frame to disk
+#' @details
+#' 'chronicle' objects where the "$value" is a data.frame can be saved with
+#' their log in either the '.csv' or '.xlsx' format to disk. In case
+#' the data is saved in the '.csv' format, the first *n* lines will contain
+#' the log. The number of lines that should be skipped to read in the data are
+#' indicated. In case the data gets saved in the '.xlsx' format, the data
+#' is written on the first sheet, and the log on the second sheet. `read.table()`
+#' with `row.names = FALSE` and `sep = ","` is used to save to the '.csv' format,
+#' and `openxlsx::write.xlsx()` is used to save to the '.xlsx' format.
+#' @param .c A chronicle object.
+#' @param path Path to the file. The extension (one of '.csv' or '.xlsx') determines the format of the file.
+#' @param row.names Should row names be saved? Defaults to FALSE.
+#' @param sep The separator for '.csv' files. Defaults to ",".
+#' @param ... Further arguments passed down to `read.table()` or `openxlsx::write.xlsx()`.
+#' @importFrom stringr str_extract
+#' @importFrom openxlsx write.xlsx
+#' @return No return value, called for side effects (writing data to disk).
+#' @export
+write_chronicle <- function(.c, path, row.names = FALSE, sep = ",", ...){
+
+  stopifnot("Only provide one path" = {length(path) == 1})
+
+  value <- pick(.c, "value")
+
+  stopifnot("Value must be of class data.frame!" = is.data.frame(value))
+
+  ext <- stringr::str_extract(path,
+                              "\\.([0-9a-z]+)(?=[?#])|(\\.)(?:[\\w]+)$")
+
+  stopifnot("write_chronicle() can only save data as either .csv or .xlsx. Change the extension of the output." = (any(c(".csv", ".xlsx") %in% ext)))
+
+  log <- chronicler::read.log(.c)
+
+  if(ext == ".csv"){
+
+    logcsv <- c(paste0("The first ", length(log) + 2, " lines of this .csv file constitute a log."),
+             paste0("Skip the first ", length(log) + 2, " lines to read in the data."),
+             log)
+
+    write(logcsv, file = path)
+    suppressWarnings(
+      write.table(value, file = path, sep = sep, append = TRUE, row.names = row.names, ...)
+    )
+
+  } else {
+
+    logxlsx <- c("This sheet contains a log of the operations used to create the dataset in the 'value' sheet.",
+             log)
+
+    xlsx_output <- list("value" = value,
+                        "log" = logxlsx)
+
+    openxlsx::write.xlsx(xlsx_output, file = path, ...)
+
+  }
+
+}

@@ -7,6 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="chronicler">
 <title>A real world example • chronicler</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -26,7 +32,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">chronicler</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,6 +51,9 @@
     <a class="dropdown-item" href="../articles/maybe-monad.html">The Maybe monad</a>
     <a class="dropdown-item" href="../articles/real-world-example.html">A real world example</a>
   </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -137,10 +146,10 @@
 <p><code>avia_monthly</code> is an object of class <code>chronicle</code>, but in essence, it is just a list, with its own print method:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avia_monthly</span>
-<span class="co">#&gt; ✔ Value computed successfully:</span>
+<span class="co">#&gt; &lt;U+2714&gt; Value computed successfully:</span>
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; Just</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 × 3</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 x 3</span></span>
 <span class="co">#&gt;    destination     date       passengers</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> LU_ELLX_AT_LOWW 2018-03-01 3967      </span>
@@ -153,7 +162,7 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> LU_ELLX_AT_LOWW 2017-08-01 4399      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> LU_ELLX_AT_LOWW 2017-07-01 4277      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span> LU_ELLX_AT_LOWW 2017-06-01 4674      </span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 7,622 more rows</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># ... with 7,622 more rows</span></span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ---------------</span>
 <span class="co">#&gt; This is an object of type `chronicle`.</span>
@@ -163,19 +172,19 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span>
 <span class="co">#&gt; [1] "Complete log:"                                                                                                           </span>
-<span class="co">#&gt; [2] "✔ select(1,contains(\"20\")) ran successfully at 2022-05-07 14:57:41"                                                    </span>
-<span class="co">#&gt; [3] "✔ pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-05-07 14:57:41"                          </span>
-<span class="co">#&gt; [4] "✔ separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-05-07 14:57:41"                   </span>
-<span class="co">#&gt; [5] "✔ filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-05-07 14:57:43"</span>
-<span class="co">#&gt; [6] "✔ mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-05-07 14:57:43"                                        </span>
-<span class="co">#&gt; [7] "✔ select(air_pr\\time,date,passengers) ran successfully at 2022-05-07 14:57:43"                                          </span>
-<span class="co">#&gt; [8] "Total running time: 1.83181023597717 secs"</span></code></pre></div>
+<span class="co">#&gt; [2] "&lt;U+2714&gt; select(1,contains(\"20\")) ran successfully at 2022-05-12 13:08:37"                                             </span>
+<span class="co">#&gt; [3] "&lt;U+2714&gt; pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2022-05-12 13:08:37"                   </span>
+<span class="co">#&gt; [4] "&lt;U+2714&gt; separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2022-05-12 13:08:37"            </span>
+<span class="co">#&gt; [5] "&lt;U+2714&gt; filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran successfully at 2022-05-12 13:08:39"</span>
+<span class="co">#&gt; [6] "&lt;U+2714&gt; mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2022-05-12 13:08:39"                                 </span>
+<span class="co">#&gt; [7] "&lt;U+2714&gt; select(air_pr\\time,date,passengers) ran successfully at 2022-05-12 13:08:39"                                   </span>
+<span class="co">#&gt; [8] "Total running time: 1.86402106285095 secs"</span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code> gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People that then read this object, can read the log to know what happened and reproduce the steps if necessary.</p>
 <p>Let’s take a look at the final data set:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">avia_monthly</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/pick.html">pick</a></span><span class="op">(</span><span class="st">"value"</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 × 3</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,632 x 3</span></span>
 <span class="co">#&gt;    destination     date       passengers</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> LU_ELLX_AT_LOWW 2018-03-01 3967      </span>
@@ -188,17 +197,17 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> LU_ELLX_AT_LOWW 2017-08-01 4399      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> LU_ELLX_AT_LOWW 2017-07-01 4277      </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span> LU_ELLX_AT_LOWW 2017-06-01 4674      </span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 7,622 more rows</span></span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># ... with 7,622 more rows</span></span></code></pre></div>
 <p>It is also possible to take a look at the underlying <code>.log_df</code> object that contains more details, and see the output of the <code>.g</code> argument (which was defined in the beginning as the <code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code> function):</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">$</span><span class="va">log_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"function"</span>, <span class="st">"g"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="co">#&gt;       function         g</span>
-<span class="co">#&gt; 1       select  509, 231</span>
-<span class="co">#&gt; 2 pivot_longer 117070, 3</span>
-<span class="co">#&gt; 3     separate 117070, 5</span>
-<span class="co">#&gt; 4       filter   7632, 5</span>
-<span class="co">#&gt; 5       mutate   7632, 5</span>
-<span class="co">#&gt; 6       select   7632, 3</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/check_g.html">check_g</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span>
+<span class="co">#&gt;   ops_number     function         g</span>
+<span class="co">#&gt; 1          1       select  509, 231</span>
+<span class="co">#&gt; 2          2 pivot_longer 117070, 3</span>
+<span class="co">#&gt; 3          3     separate 117070, 5</span>
+<span class="co">#&gt; 4          4       filter   7632, 5</span>
+<span class="co">#&gt; 5          5       mutate   7632, 5</span>
+<span class="co">#&gt; 6          6       select   7632, 3</span></code></pre></div>
 <p>After <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> the data has 509 rows and 231 columns, after the call to <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer()</a></code> 117070 rows and 3 columns, <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code> adds two columns, after <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code> only 7632 rows remain (<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> does not change the dimensions) and then <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> is used to remove 2 columns.</p>
   </main>
 </div>

@@ -19,9 +19,16 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-Easily add logs to your functions.
+Easily add logs to your functions, without interfering with the global environment.
 
 ## Installation
+
+The package is available on [CRAN](https://cran.r-project.org/web/packages/chronicler/).
+Install it with:
+
+```{r, eval = FALSE}
+install.packages("chronicler")
+```
 
 You can install the development version from [GitHub](https://github.com/) with:
 
@@ -32,9 +39,12 @@ devtools::install_github("b-rodrigues/chronicler")
 
 ## Introduction
 
-`{chronicler}` provides the `record()` function, which allows you to decorate functions. These
-decorated functions then work exactly the same as their undecorated counterparts, but they
-provide additional output. 
+`{chronicler}` provides the `record()` function, which allows you to modify functions so that they
+provide enhanced output. This enhanced output consists in a detailed log, and by chaining decorated
+functions, it becomes possible to have a complete trace of the operations that led to the final
+output. These decorated functions work exactly the same as their undecorated counterparts, but some
+care is required for correctly handling them. This introduction will give you a quick overview of
+this package’s functionality.
 
 Let's first start with a simple example, by decorating the `sqrt()` function:
 
@@ -47,7 +57,7 @@ a <- r_sqrt(1:5)
 
 ```
 
-Object `a` is now an object of class `chronicle`. Let's see what `a` is:
+Object `a` is now an object of class `chronicle`. Let's take a closer look at `a`:
 
 ```{r}
 a
@@ -56,7 +66,7 @@ a
 `a` is now made up of several parts. The first part:
 
 ```
-✔ Value computed successfully:
+OK! Value computed successfully:
 ---------------
 Just
 [1] 1.000000 1.414214 1.732051 2.000000 2.236068
@@ -64,13 +74,14 @@ Just
 ```
 
 simply provides the result of `sqrt()` applied to `1:5` (let's ignore the word `Just` on the third
-line for now; for more details see the `Maybe Monad` vignette). The second part, tells you that there's more to it:
+line for now; for more details see the `Maybe Monad` vignette). The second part tells you that
+there's more to it:
 
 ```
 ---------------
 This is an object of type `chronicle`.
 Retrieve the value of this object with pick(.c, "value").
-To read the log of this object, call read_log().
+To read the log of this object, call read.log().
 ```
 
 The value of the `sqrt()` function applied to its arguments can be obtained using `pick()`, as
@@ -80,16 +91,15 @@ explained:
 pick(a, "value")
 ```
 
-A log also gets generated and can be read using `read_log()`:
+A log also gets generated and can be read using `read.log()`:
 
 ```{r}
-read_log(a)
+read.log(a)
 ```
 
 This is especially useful for objects that get created using multiple calls:
 
 ```{r}
-
 r_sqrt <- record(sqrt)
 r_exp <- record(exp)
 r_mean <- record(mean)
@@ -101,13 +111,16 @@ b <- 1:10 |>
 
 ```
 
+(`bind_record()` is used to chain multiple decorated functions and will be explained in
+detail in the next section.)
+
 ```{r}
-read_log(b)
+read.log(b)
 
 pick(b, "value")
 ```
 
-`record()` works with any function (as far as I know).
+`record()` works with any function, but not yet with `{ggplot2}`.
 
 To avoid having to define every function individually, like this:
 
@@ -123,8 +136,7 @@ into your text editor. The gif below illustrates how `record_many()` works:
 
 ![`record_many()` in action](https://raw.githubusercontent.com/b-rodrigues/chronicler/master/data-raw/record_many.gif)
 
-
-## Composing decorated functions
+## Chaining decorated functions
 
 `bind_record()` is used to pass the output from one decorated function to the next:
 
@@ -147,7 +159,7 @@ output <- starwars %>%
 ```
 
 ```{r}
-read_log(output)
+read.log(output)
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as explained above:
@@ -171,6 +183,9 @@ output_pipe <- starwars %>%
 pick(output_pipe, "value")
 ```
 
+Using the `%>=%` is not recommended in non-interactive sessions and `bind_record()`
+is recommend in such settings.
+
 
 ## Condition handling
 
@@ -179,7 +194,7 @@ By default, errors and warnings get caught and composed in the log:
 ```{r}
 
 errord_output <- starwars %>%
-  r_select(height, mass, species, sex) %>=% 
+  r_select(height, mass, species, sex) %>=%
   r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
   r_filter(sex != "male") %>=%
   r_summarise(mass = mean(mass, na.rm = TRUE))
@@ -193,10 +208,10 @@ errord_output
 Reading the log tells you which function failed, and with which error message:
 
 ```{r}
-read_log(errord_output)
+read.log(errord_output)
 ```
 
-It is also possible to only capture errors, or catpure errors, warnings and messages using
+It is also possible to only capture errors, or capture errors, warnings and messages using
 the `strict` parameter of `record()`
 
 ```{r}
@@ -205,14 +220,14 @@ the `strict` parameter of `record()`
 r_sqrt <- record(sqrt, strict = 1)
 
 r_sqrt(-10) |>
-  read_log()
+  read.log()
 
 # Errors and warnings:
 
 r_sqrt <- record(sqrt, strict = 2)
 
 r_sqrt(-10) |>
-  read_log()
+  read.log()
 
 # Errors, warnings and messages
 
@@ -222,7 +237,7 @@ my_f <- function(x){
 }
 
 record(my_f, strict = 3)(10) |>
-                         read_log()
+                         read.log()
 
 ```
 
@@ -245,7 +260,7 @@ output_pipe <- starwars %>%
 
 ```
 
-The `$log_df` element of a `chronicle` object contains detailled information:
+The `$log_df` element of a `chronicle` object contains detailed information:
 
 ```{r}
 pick(output_pipe, "log_df")
@@ -282,9 +297,14 @@ output_pipe <- starwars %>%
 Let's compare the input and the output to `r_filter(sex != "male")`:
 
 ```{r}
-diff_filter <- output_pipe$log_df$diff_obj[[3]]
+# The following line generates a data frame with columns `ops_number`, `function` and `diff_obj`
+# it is possible to filter on the step of interest using the `ops_number` or the `function` column
+diff_pipe <- check_diff(output_pipe)
 
-diff_filter
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
+
 ```
 
 If you are familiar with the version control software `Git`, you should have no problem reading
@@ -305,16 +325,18 @@ output_pipe <- starwars %>%
   r_filter(sex != "male") %>=%
   r_summarise(mass = mean(mass, na.rm = TRUE))
 
-diff_filter <- output_pipe$log_df$diff_obj[[3]]
+diff_pipe <- check_diff(output_pipe)
 
-diff_filter
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
 
 ```
 
 
 By combining `.g` and `diff`, it is possible to have a very clear overview of what happened to the very
-first input to the final output.
-diff functionality is provided by the `{diffobj}` package.
+first input throughout the pipeline.
+`diff` functionality is provided by the `{diffobj}` package.
 
 
 
@@ -327,3 +349,4 @@ Thank you as well to [TimTeaFan](https://community.rstudio.com/t/help-with-writi
 for his help with writing the `%>=%` infix operator, [nigrahamuk](https://community.rstudio.com/t/best-way-to-catch-rlang-errors-consistently/131632/5?u=brodriguesco)
 for showing me a nice way to catch errors, and finally [Mwavu](https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco)
 for pointing me towards the right direction with an issue I've had as I started working on this package.
+Thanks to [Putosaure](https://twitter.com/putosaure) for designing the hex logo.

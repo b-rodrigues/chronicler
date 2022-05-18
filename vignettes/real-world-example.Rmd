@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{A real world example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{dplyr, tidyr, stringr, lubridate}
 ---
 
 ```{r, include = FALSE}
@@ -86,7 +87,7 @@ avia_monthly
 Now that the data is clean, we can read the log:
 
 ```{r}
-read_log(avia_monthly)
+read.log(avia_monthly)
 ```
 
 This is especially useful if the object `avia_monthly` gets saved using `saveRDS()`. People that
@@ -103,7 +104,7 @@ It is also possible to take a look at the underlying `.log_df` object that conta
 and see the output of the `.g` argument (which was defined in the beginning as the `dim()` function):
 
 ```{r}
-as.data.frame(avia_monthly$log_df[, c("function", "g")])
+check_g(avia_monthly)
 ```
 
 After `select()` the data has 509 rows and 231 columns, after the call to `pivot_longer()`

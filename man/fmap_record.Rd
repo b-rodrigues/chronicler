@@ -11,10 +11,10 @@ fmap_record(.c, .f, ...)
 
 \item{.f}{A non-chronicle function.}
 
-\item{...}{Further parameters to pass to .f.}
+\item{...}{Further parameters to pass to \code{.f}.}
 }
 \value{
-Returns the result of .f(.c$value) as a new chronicle object.
+Returns the result of \code{.f(.c$value)} as a new chronicle object.
 }
 \description{
 Evaluate a non-chronicle function on a chronicle object.

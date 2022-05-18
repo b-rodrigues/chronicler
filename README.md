@@ -6,9 +6,18 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Easily add logs to your functions.
+Easily add logs to your functions, without interfering with the global
+environment.
 
 ## Installation
+
+The package is available on
+[CRAN](https://cran.r-project.org/web/packages/chronicler/). Install it
+with:
+
+``` r
+install.packages("chronicler")
+```
 
 You can install the development version from
 [GitHub](https://github.com/) with:
@@ -21,8 +30,13 @@ devtools::install_github("b-rodrigues/chronicler")
 ## Introduction
 
 `{chronicler}` provides the `record()` function, which allows you to
-decorate functions. These decorated functions then work exactly the same
-as their undecorated counterparts, but they provide additional output.
+modify functions so that they provide enhanced output. This enhanced
+output consists in a detailed log, and by chaining decorated functions,
+it becomes possible to have a complete trace of the operations that led
+to the final output. These decorated functions work exactly the same as
+their undecorated counterparts, but some care is required for correctly
+handling them. This introduction will give you a quick overview of this
+package’s functionality.
 
 Let’s first start with a simple example, by decorating the `sqrt()`
 function:
@@ -35,11 +49,12 @@ r_sqrt <- record(sqrt)
 a <- r_sqrt(1:5)
 ```
 
-Object `a` is now an object of class `chronicle`. Let’s see what `a` is:
+Object `a` is now an object of class `chronicle`. Let’s take a closer
+look at `a`:
 
 ``` r
 a
-#> ✔ Value computed successfully:
+#> OK! Value computed successfully:
 #> ---------------
 #> Just
 #> [1] 1.000000 1.414214 1.732051 2.000000 2.236068
@@ -47,25 +62,25 @@ a
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
-#> To read the log of this object, call read_log(.c).
+#> To read the log of this object, call read.log(.c).
 ```
 
 `a` is now made up of several parts. The first part:
 
-    ✔ Value computed successfully:
+    OK! Value computed successfully:
     ---------------
     Just
     [1] 1.000000 1.414214 1.732051 2.000000 2.236068
 
 simply provides the result of `sqrt()` applied to `1:5` (let’s ignore
 the word `Just` on the third line for now; for more details see the
-`Maybe Monad` vignette). The second part, tells you that there’s more to
+`Maybe Monad` vignette). The second part tells you that there’s more to
 it:
 
     ---------------
     This is an object of type `chronicle`.
     Retrieve the value of this object with pick(.c, "value").
-    To read the log of this object, call read_log().
+    To read the log of this object, call read.log().
 
 The value of the `sqrt()` function applied to its arguments can be
 obtained using `pick()`, as explained:
@@ -75,13 +90,13 @@ pick(a, "value")
 #> [1] 1.000000 1.414214 1.732051 2.000000 2.236068
 ```
 
-A log also gets generated and can be read using `read_log()`:
+A log also gets generated and can be read using `read.log()`:
 
 ``` r
-read_log(a)
-#> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"
-#> [3] "Total running time: 0.000390052795410156 secs"
+read.log(a)
+#> [1] "Complete log:"                                     
+#> [2] "OK! sqrt() ran successfully at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000397682189941406 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -98,19 +113,22 @@ b <- 1:10 |>
   bind_record(r_mean)
 ```
 
+(`bind_record()` is used to chain multiple decorated functions and will
+be explained in detail in the next section.)
+
 ``` r
-read_log(b)
-#> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:12"
-#> [3] "✔ exp() ran successfully at 2022-05-07 14:57:12" 
-#> [4] "✔ mean() ran successfully at 2022-05-07 14:57:12"
-#> [5] "Total running time: 0.0219151973724365 secs"
+read.log(b)
+#> [1] "Complete log:"                                     
+#> [2] "OK! sqrt() ran successfully at 2022-05-18 09:55:20"
+#> [3] "OK! exp() ran successfully at 2022-05-18 09:55:20" 
+#> [4] "OK! mean() ran successfully at 2022-05-18 09:55:20"
+#> [5] "Total running time: 0.0180039405822754 secs"
 
 pick(b, "value")
 #> [1] 11.55345
 ```
 
-`record()` works with any function (as far as I know).
+`record()` works with any function, but not yet with `{ggplot2}`.
 
 To avoid having to define every function individually, like this:
 
@@ -128,7 +146,7 @@ The gif below illustrates how `record_many()` works:
 ![`record_many()` in
 action](https://raw.githubusercontent.com/b-rodrigues/chronicler/master/data-raw/record_many.gif)
 
-## Composing decorated functions
+## Chaining decorated functions
 
 `bind_record()` is used to pass the output from one decorated function
 to the next:
@@ -159,13 +177,13 @@ output <- starwars %>%
 ```
 
 ``` r
-read_log(output)
-#> [1] "Complete log:"                                                                
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:12"    
-#> [3] "✔ group_by(species,sex) ran successfully at 2022-05-07 14:57:12"              
-#> [4] "✔ filter(sex != \"male\") ran successfully at 2022-05-07 14:57:12"            
-#> [5] "✔ summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-07 14:57:12"
-#> [6] "Total running time: 0.125004291534424 secs"
+read.log(output)
+#> [1] "Complete log:"                                                                  
+#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-18 09:55:20"    
+#> [3] "OK! group_by(species,sex) ran successfully at 2022-05-18 09:55:20"              
+#> [4] "OK! filter(sex != \"male\") ran successfully at 2022-05-18 09:55:20"            
+#> [5] "OK! summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-18 09:55:20"
+#> [6] "Total running time: 0.471692562103271 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as
@@ -216,13 +234,16 @@ pick(output_pipe, "value")
 #> 9 Twi'lek    female              55
 ```
 
+Using the `%>=%` is not recommended in non-interactive sessions and
+`bind_record()` is recommend in such settings.
+
 ## Condition handling
 
 By default, errors and warnings get caught and composed in the log:
 
 ``` r
 errord_output <- starwars %>%
-  r_select(height, mass, species, sex) %>=% 
+  r_select(height, mass, species, sex) %>=%
   r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
   r_filter(sex != "male") %>=%
   r_summarise(mass = mean(mass, na.rm = TRUE))
@@ -230,29 +251,29 @@ errord_output <- starwars %>%
 
 ``` r
 errord_output
-#> ✘ Value computed unsuccessfully:
+#> NOK! Value computed unsuccessfully:
 #> ---------------
 #> Nothing
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
-#> To read the log of this object, call read_log(.c).
+#> To read the log of this object, call read.log(.c).
 ```
 
 Reading the log tells you which function failed, and with which error
 message:
 
 ``` r
-read_log(errord_output)
-#> [1] "Complete log:"                                                                                                                                                    
-#> [2] "✔ select(height,mass,species,sex) ran successfully at 2022-05-07 14:57:13"                                                                                        
-#> [3] "✘ group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-07 14:57:13"
-#> [4] "✘ filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                                           
-#> [5] "✘ summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-07 14:57:13"                               
-#> [6] "Total running time: 0.0510673522949219 secs"
+read.log(errord_output)
+#> [1] "Complete log:"                                                                                                                                                       
+#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-18 09:55:20"                                                                                         
+#> [3] "NOK! group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-18 09:55:20"
+#> [4] "NOK! filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-18 09:55:20"                                           
+#> [5] "NOK! summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-18 09:55:20"                               
+#> [6] "Total running time: 0.0587713718414307 secs"
 ```
 
-It is also possible to only capture errors, or catpure errors, warnings
+It is also possible to only capture errors, or capture errors, warnings
 and messages using the `strict` parameter of `record()`
 
 ``` r
@@ -261,21 +282,21 @@ and messages using the `strict` parameter of `record()`
 r_sqrt <- record(sqrt, strict = 1)
 
 r_sqrt(-10) |>
-  read_log()
+  read.log()
 #> Warning in .f(...): NaNs produced
-#> [1] "Complete log:"                                   
-#> [2] "✔ sqrt() ran successfully at 2022-05-07 14:57:13"
-#> [3] "Total running time: 0.000293731689453125 secs"
+#> [1] "Complete log:"                                     
+#> [2] "OK! sqrt() ran successfully at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000290632247924805 secs"
 
 # Errors and warnings:
 
 r_sqrt <- record(sqrt, strict = 2)
 
 r_sqrt(-10) |>
-  read_log()
-#> [1] "Complete log:"                                                                             
-#> [2] "✘ sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-07 14:57:13"
-#> [3] "Total running time: 0.000282526016235352 secs"
+  read.log()
+#> [1] "Complete log:"                                                                                
+#> [2] "NOK! sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000285863876342773 secs"
 
 # Errors, warnings and messages
 
@@ -285,10 +306,10 @@ my_f <- function(x){
 }
 
 record(my_f, strict = 3)(10) |>
-                         read_log()
-#> [1] "Complete log:"                                                                                   
-#> [2] "✘ my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-07 14:57:13"
-#> [3] "Total running time: 0.000349521636962891 secs"
+                         read.log()
+#> [1] "Complete log:"                                                                                      
+#> [2] "NOK! my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000369071960449219 secs"
 ```
 
 ## Advanced logging
@@ -310,18 +331,18 @@ output_pipe <- starwars %>%
   r_summarise(mass = mean(mass, na.rm = TRUE))
 ```
 
-The `$log_df` element of a `chronicle` object contains detailled
+The `$log_df` element of a `chronicle` object contains detailed
 information:
 
 ``` r
 pick(output_pipe, "log_df")
 #> # A tibble: 4 × 11
-#>   ops_number outcome   `function` arguments          message start_time         
-#>        <int> <chr>     <chr>      <chr>              <chr>   <dttm>             
-#> 1          1 ✔ Success select     "height,mass,spec… NA      2022-05-07 14:57:13
-#> 2          2 ✔ Success group_by   "species,sex"      NA      2022-05-07 14:57:13
-#> 3          3 ✔ Success filter     "sex != \"male\""  NA      2022-05-07 14:57:13
-#> 4          4 ✔ Success summarise  "mean(mass, na.rm… NA      2022-05-07 14:57:13
+#>   ops_number outcome     `function` arguments        message start_time         
+#>        <int> <chr>       <chr>      <chr>            <chr>   <dttm>             
+#> 1          1 OK! Success select     "height,mass,sp… NA      2022-05-18 09:55:20
+#> 2          2 OK! Success group_by   "species,sex"    NA      2022-05-18 09:55:20
+#> 3          3 OK! Success filter     "sex != \"male\… NA      2022-05-18 09:55:20
+#> 4          4 OK! Success summarise  "mean(mass, na.… NA      2022-05-18 09:55:20
 #> # … with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
 #> #   diff_obj <list>, lag_outcome <chr>
 ```
@@ -362,9 +383,14 @@ output_pipe <- starwars %>%
 Let’s compare the input and the output to `r_filter(sex != "male")`:
 
 ``` r
-diff_filter <- output_pipe$log_df$diff_obj[[3]]
+# The following line generates a data frame with columns `ops_number`, `function` and `diff_obj`
+# it is possible to filter on the step of interest using the `ops_number` or the `function` column
+diff_pipe <- check_diff(output_pipe)
 
-diff_filter
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
+#> [[1]]
 #> < input                                 
 #> > output                                
 #> @@ 1,15 / 1,15 @@                       
@@ -412,9 +438,12 @@ output_pipe <- starwars %>%
   r_filter(sex != "male") %>=%
   r_summarise(mass = mean(mass, na.rm = TRUE))
 
-diff_filter <- output_pipe$log_df$diff_obj[[3]]
+diff_pipe <- check_diff(output_pipe)
 
-diff_filter
+diff_pipe %>%
+  filter(`function` == "filter") %>%  # <- backticks around `function` are required
+  pull(diff_obj)
+#> [[1]]
 #> 
 #> Found differences in 5 hunks:
 #>   8 insertions, 8 deletions, 7 matches (lines)
@@ -424,7 +453,8 @@ diff_filter
 ```
 
 By combining `.g` and `diff`, it is possible to have a very clear
-overview of what happened to the very first input to the final output.
+overview of what happened to the very first input throughout the
+pipeline. `diff` functionality is provided by the `{diffobj}` package.
 
 ## Thanks
 
@@ -439,4 +469,5 @@ for his help with writing the `%>=%` infix operator,
 for showing me a nice way to catch errors, and finally
 [Mwavu](https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco)
 for pointing me towards the right direction with an issue I’ve had as I
-started working on this package.
+started working on this package. Thanks to
+[Putosaure](https://twitter.com/putosaure) for designing the hex logo.

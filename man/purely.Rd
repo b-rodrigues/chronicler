@@ -9,13 +9,14 @@ purely(.f, strict = 2)
 \arguments{
 \item{.f}{A function to decorate.}
 
-\item{strict}{Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).}
+\item{strict}{Controls if the decorated function should catch only errors (1), errors and
+warnings (2, the default) or errors, warnings and messages (3).}
 }
 \value{
-A function which returns a list. The first element of the list, $value, is the result of
-the original function .f applied to its inputs. The second element, $log is NULL in case everything
-goes well. In case of error/warning/message, $value is NA and $log holds the message.
-purely() is used by record() to allow the latter to handle errors.
+A function which returns a list. The first element of the list, \verb{$value},
+is the result of the original function \code{.f} applied to its inputs. The second element, \verb{$log} is
+\code{NULL} in case everything goes well. In case of error/warning/message, \verb{$value} is NA and \verb{$log}
+holds the message. \code{purely()} is used by \code{record()} to allow the latter to handle errors.
 }
 \description{
 Capture all errors, warnings and messages.
