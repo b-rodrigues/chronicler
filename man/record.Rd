@@ -19,7 +19,7 @@ record(.f, .g = (function(x) NA), strict = 2, diff = "none")
 A function which returns objects of type \code{chronicle}. \code{chronicle} objects carry several
 elements: a \code{value} which is the result of the function evaluated on its inputs and a second
 object called \code{log_df}. \code{log_df} contains logging information, which can be read using
-\code{read_log()}. \code{log_df} is a data frame with columns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
+\code{read.log()}. \code{log_df} is a data frame with columns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
 }
 \description{
 Decorates a function to output objects of type \code{chronicle}.

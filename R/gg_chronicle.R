@@ -127,10 +127,10 @@ document_gg <- function(.c, overwrite_caption = TRUE){
                                   default = maybe::nothing()))$labels$caption
 
   cap <- if(overwrite_caption){
-           paste0(read_log(.c), collapse = "\n")
+           paste0(read.log(.c), collapse = "\n")
          } else {
 
-           paste0(c(.c_caption,  read_log(.c)), collapse = "\n")
+           paste0(c(.c_caption,  read.log(.c)), collapse = "\n")
            }
 
   .c %>+%

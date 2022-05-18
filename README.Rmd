@@ -81,7 +81,7 @@ there's more to it:
 ---------------
 This is an object of type `chronicle`.
 Retrieve the value of this object with pick(.c, "value").
-To read the log of this object, call read_log().
+To read the log of this object, call read.log().
 ```
 
 The value of the `sqrt()` function applied to its arguments can be obtained using `pick()`, as
@@ -91,10 +91,10 @@ explained:
 pick(a, "value")
 ```
 
-A log also gets generated and can be read using `read_log()`:
+A log also gets generated and can be read using `read.log()`:
 
 ```{r}
-read_log(a)
+read.log(a)
 ```
 
 This is especially useful for objects that get created using multiple calls:
@@ -115,7 +115,7 @@ b <- 1:10 |>
 detail in the next section.)
 
 ```{r}
-read_log(b)
+read.log(b)
 
 pick(b, "value")
 ```
@@ -159,7 +159,7 @@ output <- starwars %>%
 ```
 
 ```{r}
-read_log(output)
+read.log(output)
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as explained above:
@@ -194,7 +194,7 @@ By default, errors and warnings get caught and composed in the log:
 ```{r}
 
 errord_output <- starwars %>%
-  r_select(height, mass, species, sex) %>=% 
+  r_select(height, mass, species, sex) %>=%
   r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
   r_filter(sex != "male") %>=%
   r_summarise(mass = mean(mass, na.rm = TRUE))
@@ -208,7 +208,7 @@ errord_output
 Reading the log tells you which function failed, and with which error message:
 
 ```{r}
-read_log(errord_output)
+read.log(errord_output)
 ```
 
 It is also possible to only capture errors, or capture errors, warnings and messages using
@@ -220,14 +220,14 @@ the `strict` parameter of `record()`
 r_sqrt <- record(sqrt, strict = 1)
 
 r_sqrt(-10) |>
-  read_log()
+  read.log()
 
 # Errors and warnings:
 
 r_sqrt <- record(sqrt, strict = 2)
 
 r_sqrt(-10) |>
-  read_log()
+  read.log()
 
 # Errors, warnings and messages
 
@@ -237,7 +237,7 @@ my_f <- function(x){
 }
 
 record(my_f, strict = 3)(10) |>
-                         read_log()
+                         read.log()
 
 ```
 

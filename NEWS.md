@@ -4,6 +4,7 @@
 
 ## New features
 
+* Renamed `read_log()` to `read.log()` to avoid clashing with `readr::read_log()`
 * Possible to log {ggplot2} functions using `ggrecord()`.
 * Possible to save datasets alongside their logs to disk using `write_chronicle()`.
 

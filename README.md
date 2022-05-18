@@ -11,6 +11,14 @@ environment.
 
 ## Installation
 
+The package is available on
+[CRAN](https://cran.r-project.org/web/packages/chronicler/). Install it
+with:
+
+``` r
+install.packages("chronicler")
+```
+
 You can install the development version from
 [GitHub](https://github.com/) with:
 
@@ -54,7 +62,7 @@ a
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
-#> To read the log of this object, call read_log(.c).
+#> To read the log of this object, call read.log(.c).
 ```
 
 `a` is now made up of several parts. The first part:
@@ -72,7 +80,7 @@ it:
     ---------------
     This is an object of type `chronicle`.
     Retrieve the value of this object with pick(.c, "value").
-    To read the log of this object, call read_log().
+    To read the log of this object, call read.log().
 
 The value of the `sqrt()` function applied to its arguments can be
 obtained using `pick()`, as explained:
@@ -82,13 +90,13 @@ pick(a, "value")
 #> [1] 1.000000 1.414214 1.732051 2.000000 2.236068
 ```
 
-A log also gets generated and can be read using `read_log()`:
+A log also gets generated and can be read using `read.log()`:
 
 ``` r
-read_log(a)
+read.log(a)
 #> [1] "Complete log:"                                     
-#> [2] "OK! sqrt() ran successfully at 2022-05-12 13:06:09"
-#> [3] "Total running time: 0.000997066497802734 secs"
+#> [2] "OK! sqrt() ran successfully at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000397682189941406 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -109,12 +117,12 @@ b <- 1:10 |>
 be explained in detail in the next section.)
 
 ``` r
-read_log(b)
+read.log(b)
 #> [1] "Complete log:"                                     
-#> [2] "OK! sqrt() ran successfully at 2022-05-12 13:06:09"
-#> [3] "OK! exp() ran successfully at 2022-05-12 13:06:09" 
-#> [4] "OK! mean() ran successfully at 2022-05-12 13:06:09"
-#> [5] "Total running time: 0.0189518928527832 secs"
+#> [2] "OK! sqrt() ran successfully at 2022-05-18 09:55:20"
+#> [3] "OK! exp() ran successfully at 2022-05-18 09:55:20" 
+#> [4] "OK! mean() ran successfully at 2022-05-18 09:55:20"
+#> [5] "Total running time: 0.0180039405822754 secs"
 
 pick(b, "value")
 #> [1] 11.55345
@@ -169,13 +177,13 @@ output <- starwars %>%
 ```
 
 ``` r
-read_log(output)
+read.log(output)
 #> [1] "Complete log:"                                                                  
-#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-12 13:06:09"    
-#> [3] "OK! group_by(species,sex) ran successfully at 2022-05-12 13:06:09"              
-#> [4] "OK! filter(sex != \"male\") ran successfully at 2022-05-12 13:06:09"            
-#> [5] "OK! summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-12 13:06:09"
-#> [6] "Total running time: 0.15665602684021 secs"
+#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-18 09:55:20"    
+#> [3] "OK! group_by(species,sex) ran successfully at 2022-05-18 09:55:20"              
+#> [4] "OK! filter(sex != \"male\") ran successfully at 2022-05-18 09:55:20"            
+#> [5] "OK! summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-18 09:55:20"
+#> [6] "Total running time: 0.471692562103271 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as
@@ -183,7 +191,7 @@ explained above:
 
 ``` r
 pick(output, "value")
-#> # A tibble: 9 x 3
+#> # A tibble: 9 × 3
 #> # Groups:   species [9]
 #>   species    sex              mass
 #>   <chr>      <chr>           <dbl>
@@ -211,7 +219,7 @@ output_pipe <- starwars %>%
 
 ``` r
 pick(output_pipe, "value")
-#> # A tibble: 9 x 3
+#> # A tibble: 9 × 3
 #> # Groups:   species [9]
 #>   species    sex            mean_mass
 #>   <chr>      <chr>              <dbl>
@@ -235,7 +243,7 @@ By default, errors and warnings get caught and composed in the log:
 
 ``` r
 errord_output <- starwars %>%
-  r_select(height, mass, species, sex) %>=% 
+  r_select(height, mass, species, sex) %>=%
   r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
   r_filter(sex != "male") %>=%
   r_summarise(mass = mean(mass, na.rm = TRUE))
@@ -246,24 +254,23 @@ errord_output
 #> NOK! Value computed unsuccessfully:
 #> ---------------
 #> Nothing
-#> 
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
-#> To read the log of this object, call read_log(.c).
+#> To read the log of this object, call read.log(.c).
 ```
 
 Reading the log tells you which function failed, and with which error
 message:
 
 ``` r
-read_log(errord_output)
+read.log(errord_output)
 #> [1] "Complete log:"                                                                                                                                                       
-#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-12 13:06:09"                                                                                         
-#> [3] "NOK! group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\nx Column `sx` is not found. at 2022-05-12 13:06:09"
-#> [4] "NOK! filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-12 13:06:09"                                           
-#> [5] "NOK! summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-12 13:06:09"                               
-#> [6] "Total running time: 0.0538311004638672 secs"
+#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-18 09:55:20"                                                                                         
+#> [3] "NOK! group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-18 09:55:20"
+#> [4] "NOK! filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-18 09:55:20"                                           
+#> [5] "NOK! summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-18 09:55:20"                               
+#> [6] "Total running time: 0.0587713718414307 secs"
 ```
 
 It is also possible to only capture errors, or capture errors, warnings
@@ -275,21 +282,21 @@ and messages using the `strict` parameter of `record()`
 r_sqrt <- record(sqrt, strict = 1)
 
 r_sqrt(-10) |>
-  read_log()
+  read.log()
 #> Warning in .f(...): NaNs produced
 #> [1] "Complete log:"                                     
-#> [2] "OK! sqrt() ran successfully at 2022-05-12 13:06:10"
-#> [3] "Total running time: 0.000993013381958008 secs"
+#> [2] "OK! sqrt() ran successfully at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000290632247924805 secs"
 
 # Errors and warnings:
 
 r_sqrt <- record(sqrt, strict = 2)
 
 r_sqrt(-10) |>
-  read_log()
+  read.log()
 #> [1] "Complete log:"                                                                                
-#> [2] "NOK! sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-12 13:06:10"
-#> [3] "Total running time: 0.00100207328796387 secs"
+#> [2] "NOK! sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000285863876342773 secs"
 
 # Errors, warnings and messages
 
@@ -299,10 +306,10 @@ my_f <- function(x){
 }
 
 record(my_f, strict = 3)(10) |>
-                         read_log()
+                         read.log()
 #> [1] "Complete log:"                                                                                      
-#> [2] "NOK! my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-12 13:06:10"
-#> [3] "Total running time: 0.000956058502197266 secs"
+#> [2] "NOK! my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-18 09:55:20"
+#> [3] "Total running time: 0.000369071960449219 secs"
 ```
 
 ## Advanced logging
@@ -329,14 +336,14 @@ information:
 
 ``` r
 pick(output_pipe, "log_df")
-#> # A tibble: 4 x 11
+#> # A tibble: 4 × 11
 #>   ops_number outcome     `function` arguments        message start_time         
 #>        <int> <chr>       <chr>      <chr>            <chr>   <dttm>             
-#> 1          1 OK! Success select     "height,mass,sp~ NA      2022-05-12 13:06:10
-#> 2          2 OK! Success group_by   "species,sex"    NA      2022-05-12 13:06:10
-#> 3          3 OK! Success filter     "sex != \"male\~ NA      2022-05-12 13:06:10
-#> 4          4 OK! Success summarise  "mean(mass, na.~ NA      2022-05-12 13:06:10
-#> # ... with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
+#> 1          1 OK! Success select     "height,mass,sp… NA      2022-05-18 09:55:20
+#> 2          2 OK! Success group_by   "species,sex"    NA      2022-05-18 09:55:20
+#> 3          3 OK! Success filter     "sex != \"male\… NA      2022-05-18 09:55:20
+#> 4          4 OK! Success summarise  "mean(mass, na.… NA      2022-05-18 09:55:20
+#> # … with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
 #> #   diff_obj <list>, lag_outcome <chr>
 ```
 
@@ -387,8 +394,8 @@ diff_pipe %>%
 #> < input                                 
 #> > output                                
 #> @@ 1,15 / 1,15 @@                       
-#> < # A tibble: 87 x 4                    
-#> > # A tibble: 23 x 4                    
+#> < # A tibble: 87 × 4                    
+#> > # A tibble: 23 × 4                    
 #> < # Groups:   species, sex [41]         
 #> > # Groups:   species, sex [9]          
 #>      height  mass species sex           
@@ -408,8 +415,8 @@ diff_pipe %>%
 #> < 10    182    77 Human   male          
 #> >  9    163    NA Human   female        
 #> > 10    178    55 Twi'lek female        
-#> < # ... with 77 more rows               
-#> > # ... with 13 more rows
+#> < # … with 77 more rows                 
+#> > # … with 13 more rows
 ```
 
 If you are familiar with the version control software `Git`, you should

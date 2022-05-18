@@ -48,10 +48,10 @@ make_log_df <- function(ops_number = 1,
 #' @return The log of the object.
 #' @examples
 #' \dontrun{
-#' read_log(chronicle_object)
+#' read.log(chronicle_object)
 #' }
 #' @export
-read_log <- function(.c){
+read.log <- function(.c){
 
   log_df <- .c$log_df
 
@@ -143,7 +143,7 @@ print.chronicle <- function(x, ...){
 
   graph_or_value <- ifelse(
     ggplot2::is.ggplot(
-               maybe::from_maybe(x$value)), "Ggplot", "Value")
+               maybe::from_maybe(x$value, default = maybe::nothing())), "Ggplot", "Value")
 
   cat(paste0(success_symbol, " ", graph_or_value, " computed ", succeed, ":\n"))
   cat("---------------\n")
@@ -152,7 +152,7 @@ print.chronicle <- function(x, ...){
   cat("---------------\n")
   cat("This is an object of type `chronicle`.\n")
   cat("Retrieve the value of this object with pick(.c, \"value\").\n")
-  cat("To read the log of this object, call read_log(.c).\n")
+  cat("To read the log of this object, call read.log(.c).\n")
   cat("\n")
 
 }
@@ -251,7 +251,7 @@ purely <- function(.f, strict = 2){
 #' @return A function which returns objects of type `chronicle`. `chronicle` objects carry several
 #' elements: a `value` which is the result of the function evaluated on its inputs and a second
 #' object called `log_df`. `log_df` contains logging information, which can be read using
-#' `read_log()`. `log_df` is a data frame with columns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
+#' `read.log()`. `log_df` is a data frame with columns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.
 #' @details
 #' To chain multiple decorated function, use `bind_record()` or `%>=%`.
 #' If the `diff` parameter is set to "full", `diffobj::diffObj()`
@@ -634,7 +634,7 @@ write_chronicle <- function(.c, path, row.names = FALSE, sep = ",", ...){
 
   stopifnot("write_chronicle() can only save data as either .csv or .xlsx. Change the extension of the output." = (any(c(".csv", ".xlsx") %in% ext)))
 
-  log <- chronicler::read_log(.c)
+  log <- chronicler::read.log(.c)
 
   if(ext == ".csv"){
 

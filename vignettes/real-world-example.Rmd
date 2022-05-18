@@ -87,7 +87,7 @@ avia_monthly
 Now that the data is clean, we can read the log:
 
 ```{r}
-read_log(avia_monthly)
+read.log(avia_monthly)
 ```
 
 This is especially useful if the object `avia_monthly` gets saved using `saveRDS()`. People that
