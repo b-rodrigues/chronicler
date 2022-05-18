@@ -161,6 +161,20 @@ errors_and_warnings <- function(.f, ...){
            )
 }
 
+errors_and_innoffensive_warnings <- function(.f, ...){
+
+  suppressWarnings(
+    rlang::try_fetch(
+             rlang::eval_tidy(.f(...)),
+             error = function(err) err,
+             warning = function(warn, result){
+               list("warn" = warn, "result" = .f(...))
+             }
+           )
+  )
+
+}
+
 errs_warn_mess <- function(.f, ...){
 
   rlang::try_fetch(
@@ -173,7 +187,10 @@ errs_warn_mess <- function(.f, ...){
 
 #' Capture all errors, warnings and messages.
 #' @param .f A function to decorate.
-#' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
+#' @param strict Controls if the decorated function should catch only errors (1),
+#' errors and warnings (2, the default), errors and warnings but not fail (3, for example,
+#' if you wish to catpure warnings announcing that a function will be deprecated or suchlike)
+#' or errors, warnings and messages (4).
 #' @return A function which returns a list. The first element of the list, $value, is the result of
 #' the original function .f applied to its inputs. The second element, $log is NULL in case everything
 #' goes well. In case of error/warning/message, $value is NA and $log holds the message.
@@ -201,6 +218,7 @@ purely <- function(.f, strict = 2){
       res <- switch(strict,
                     only_errors(.f, .value,  ...),
                     errors_and_warnings(.f, .value, ...),
+                    errors_and_innoffensive_warnings(.f, .value, ...){
                     errs_warn_mess(.f, .value, ...))
 
       final_result <- list(
