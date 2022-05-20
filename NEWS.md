@@ -14,6 +14,7 @@
 
 * *Saving 'chronicle' objects to disk*
 * *Creating self-documenting ggplots*
+* *How to write safer programs*
 
 # chronicler 0.2.0
 
