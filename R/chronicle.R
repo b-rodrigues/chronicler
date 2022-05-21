@@ -161,50 +161,64 @@ only_errors <- function(.f, ...){
 
   rlang::try_fetch(
            rlang::eval_tidy(.f(...)),
-           error = function(err) err,
-           )
-
+           error = function(err){
+             list("cnd" = err, "result" = maybe::nothing())
+           }
+         )
 }
 
 errors_and_warnings <- function(.f, ...){
 
   rlang::try_fetch(
            rlang::eval_tidy(.f(...)),
-           error = function(err) err,
-           warning = function(warn) warn,
-           )
-}
-
-errors_and_inoffensive_warnings <- function(.f, ...){
-
-  suppressWarnings(
-    rlang::try_fetch(
-             rlang::eval_tidy(.f(...)),
-             error = function(err) err,
-             warning = function(warn, result){
-               list("warn" = warn, "result" = .f(...))
-             }
-           )
-  )
-
+           error = function(err){
+             list("cnd" = err, "result" = maybe::nothing())
+           },
+           warning = function(warn){
+             list("cnd" = warn, "result" = maybe::nothing())
+           }
+         )
 }
 
 errs_warn_mess <- function(.f, ...){
 
   rlang::try_fetch(
            rlang::eval_tidy(.f(...)),
-           error = function(err) err,
-           warning = function(warn) warn,
-           message = function(message) message,
+           error = function(err){
+             list("cnd" = err, "result" = maybe::nothing())
+           },
+           warning = function(warn){
+             list("cnd" = warn, "result" = maybe::nothing())
+           },
+           message = function(msg){
+             list("cnd" = msg, "result" = maybe::nothing())
+           }
            )
+}
+
+errors_and_inoffensive_cnds <- function(.f, ...){
+
+    rlang::try_fetch(
+             rlang::eval_tidy(.f(...)),
+             error = function(err){
+               list("cnd" = err, "result" = maybe::nothing())
+             },
+             warning = function(warn){
+               list("cnd" = warn, "result" = .f(...))
+             },
+             message = function(msg){
+               list("cnd" = msg, "result" = .f(...))
+             }
+  )
+
 }
 
 #' Capture all errors, warnings and messages.
 #' @param .f A function to decorate.
 #' @param strict Controls if the decorated function should catch only errors (1),
-#' errors and warnings (2, the default), errors and warnings but not fail (3, for example,
-#' if you wish to catpure warnings announcing that a function will be deprecated or suchlike)
-#' or errors, warnings and messages (4).
+#' errors and warnings (2, the default) or errors, warnings and messages (3),
+#' errors, warnings and message but not fail (4, for example, if you wish to capture
+#' warnings announcing that a function will be deprecated or suchlike).
 #' @return A function which returns a list. The first element of the list, $value, is the result of
 #' the original function .f applied to its inputs. The second element, $log is NULL in case everything
 #' goes well. In case of error/warning/message, $value is NA and $log holds the message.
@@ -232,23 +246,33 @@ purely <- function(.f, strict = 2){
       res <- switch(strict,
                     only_errors(.f, .value,  ...),
                     errors_and_warnings(.f, .value, ...),
-                    errors_and_inoffensive_warnings(.f, .value, ...),
-                    errs_warn_mess(.f, .value, ...))
+                    errs_warn_mess(.f, .value, ...),
+                    errors_and_inoffensive_cnds(.f, .value, ...)
+                    )
 
-      final_result <- list(
-        value = NULL,
-        log_df = NULL
-      )
+      if(length(res) == 2){
+        final_result <- list(
+          value = res$result,
+          log_df = res$cnd
+        )
+      } else {
 
-      final_result$value <- dplyr::case_when(
-           strict == 3 & "warning" %in% class(res$result) ~ maybe::just(res$result),
-           any(c("error", "warning", "message") %in% class(res)) ~ maybe::nothing(),
-           TRUE ~ maybe::just(res))
+        final_result <- list(
+          value = res,
+          log_df = NA)
 
-      final_result$log_df <- dplyr::case_when(
-           strict == 3 & "warning" %in% class(res$result) ~ rlang::cnd_message(res$warn),
-           any(c("error", "warning", "message") %in% class(res)) ~ rlang::cnd_message(res),
-           TRUE ~ NA)
+      }
+
+
+      #final_result$value <- dplyr::case_when(
+      #     strict == 3 & "warning" %in% class(res$result) ~ maybe::just(res$result),
+      #     any(c("error", "warning", "message") %in% class(res)) ~ maybe::nothing(),
+      #     TRUE ~ maybe::just(res))
+
+      #final_result$log_df <- dplyr::case_when(
+      #     strict == 3 & "warning" %in% class(res$result) ~ rlang::cnd_message(res$warn),
+      #     any(c("error", "warning", "message") %in% class(res)) ~ rlang::cnd_message(res),
+      #     TRUE ~ NA)
 
     }
 
