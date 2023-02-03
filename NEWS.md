@@ -1,5 +1,11 @@
 # chronicler
 
+# chronicler 0.2.1
+
+## Maintenance release
+
+Compatibility with dplyr 1.1.0
+
 # chronicler 0.2.0
 
 ## New features

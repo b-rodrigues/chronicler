@@ -1,4 +1,27 @@
-## Resubmission
+# Submission of version 0.2.1
+
+Minor update, to take dplyr v 1.1.0.
+
+Running checks on Rhub resulted in one note, but I believe it's not 
+relevant for releasing on CRAN.
+
+## Test environments
+
+## R CMD check results
+
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
+
+
+> On windows-x86_64-devel (r-devel)
+  checking for detritus in the temp directory ... NOTE
+  Found the following files/directories:
+    'lastMiKTeXException'
+
+0 errors v | 0 warnings v | 1 notes x
+
+# Resubmission
 This is a resubmission. In this version I have:
 
 * Responded to comments by Gregor Seyer by adding \value tags to:
