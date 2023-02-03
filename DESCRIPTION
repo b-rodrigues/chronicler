@@ -1,6 +1,6 @@
 Package: chronicler
 Title: Add Logging to Functions
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689"))
@@ -11,7 +11,7 @@ Description: Decorate functions to make them return enhanced output. The enhance
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 BugReports: https://github.com/b-rodrigues/chronicler/issues
 Depends:
     R (>= 4.0),
