@@ -8,3 +8,4 @@
 ^LICENSE
 cran-comments.md
 pkgdown/
+^CRAN-SUBMISSION$

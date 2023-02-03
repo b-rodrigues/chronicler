@@ -4,7 +4,8 @@
 
 ## Maintenance release
 
-Compatibility with dplyr 1.1.0
+* Compatibility with dplyr 1.1.0
+* Changed link to canonical link in the Readme.md
 
 # chronicler 0.2.0
 

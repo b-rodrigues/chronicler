@@ -1,9 +1,11 @@
 # Submission of version 0.2.1
 
-Minor update, to take dplyr v 1.1.0.
+Minor update, to take dplyr v 1.1.0 into account.
 
-Running checks on Rhub resulted in one note, but I believe it's not 
+Running checks on Rhub resulted in two note, but I believe it's not 
 relevant for releasing on CRAN.
+
+Changed url to canonical form in Readme.md.
 
 ## Test environments
 
@@ -18,8 +20,11 @@ relevant for releasing on CRAN.
   checking for detritus in the temp directory ... NOTE
   Found the following files/directories:
     'lastMiKTeXException'
+    
+> fedora-clang-devel (r-devel)
+  checking HTML version of manual ... NOTE
+  Skipping checking HTML validation: no command 'tidy' found
 
-0 errors v | 0 warnings v | 1 notes x
 
 # Resubmission
 This is a resubmission. In this version I have:

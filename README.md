@@ -12,7 +12,7 @@ environment.
 ## Installation
 
 The package is available on
-[CRAN](https://cran.r-project.org/web/packages/chronicler/). Install it
+[CRAN](https://CRAN.R-project.org/package=chronicler). Install it
 with:
 
 ``` r
