@@ -616,7 +616,6 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 ggplot_fun <- function(ggplot_call) {
   ggplot_obj <- eval_tidy(ggplot_call)
   ggplot_build(ggplot_obj)
-  ggplot_obj
 }
 
 #' Record ggplot
