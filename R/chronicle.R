@@ -598,22 +598,24 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 
 }
 
-#' Helper function for record_ggplot
+#' Helper function for record_ggplot()
 #'
 #' @details
-#' ggplot_fun takes a ggplot_call (an unevaluated ggplot expression) as input
+#' ggplot_fun() takes a ggplot_call (an unevaluated ggplot expression) as input
 #' and does the following steps:
 #' 1. Evaluates the ggplot_call using rlang::eval_tidy
 #' 2. Builds the ggplot object using ggplot2::ggplot_build
 #' 3. Returns the ggplot object
 #' @param ggplot_call An unevaluated ggplot expression.
 #' @return A ggplot object.
+#' @importFrom rlang eval_tidy
+#' @importFrom ggplot2 ggplot_build
 #' @examples
 #' # This function is not meant to be used directly by the user.
 #' # Instead, use record_ggplot function.
 ggplot_fun <- function(ggplot_call) {
-  ggplot_obj <- rlang::eval_tidy(ggplot_call)
-  ggplot2::ggplot_build(ggplot_obj)
+  ggplot_obj <- eval_tidy(ggplot_call)
+  ggplot_build(ggplot_obj)
   ggplot_obj
 }
 
