@@ -96,17 +96,6 @@ test_that("record_ggplot produces the same output as the original expression", {
   # Record the ggplot expression and store the chronicle object
   gg_chronicle <- record_ggplot(gg_expr)
   
-  # Create a temporary directory to store the plots
-  temp_dir <- tempdir()
-  
-  # Save the original ggplot to a file
-  orig_plot_file <- file.path(temp_dir, "orig_plot.rds")
-  saveRDS(gg_expr, orig_plot_file)
-  
-  # Save the chronicle ggplot to a file
-  chronicle_plot_file <- file.path(temp_dir, "chronicle_plot.rds")
-  saveRDS(pick(gg_chronicle, "value"), chronicle_plot_file)
-  
   # Render the original ggplot
   orig_plot <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
   orig_plot_file <- tempfile(fileext = ".png")
