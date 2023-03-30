@@ -22,7 +22,8 @@ Imports:
     maybe,
     rlang,
     stringr,
-    tibble
+    tibble,
+    ggplot
 Suggests: 
     knitr,
     lubridate,
