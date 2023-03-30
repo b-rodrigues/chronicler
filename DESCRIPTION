@@ -23,7 +23,7 @@ Imports:
     rlang,
     stringr,
     tibble,
-    ggplot
+    ggplot2
 Suggests: 
     knitr,
     lubridate,
