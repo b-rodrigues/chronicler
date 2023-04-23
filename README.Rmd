@@ -142,6 +142,7 @@ into your text editor. The gif below illustrates how `record_many()` works:
 
 ```{r}
 library(dplyr)
+library(ggplot2)
 
 r_group_by <- record(group_by)
 r_select <- record(select)
@@ -338,7 +339,35 @@ By combining `.g` and `diff`, it is possible to have a very clear overview of wh
 first input throughout the pipeline.
 `diff` functionality is provided by the `{diffobj}` package.
 
+## Recording ggplot
+This package provides a `record()` implementation for `{ggplot2}` called `record_ggplot()`. It is a separate function for two main reasons: 
 
+* ggplot specifications are composed of multiple function calls.
+* ggplot specifications are lazily evaluated, meaning that errors aren't thrown immediately. For example:
+
+```{r}
+# Notice the double "g" in "mpgg" 
+plot_1 <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg))
+# The error is not thrown here due to ggplot's lazy evaluation
+```
+
+The error will only be thrown when you force evaluation, for example by printing `plot_1`.
+
+The function `record_ggplot()` takes the ggplot specification as the first argument. It can also take the `strict` argument mentioned above. 
+
+```{r}
+r_plot_1 <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
+```
+
+The output of this function is the same as for `record()`:
+
+```{r}
+pick(r_plot_1, "value")
+```
+
+```{r}
+read_log(r_plot_1)
+```
 
 ## Thanks
 
