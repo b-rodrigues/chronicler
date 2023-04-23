@@ -95,8 +95,8 @@ A log also gets generated and can be read using `read_log()`:
 ``` r
 read_log(a)
 #> [1] "Complete log:"                                     
-#> [2] "OK! sqrt() ran successfully at 2022-05-18 10:33:06"
-#> [3] "Total running time: 0.000387907028198242 secs"
+#> [2] "OK! sqrt() ran successfully at 2023-04-23 14:45:24"
+#> [3] "Total running time: 0.000359058380126953 secs"
 ```
 
 This is especially useful for objects that get created using multiple
@@ -119,10 +119,10 @@ be explained in detail in the next section.)
 ``` r
 read_log(b)
 #> [1] "Complete log:"                                     
-#> [2] "OK! sqrt() ran successfully at 2022-05-18 10:33:06"
-#> [3] "OK! exp() ran successfully at 2022-05-18 10:33:06" 
-#> [4] "OK! mean() ran successfully at 2022-05-18 10:33:06"
-#> [5] "Total running time: 0.0220048427581787 secs"
+#> [2] "OK! sqrt() ran successfully at 2023-04-23 14:45:24"
+#> [3] "OK! exp() ran successfully at 2023-04-23 14:45:24" 
+#> [4] "OK! mean() ran successfully at 2023-04-23 14:45:24"
+#> [5] "Total running time: 0.0229091644287109 secs"
 
 pick(b, "value")
 #> [1] 11.55345
@@ -153,14 +153,7 @@ to the next:
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
+library(ggplot2)
 
 r_group_by <- record(group_by)
 r_select <- record(select)
@@ -179,11 +172,11 @@ output <- starwars %>%
 ``` r
 read_log(output)
 #> [1] "Complete log:"                                                                  
-#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-18 10:33:06"    
-#> [3] "OK! group_by(species,sex) ran successfully at 2022-05-18 10:33:06"              
-#> [4] "OK! filter(sex != \"male\") ran successfully at 2022-05-18 10:33:06"            
-#> [5] "OK! summarise(mean(mass, na.rm = TRUE)) ran successfully at 2022-05-18 10:33:06"
-#> [6] "Total running time: 0.124835014343262 secs"
+#> [2] "OK! select(height,mass,species,sex) ran successfully at 2023-04-23 14:45:24"    
+#> [3] "OK! group_by(species,sex) ran successfully at 2023-04-23 14:45:24"              
+#> [4] "OK! filter(sex != \"male\") ran successfully at 2023-04-23 14:45:24"            
+#> [5] "OK! summarise(mean(mass, na.rm = TRUE)) ran successfully at 2023-04-23 14:45:24"
+#> [6] "Total running time: 0.0944859981536865 secs"
 ```
 
 The value can then be accessed and worked on as usual using `pick()`, as
@@ -242,6 +235,7 @@ Using the `%>=%` is not recommended in non-interactive sessions and
 By default, errors and warnings get caught and composed in the log:
 
 ``` r
+
 errord_output <- starwars %>%
   r_select(height, mass, species, sex) %>=% 
   r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
@@ -254,6 +248,7 @@ errord_output
 #> NOK! Value computed unsuccessfully:
 #> ---------------
 #> Nothing
+#> 
 #> ---------------
 #> This is an object of type `chronicle`.
 #> Retrieve the value of this object with pick(.c, "value").
@@ -266,11 +261,11 @@ message:
 ``` r
 read_log(errord_output)
 #> [1] "Complete log:"                                                                                                                                                       
-#> [2] "OK! select(height,mass,species,sex) ran successfully at 2022-05-18 10:33:06"                                                                                         
-#> [3] "NOK! group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2022-05-18 10:33:06"
-#> [4] "NOK! filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-18 10:33:06"                                           
-#> [5] "NOK! summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2022-05-18 10:33:06"                               
-#> [6] "Total running time: 0.0504987239837646 secs"
+#> [2] "OK! select(height,mass,species,sex) ran successfully at 2023-04-23 14:45:24"                                                                                         
+#> [3] "NOK! group_by(species,sx) ran unsuccessfully with following exception: Must group by variables found in `.data`.\n✖ Column `sx` is not found. at 2023-04-23 14:45:24"
+#> [4] "NOK! filter(sex != \"male\") ran unsuccessfully with following exception: Pipeline failed upstream at 2023-04-23 14:45:24"                                           
+#> [5] "NOK! summarise(mean(mass, na.rm = TRUE)) ran unsuccessfully with following exception: Pipeline failed upstream at 2023-04-23 14:45:24"                               
+#> [6] "Total running time: 0.216241836547852 secs"
 ```
 
 It is also possible to only capture errors, or capture errors, warnings
@@ -285,8 +280,8 @@ r_sqrt(-10) |>
   read_log()
 #> Warning in .f(...): NaNs produced
 #> [1] "Complete log:"                                     
-#> [2] "OK! sqrt() ran successfully at 2022-05-18 10:33:06"
-#> [3] "Total running time: 0.0002899169921875 secs"
+#> [2] "OK! sqrt() ran successfully at 2023-04-23 14:45:24"
+#> [3] "Total running time: 0.000522136688232422 secs"
 
 # Errors and warnings:
 
@@ -295,8 +290,8 @@ r_sqrt <- record(sqrt, strict = 2)
 r_sqrt(-10) |>
   read_log()
 #> [1] "Complete log:"                                                                                
-#> [2] "NOK! sqrt() ran unsuccessfully with following exception: NaNs produced at 2022-05-18 10:33:06"
-#> [3] "Total running time: 0.000281810760498047 secs"
+#> [2] "NOK! sqrt() ran unsuccessfully with following exception: NaNs produced at 2023-04-23 14:45:24"
+#> [3] "Total running time: 0.00027012825012207 secs"
 
 # Errors, warnings and messages
 
@@ -308,8 +303,8 @@ my_f <- function(x){
 record(my_f, strict = 3)(10) |>
                          read_log()
 #> [1] "Complete log:"                                                                                      
-#> [2] "NOK! my_f() ran unsuccessfully with following exception: this is a message\n at 2022-05-18 10:33:06"
-#> [3] "Total running time: 0.00035405158996582 secs"
+#> [2] "NOK! my_f() ran unsuccessfully with following exception: this is a message\n at 2023-04-23 14:45:24"
+#> [3] "Total running time: 0.000407934188842773 secs"
 ```
 
 ## Advanced logging
@@ -339,11 +334,11 @@ pick(output_pipe, "log_df")
 #> # A tibble: 4 × 11
 #>   ops_number outcome     `function` arguments        message start_time         
 #>        <int> <chr>       <chr>      <chr>            <chr>   <dttm>             
-#> 1          1 OK! Success select     "height,mass,sp… NA      2022-05-18 10:33:06
-#> 2          2 OK! Success group_by   "species,sex"    NA      2022-05-18 10:33:06
-#> 3          3 OK! Success filter     "sex != \"male\… NA      2022-05-18 10:33:06
-#> 4          4 OK! Success summarise  "mean(mass, na.… NA      2022-05-18 10:33:06
-#> # … with 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
+#> 1          1 OK! Success select     "height,mass,sp… NA      2023-04-23 14:45:24
+#> 2          2 OK! Success group_by   "species,sex"    NA      2023-04-23 14:45:24
+#> 3          3 OK! Success filter     "sex != \"male\… NA      2023-04-23 14:45:24
+#> 4          4 OK! Success summarise  "mean(mass, na.… NA      2023-04-23 14:45:24
+#> # ℹ 5 more variables: end_time <dttm>, run_time <drtn>, g <list>,
 #> #   diff_obj <list>, lag_outcome <chr>
 ```
 
@@ -415,8 +410,8 @@ diff_pipe %>%
 #> < 10    182    77 Human   male          
 #> >  9    163    NA Human   female        
 #> > 10    178    55 Twi'lek female        
-#> < # … with 77 more rows                 
-#> > # … with 13 more rows
+#> < # ℹ 77 more rows                      
+#> > # ℹ 13 more rows
 ```
 
 If you are familiar with the version control software `Git`, you should
@@ -455,6 +450,46 @@ diff_pipe %>%
 By combining `.g` and `diff`, it is possible to have a very clear
 overview of what happened to the very first input throughout the
 pipeline. `diff` functionality is provided by the `{diffobj}` package.
+
+## Recording ggplot
+
+This package provides a `record()` implementation for `{ggplot2}` called
+`record_ggplot()`. It is a separate function for two main reasons:
+
+- ggplot specifications are composed of multiple function calls.
+- ggplot specifications are lazily evaluated, meaning that errors aren’t
+  thrown immediately. For example:
+
+``` r
+# Notice the double "g" in "mpgg" 
+plot_1 <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg))
+# The error is not thrown here due to ggplot's lazy evaluation
+```
+
+The error will only be thrown when you force evaluation, for example by
+printing `plot_1`.
+
+The function `record_ggplot()` takes the ggplot specification as the
+first argument. It can also take the `strict` argument mentioned above.
+
+``` r
+r_plot_1 <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
+```
+
+The output of this function is the same as for `record()`:
+
+``` r
+pick(r_plot_1, "value")
+```
+
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
+
+``` r
+read_log(r_plot_1)
+#> [1] "Complete log:"                                           
+#> [2] "OK! ggplot_fun() ran successfully at 2023-04-23 14:45:26"
+#> [3] "Total running time: 0.0395100116729736 secs"
+```
 
 ## Thanks
 
