@@ -4,7 +4,7 @@ library(ggplot2)
 test_that("record_ggplot returns a chronicle object", {
 
   # Define the ggplot expression
-  gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
+  gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot expression and store the chronicle object
   gg_chronicle <- record_ggplot(gg_expr)
@@ -17,7 +17,7 @@ test_that("record_ggplot returns a chronicle object", {
 test_that("the chronicle object produced by record_ggplot contains a ggplot object", {
 
   # Define the ggplot expression
-  gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
+  gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot expression and store the chronicle object
   gg_chronicle <- record_ggplot(gg_expr)
@@ -32,7 +32,7 @@ test_that("the chronicle object produced by record_ggplot contains a ggplot obje
 # Test 3: Verify that record_ggplot returns expected ggplot "recipe"
 test_that("record_ggplot returns expected ggplot recipe", {
   # Create a ggplot expression
-  gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
+  gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot using record_ggplot function
   gg_chronicle <- record_ggplot(gg_expr)
@@ -56,7 +56,7 @@ test_that("record_ggplot returns expected ggplot recipe", {
 test_that("record_ggplot returns expected ggplot recipe", {
 
   # Define the ggplot expression
-  gg_expr <- ggplot(data = mtcars) +
+  gg_expr <<- ggplot(data = mtcars) +
     geom_point(aes(y = hp, x = mpg)) +
     scale_x_continuous(name = "Miles per gallon") +
     scale_y_continuous(name = "Horsepower") +
@@ -93,7 +93,7 @@ test_that("record_ggplot returns expected ggplot recipe", {
 test_that("record_ggplot produces the same output as the original expression", {
 
   # Define the ggplot expression
-  gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
+  gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot expression and store the chronicle object
   gg_chronicle <- record_ggplot(gg_expr)
@@ -111,3 +111,4 @@ test_that("record_ggplot produces the same output as the original expression", {
   # Verify that the rendered plots are identical
   expect_identical(readBin(orig_plot_file, what = "raw"), readBin(chronicle_plot_file, what = "raw"))
 })
+
