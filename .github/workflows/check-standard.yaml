@@ -44,6 +44,9 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - name: Install ggplot2
+        run: Rscript -e 'install.packages("ggplot2")'
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true

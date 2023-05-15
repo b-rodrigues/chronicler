@@ -609,7 +609,7 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 #' @param ggplot_call An unevaluated ggplot expression.
 #' @return A ggplot object.
 #' @importFrom rlang eval_tidy
-#' @importFrom ggplot2 ggplot_build geom_point aes ggplot
+#' @importFrom ggplot2 ggplot_build
 #' @examples
 #' # This function is not meant to be used directly by the user.
 #' # Instead, use record_ggplot function.
