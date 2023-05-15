@@ -41,7 +41,9 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, ggplot2
+          extra-packages: |
+            any::ggplot2
+            any::rcmdcheck
           needs: check
 
       # - name: Install ggplot2
