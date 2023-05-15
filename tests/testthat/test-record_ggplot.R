@@ -4,6 +4,11 @@ library(ggplot2)
 test_that("record_ggplot returns a chronicle object", {
 
   # Define the ggplot expression
+  # We use global assignment (<<-) due to environment handling by 'testthat' and 'chronicler'
+  # 'testthat' creates a new environment for each test. However, when we pass 'gg_expr' to 'record_ggplot',
+  # it's passed as an unevaluated expression. This expression is then evaluated within 'ggplot_fun' (in 'chronicler' package environment),
+  # where 'gg_expr' doesn't exist. Using global assignment ensures 'gg_expr' exists in all parent environments,
+  # hence accessible by 'ggplot_fun' when it tries to evaluate the expression. This won't be an issue for users running the code outside 'testthat'.
   gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot expression and store the chronicle object
@@ -17,6 +22,7 @@ test_that("record_ggplot returns a chronicle object", {
 test_that("the chronicle object produced by record_ggplot contains a ggplot object", {
 
   # Define the ggplot expression
+  # Global assignment explained in Test 1
   gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot expression and store the chronicle object
@@ -31,7 +37,9 @@ test_that("the chronicle object produced by record_ggplot contains a ggplot obje
 
 # Test 3: Verify that record_ggplot returns expected ggplot "recipe"
 test_that("record_ggplot returns expected ggplot recipe", {
+
   # Create a ggplot expression
+  # Global assignment explained in Test 1
   gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot using record_ggplot function
@@ -56,6 +64,7 @@ test_that("record_ggplot returns expected ggplot recipe", {
 test_that("record_ggplot returns expected ggplot recipe", {
 
   # Define the ggplot expression
+  # Global assignment explained in Test 1
   gg_expr <<- ggplot(data = mtcars) +
     geom_point(aes(y = hp, x = mpg)) +
     scale_x_continuous(name = "Miles per gallon") +
@@ -93,6 +102,7 @@ test_that("record_ggplot returns expected ggplot recipe", {
 test_that("record_ggplot produces the same output as the original expression", {
 
   # Define the ggplot expression
+  # Global assignment explained in Test 1
   gg_expr <<- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
   # Record the ggplot expression and store the chronicle object
