@@ -614,9 +614,11 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 #' # This function is not meant to be used directly by the user.
 #' # Instead, use record_ggplot function.
 ggplot_fun <- function(ggplot_expression) {
+
   ggplot_obj <- eval_tidy(ggplot_expression)
   ggplot_build(ggplot_obj)
   return(ggplot_obj)
+
 }
 
 #' Record ggplot
@@ -631,6 +633,7 @@ ggplot_fun <- function(ggplot_expression) {
 #' @param strict An optional integer argument controlling the behavior of the record() function from chronicler. Default is 2.
 #' @return A chronicler object.
 #' @examples
+#' \dontrun{
 #' library(ggplot2)
 #' # Unsuccessful example
 #' x <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg)))
@@ -639,10 +642,12 @@ ggplot_fun <- function(ggplot_expression) {
 #' # Successful example
 #' z <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
 #' print(z)
+#' }
 #' @export
 record_ggplot <- function(ggplot_expression, strict = 2) {
 
   r_ggplot_fun <- record(ggplot_fun, strict = strict)
   r_ggplot_fun(ggplot_expression)
+
 }
 
