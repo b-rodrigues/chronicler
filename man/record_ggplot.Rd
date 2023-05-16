@@ -15,18 +15,16 @@ record_ggplot(ggplot_expression, strict = 2)
 A chronicler object.
 }
 \description{
-Record ggplot
-}
-\details{
 record_ggplot takes a ggplot_expression and an optional strict argument as input and does the following steps:
 \enumerate{
-\item Captures the unevaluated ggplot_expression using substitute
 \item Records the ggplot_fun function with the given strict argument using the record function from chronicler
-\item Passes the captured ggplot_call to the recorded ggplot_fun function
+\item Passes the ggplot_expression to the recorded ggplot_fun function
 \item Returns the result of the recorded ggplot_fun function
 }
 }
 \examples{
+\dontrun{
+library(ggplot2)
 # Unsuccessful example
 x <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg)))
 print(x)
@@ -34,4 +32,5 @@ print(x)
 # Successful example
 z <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
 print(z)
+}
 }

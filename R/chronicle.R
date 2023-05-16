@@ -600,37 +600,42 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 
 #' Helper function for record_ggplot()
 #'
-#' @details
-#' ggplot_fun() takes a ggplot_call (an unevaluated ggplot expression) as input
+#' @description
+#' ggplot_fun() takes a ggplot_expression (an unevaluated ggplot expression) as input
 #' and does the following steps:
-#' 1. Evaluates the ggplot_call using rlang::eval_tidy
+#' 1. Evaluates the ggplot_expression using rlang::eval_tidy
 #' 2. Builds the ggplot object using ggplot2::ggplot_build
 #' 3. Returns the ggplot object
-#' @param ggplot_call An unevaluated ggplot expression.
+#' @param ggplot_expression An unevaluated ggplot expression.
 #' @return A ggplot object.
 #' @importFrom rlang eval_tidy
 #' @importFrom ggplot2 ggplot_build
 #' @examples
+#' \dontrun{
 #' # This function is not meant to be used directly by the user.
 #' # Instead, use record_ggplot function.
-ggplot_fun <- function(ggplot_call) {
-  ggplot_obj <- eval_tidy(ggplot_call)
+#' }
+ggplot_fun <- function(ggplot_expression) {
+
+  ggplot_obj <- eval_tidy(ggplot_expression)
   ggplot_build(ggplot_obj)
   return(ggplot_obj)
+
 }
 
 #' Record ggplot
 #'
-#' @details
+#' @description
 #' record_ggplot takes a ggplot_expression and an optional strict argument as input and does the following steps:
-#' 1. Captures the unevaluated ggplot_expression using substitute
-#' 2. Records the ggplot_fun function with the given strict argument using the record function from chronicler
-#' 3. Passes the captured ggplot_call to the recorded ggplot_fun function
-#' 4. Returns the result of the recorded ggplot_fun function
+#' 1. Records the ggplot_fun function with the given strict argument using the record function from chronicler
+#' 2. Passes the ggplot_expression to the recorded ggplot_fun function
+#' 3. Returns the result of the recorded ggplot_fun function
 #' @param ggplot_expression A ggplot expression.
 #' @param strict An optional integer argument controlling the behavior of the record() function from chronicler. Default is 2.
 #' @return A chronicler object.
 #' @examples
+#' \dontrun{
+#' library(ggplot2)
 #' # Unsuccessful example
 #' x <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg)))
 #' print(x)
@@ -638,10 +643,12 @@ ggplot_fun <- function(ggplot_call) {
 #' # Successful example
 #' z <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
 #' print(z)
+#' }
 #' @export
 record_ggplot <- function(ggplot_expression, strict = 2) {
-  ggplot_call <- substitute(ggplot_expression)
+
   r_ggplot_fun <- record(ggplot_fun, strict = strict)
-  r_ggplot_fun(ggplot_call)
+  r_ggplot_fun(ggplot_expression)
+
 }
 
