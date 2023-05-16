@@ -631,6 +631,7 @@ ggplot_fun <- function(ggplot_expression) {
 #' @param strict An optional integer argument controlling the behavior of the record() function from chronicler. Default is 2.
 #' @return A chronicler object.
 #' @examples
+#' library(ggplot2)
 #' # Unsuccessful example
 #' x <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg)))
 #' print(x)
