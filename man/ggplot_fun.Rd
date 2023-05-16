@@ -4,27 +4,26 @@
 \alias{ggplot_fun}
 \title{Helper function for record_ggplot()}
 \usage{
-ggplot_fun(ggplot_call)
+ggplot_fun(ggplot_expression)
 }
 \arguments{
-\item{ggplot_call}{An unevaluated ggplot expression.}
+\item{ggplot_expression}{An unevaluated ggplot expression.}
 }
 \value{
 A ggplot object.
 }
 \description{
-Helper function for record_ggplot()
-}
-\details{
-ggplot_fun() takes a ggplot_call (an unevaluated ggplot expression) as input
+ggplot_fun() takes a ggplot_expression (an unevaluated ggplot expression) as input
 and does the following steps:
 \enumerate{
-\item Evaluates the ggplot_call using rlang::eval_tidy
+\item Evaluates the ggplot_expression using rlang::eval_tidy
 \item Builds the ggplot object using ggplot2::ggplot_build
 \item Returns the ggplot object
 }
 }
 \examples{
+\dontrun{
 # This function is not meant to be used directly by the user.
 # Instead, use record_ggplot function.
+}
 }
