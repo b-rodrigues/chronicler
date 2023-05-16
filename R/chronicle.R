@@ -614,8 +614,7 @@ check_diff <- function(.c, columns = c("ops_number", "function")){
 #' # This function is not meant to be used directly by the user.
 #' # Instead, use record_ggplot function.
 ggplot_fun <- function(ggplot_expression) {
-  ggplot_call <- substitute(ggplot_expression)
-  ggplot_obj <- eval_tidy(ggplot_call)
+  ggplot_obj <- eval_tidy(ggplot_expression)
   ggplot_build(ggplot_obj)
   return(ggplot_obj)
 }
@@ -641,7 +640,7 @@ ggplot_fun <- function(ggplot_expression) {
 #' print(z)
 #' @export
 record_ggplot <- function(ggplot_expression, strict = 2) {
-  # ggplot_call <- substitute(ggplot_expression)
+
   r_ggplot_fun <- record(ggplot_fun, strict = strict)
   r_ggplot_fun(ggplot_expression)
 }
