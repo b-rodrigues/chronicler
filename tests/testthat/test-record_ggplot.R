@@ -1,4 +1,5 @@
 library(ggplot2)
+# trigger rerun
 
 # Test 1: Verify that record_ggplot returns a chronicle object
 test_that("record_ggplot returns a chronicle object", {
