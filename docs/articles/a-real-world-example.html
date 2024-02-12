@@ -125,41 +125,64 @@ improve logging, I add the <code><a href="https://rdrr.io/r/base/dim.html" class
 possible to see how the dimensions of the data change inside the
 pipeline:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Define required functions </span></span>
+<code class="sourceCode R"><span><span class="co"># Define required functions</span></span>
 <span><span class="co"># You can use `record_many()` to avoid having to write everything</span></span>
 <span></span>
 <span><span class="va">r_select</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">select</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span>
 <span><span class="va">r_pivot_longer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">pivot_longer</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span>
 <span><span class="va">r_filter</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">filter</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span>
-<span><span class="va">r_mutate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">mutate</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span>
 <span><span class="va">r_separate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">separate</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span>
 <span><span class="va">r_group_by</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">group_by</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span>
 <span><span class="va">r_summarise</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">summarise</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span></code></pre></div>
+<p>We can now start by preparing the data:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avia_clean</span> <span class="op">&lt;-</span> <span class="va">avia</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">r_select</span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">contains</a></span><span class="op">(</span><span class="st">"20"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># select the first column and every column starting with 20</span></span>
-<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_pivot_longer</span>, <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"unit"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"date"</span>, values_to <span class="op">=</span> <span class="st">"passengers"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_pivot_longer</span>,</span>
+<span>              <span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"freq"</span><span class="op">)</span>,</span>
+<span>              names_to <span class="op">=</span> <span class="st">"date"</span>,</span>
+<span>              values_to <span class="op">=</span> <span class="st">"passengers"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_separate</span>,</span>
 <span>              col <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>              into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"unit"</span>, <span class="st">"tra_meas"</span>, <span class="st">"air_pr\\time"</span><span class="op">)</span>,</span>
+<span>              into <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"freq"</span>, <span class="st">"unit"</span>, <span class="st">"tra_meas"</span>, <span class="st">"air_pr\\time"</span><span class="op">)</span>,</span>
 <span>              sep <span class="op">=</span> <span class="st">","</span><span class="op">)</span></span></code></pre></div>
-<p>Let’s focus on monthly data:</p>
+<p>Let’s take a look at the data:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">avia_monthly</span> <span class="op">&lt;-</span> <span class="va">avia_clean</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_filter</span>,</span>
-<span>              <span class="va">tra_meas</span> <span class="op">==</span> <span class="st">"PAS_BRD_ARR"</span>,</span>
-<span>              <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">passengers</span><span class="op">)</span>,</span>
-<span>              <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">date</span>, <span class="st">"M"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_mutate</span>,</span>
-<span>              date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">date</span>, <span class="st">"01"</span><span class="op">)</span>,</span>
-<span>              date <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_select</span>,</span>
-<span>              destination <span class="op">=</span> <span class="st">"air_pr\\time"</span>, <span class="va">date</span>, <span class="va">passengers</span><span class="op">)</span></span></code></pre></div>
-<p><code>avia_monthly</code> is an object of class
-<code>chronicle</code>, but in essence, it is just a list, with its own
-print method:</p>
+<code class="sourceCode R"><span><span class="va">avia_clean</span></span>
+<span><span class="co">#&gt; OK! Value computed successfully:</span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; Just</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 464,616 × 6</span></span></span>
+<span><span class="co">#&gt;    freq  unit   tra_meas `air_pr\\time`  date    passengers</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2000    :         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2001    :         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2002    :         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2003    :         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2004    :         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005    :         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-01 143       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-02 134       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-03 154       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-04 142       </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 464,606 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
+<p>The passengers column contains <code>":"</code> characters instead of
+<code>NA</code>s, and it’s a character column. Let’s convert this column
+to numbers:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">avia_monthly</span></span>
+<code class="sourceCode R"><span><span class="va">r_mutate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">mutate</span>, .g <span class="op">=</span> <span class="va">dim</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">avia_clean2</span> <span class="op">&lt;-</span> <span class="va">avia_clean</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_mutate</span>,</span>
+<span>              passengers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">passengers</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Let’s look at the data:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avia_clean2</span></span>
 <span><span class="co">#&gt; NOK! Value computed unsuccessfully:</span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; Nothing</span></span>
@@ -168,45 +191,189 @@ print method:</p>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
 <span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
+<p>What happened? Let’s read the log to find out!</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_clean2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                                                                                                                                                       </span></span>
+<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2024-02-12 21:06:59.346958"                                                                                                                                                                                                                                       </span></span>
+<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2024-02-12 21:06:59.346865"                                                                                                                                                                                                             </span></span>
+<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2024-02-12 21:06:59.346518"                                                                                                                                                                                            </span></span>
+<span><span class="co">#&gt; [5] "NOK! mutate(as.numeric(passengers)) ran unsuccessfully with following exception: \033[1m\033[22mThere was 1 warning in `.f()`.\n\033[1m\033[22m\033[36mℹ\033[39m In argument: `passengers = as.numeric(passengers)`.\nCaused by warning:\n\033[33m!\033[39m NAs introduced by coercion at 2024-02-12 21:07:06.081974"</span></span>
+<span><span class="co">#&gt; [6] "Total running time: 7.11056327819824 secs"</span></span></code></pre></div>
+<p>So what happened is that <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code> introduced
+<code>NA</code>s by coercion. This is what happens when trying to
+convert a character to a number, for example
+<code>as.numeric(":")</code> will result in an <code>NA</code>. Because
+<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> was recorded with the default value for its
+<code>strict</code> argument (which is <code>2</code>), warnings get
+promoted to errors. This can be quite useful to avoid problems with
+silent conversions. But in this case, we want to ignore the warning:
+let’s record <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> with <code>strict = 1</code>, so that
+only errors can stop the pipeline:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">r_mutate_lenient</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">mutate</span>, .g <span class="op">=</span> <span class="va">dim</span>, strict <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">avia_clean2</span> <span class="op">&lt;-</span> <span class="va">avia_clean</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_mutate_lenient</span>,</span>
+<span>              passengers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">passengers</span><span class="op">)</span></span>
+<span>              <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: There was 1 warning in `.f()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `passengers = as.numeric(passengers)`.</span></span>
+<span><span class="co">#&gt; Caused by warning:</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> NAs introduced by coercion</span></span></code></pre></div>
+<p>As you can see, the warnings get printed, they’re not captured. We
+can now take a look at the data and see that <code>":"</code> characters
+where successfully replaced by <code>NA</code>s:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avia_clean2</span></span>
+<span><span class="co">#&gt; OK! Value computed successfully:</span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; Just</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 464,616 × 6</span></span></span>
+<span><span class="co">#&gt;    freq  unit   tra_meas `air_pr\\time`  date    passengers</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2000            <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2001            <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2002            <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2003            <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2004            <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005            <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-01        143</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-02        134</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-03        154</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> M     FLIGHT CAF_PAS  LU_ELLX_AT_LOWW 2005-04        142</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 464,606 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
+<p>Let’s continue and focus on monthly data:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avia_monthly</span> <span class="op">&lt;-</span> <span class="va">avia_clean2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_filter</span>,</span>
+<span>              <span class="va">freq</span> <span class="op">==</span> <span class="st">"M"</span>,</span>
+<span>              <span class="va">tra_meas</span> <span class="op">==</span> <span class="st">"PAS_BRD_ARR"</span>,</span>
+<span>              <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">passengers</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_mutate</span>,</span>
+<span>              date <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">date</span>, <span class="st">"01"</span><span class="op">)</span>,</span>
+<span>              date <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_select</span>,</span>
+<span>              destination <span class="op">=</span> <span class="st">"air_pr\\time"</span>, <span class="va">date</span>, <span class="va">passengers</span><span class="op">)</span></span></code></pre></div>
+<p>To make sure I only have monthly data, I can count the values of the
+<code>date</code> column using <code><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">dplyr::count()</a></code>. But because
+<code>avia_monthly</code> is not a data frame, but a
+<code>chronicle</code> I need to <code><a href="../reference/record.html">record()</a></code> the
+<code><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">dplyr::count()</a></code> function. But because I only need it this
+once, I could instead use <code><a href="../reference/fmap_record.html">fmap_record()</a></code>, which makes it
+possible to apply an undecorated function to a <code>chronicle</code>
+object:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fmap_record.html">fmap_record</a></span><span class="op">(</span><span class="va">avia_monthly</span>, <span class="va">count</span>, <span class="va">date</span><span class="op">)</span></span>
+<span><span class="co">#&gt; OK! Value computed successfully:</span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; Just</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 226 × 2</span></span></span>
+<span><span class="co">#&gt;    date           n</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 2005-01-01    23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 2005-02-01    23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 2005-03-01    23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 2005-04-01    24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 2005-05-01    24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2005-06-01    24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2005-07-01    24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2005-08-01    24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2005-09-01    24</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2005-10-01    24</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 216 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
+<p><code>avia_monthly</code> is an object of class
+<code>chronicle</code>, but in essence, it is just a list, with its own
+print method:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">avia_monthly</span></span>
+<span><span class="co">#&gt; OK! Value computed successfully:</span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; Just</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,643 × 3</span></span></span>
+<span><span class="co">#&gt;    destination     date       passengers</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> LU_ELLX_AT_LOWW 2005-01-01       <span style="text-decoration: underline;">1</span>758</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> LU_ELLX_AT_LOWW 2005-02-01       <span style="text-decoration: underline;">1</span>843</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> LU_ELLX_AT_LOWW 2005-03-01       <span style="text-decoration: underline;">2</span>129</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> LU_ELLX_AT_LOWW 2005-04-01       <span style="text-decoration: underline;">2</span>332</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> LU_ELLX_AT_LOWW 2005-05-01       <span style="text-decoration: underline;">2</span>402</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> LU_ELLX_AT_LOWW 2005-06-01       <span style="text-decoration: underline;">2</span>475</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> LU_ELLX_AT_LOWW 2005-07-01       <span style="text-decoration: underline;">2</span>082</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> LU_ELLX_AT_LOWW 2005-08-01       <span style="text-decoration: underline;">2</span>175</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> LU_ELLX_AT_LOWW 2005-09-01       <span style="text-decoration: underline;">2</span>288</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> LU_ELLX_AT_LOWW 2005-10-01       <span style="text-decoration: underline;">2</span>296</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6,633 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ---------------</span></span>
+<span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p>Now that the data is clean, we can read the log:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                                                                                                                                                                                    </span></span>
-<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2024-02-12 17:46:10.449248"                                                                                                                                                                                                                                                                    </span></span>
-<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"unit\"),date,passengers) ran successfully at 2024-02-12 17:46:10.44915"                                                                                                                                                                                                                                           </span></span>
-<span><span class="co">#&gt; [4] "NOK! separate(1,c(\"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran unsuccessfully with following exception: \033[1m\033[22mExpected 3 pieces. Additional pieces discarded in 2171 rows [1, 326, 651, 976,\n1301, 1626, 1951, 2276, 2601, 2926, 3251, 3576, 3901, 4226, 4551, 4876, 5201,\n5526, 5851, 6176, ...]. at 2024-02-12 17:46:10.448774"</span></span>
-<span><span class="co">#&gt; [5] "NOK! filter(tra_meas == \"PAS_BRD_ARR\",!is.na(passengers),str_detect(date, \"M\")) ran unsuccessfully with following exception: Pipeline failed upstream at 2024-02-12 17:46:15.919986"                                                                                                                                                          </span></span>
-<span><span class="co">#&gt; [6] "NOK! mutate(paste0(date, \"01\"),ymd(date)) ran unsuccessfully with following exception: Pipeline failed upstream at 2024-02-12 17:46:15.919882"                                                                                                                                                                                                  </span></span>
-<span><span class="co">#&gt; [7] "NOK! select(air_pr\\time,date,passengers) ran unsuccessfully with following exception: Pipeline failed upstream at 2024-02-12 17:46:15.919766"                                                                                                                                                                                                    </span></span>
-<span><span class="co">#&gt; [8] "Total running time: 5.62695646286011 secs"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Complete log:"                                                                                                           </span></span>
+<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2024-02-12 21:06:59.346958"                                           </span></span>
+<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2024-02-12 21:06:59.346865"                 </span></span>
+<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2024-02-12 21:06:59.346518"</span></span>
+<span><span class="co">#&gt; [5] "OK! mutate(as.numeric(passengers)) ran successfully at 2024-02-12 21:07:06.676081"                                       </span></span>
+<span><span class="co">#&gt; [6] "OK! filter(freq == \"M\",tra_meas == \"PAS_BRD_ARR\",!is.na(passengers)) ran successfully at 2024-02-12 21:07:06.940474" </span></span>
+<span><span class="co">#&gt; [7] "OK! mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2024-02-12 21:07:06.940378"                               </span></span>
+<span><span class="co">#&gt; [8] "OK! select(air_pr\\time,date,passengers) ran successfully at 2024-02-12 21:07:06.940263"                                 </span></span>
+<span><span class="co">#&gt; [9] "Total running time: 6.89280724525452 secs"</span></span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code>
-gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People that then read this
+gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People can then read this
 object, can read the log to know what happened and reproduce the steps
 if necessary.</p>
 <p>Let’s take a look at the final data set:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avia_monthly</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/pick.html">pick</a></span><span class="op">(</span><span class="st">"value"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Nothing</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,643 × 3</span></span></span>
+<span><span class="co">#&gt;    destination     date       passengers</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> LU_ELLX_AT_LOWW 2005-01-01       <span style="text-decoration: underline;">1</span>758</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> LU_ELLX_AT_LOWW 2005-02-01       <span style="text-decoration: underline;">1</span>843</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> LU_ELLX_AT_LOWW 2005-03-01       <span style="text-decoration: underline;">2</span>129</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> LU_ELLX_AT_LOWW 2005-04-01       <span style="text-decoration: underline;">2</span>332</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> LU_ELLX_AT_LOWW 2005-05-01       <span style="text-decoration: underline;">2</span>402</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> LU_ELLX_AT_LOWW 2005-06-01       <span style="text-decoration: underline;">2</span>475</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> LU_ELLX_AT_LOWW 2005-07-01       <span style="text-decoration: underline;">2</span>082</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> LU_ELLX_AT_LOWW 2005-08-01       <span style="text-decoration: underline;">2</span>175</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> LU_ELLX_AT_LOWW 2005-09-01       <span style="text-decoration: underline;">2</span>288</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> LU_ELLX_AT_LOWW 2005-10-01       <span style="text-decoration: underline;">2</span>296</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6,633 more rows</span></span></span></code></pre></div>
 <p>It is also possible to take a look at the underlying
 <code>.log_df</code> object that contains more details, and see the
 output of the <code>.g</code> argument (which was defined in the
 beginning as the <code><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim()</a></code> function):</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/check_g.html">check_g</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   ops_number     function         g</span></span>
-<span><span class="co">#&gt; 1          1       select 2171, 325</span></span>
-<span><span class="co">#&gt; 2          2 pivot_longer 705575, 2</span></span>
-<span><span class="co">#&gt; 3          3     separate      NULL</span></span>
-<span><span class="co">#&gt; 4          4       filter      NULL</span></span>
-<span><span class="co">#&gt; 5          5       mutate      NULL</span></span>
-<span><span class="co">#&gt; 6          6       select      NULL</span></span></code></pre></div>
-<p>After <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> the data has 509 rows and 231 columns,
-after the call to <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer()</a></code> 117070 rows and 3 columns,
-<code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code> adds two columns, after <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>
-only 7632 rows remain (<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> does not change the
-dimensions) and then <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> is used to remove 2
-columns.</p>
+<span><span class="co">#&gt; 1          1       select 1434, 325</span></span>
+<span><span class="co">#&gt; 2          2 pivot_longer 464616, 3</span></span>
+<span><span class="co">#&gt; 3          3     separate 464616, 6</span></span>
+<span><span class="co">#&gt; 4          4       mutate 464616, 6</span></span>
+<span><span class="co">#&gt; 5          5       filter   6643, 6</span></span>
+<span><span class="co">#&gt; 6          6       mutate   6643, 6</span></span>
+<span><span class="co">#&gt; 7          7       select   6643, 3</span></span></code></pre></div>
+<p>After <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> the data has <code>hu[[1]][1]</code> rows
+and <code>hu[[1]][2]</code> columns, after the call to
+<code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer()</a></code>, <code>hu[[2]][1]</code> rows and
+<code>hu[[2]][2]</code> columns, <code><a href="https://tidyr.tidyverse.org/reference/separate.html" class="external-link">separate()</a></code> adds three
+columns, after <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code> only <code>hu[[5]][1]</code> rows
+remain (<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> does not change the dimensions) and then
+<code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code> is used to remove three columns.</p>
   </main>
 </div>
 

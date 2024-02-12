@@ -23,8 +23,8 @@ library(chronicler)
 This vignette is only needed for the developers of `{chronicler}`.
 
 
-```{r}
+```{r eval = F}
 avia <- readr::read_tsv("https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/avia_par_lu?format=tsv&compressed=false") %>%
-  filter(!grepl("^A", "freq,unit,tra_meas,airp_pr\\TIME_PERIOD"))
+  filter(!grepl("^A.*", `freq,unit,tra_meas,airp_pr\\TIME_PERIOD`))
 ```
 

@@ -21,6 +21,7 @@ Imports:
     clipr,
     diffobj,
     dplyr,
+    ggplot2,
     maybe,
     rlang,
     stringr,
@@ -30,7 +31,6 @@ Suggests:
     knitr,
     lubridate,
     purrr,
-    readr,
     rmarkdown,
     testthat (>= 3.0.0),
     tidyr
