@@ -10,3 +10,5 @@ cran-comments.md
 pkgdown/
 ^CRAN-SUBMISSION$
 ^\.github$
+^dev$
+^\.here$

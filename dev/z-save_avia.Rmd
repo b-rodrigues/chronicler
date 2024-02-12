@@ -1,0 +1,13 @@
+---
+title: "Developer Vignette: Including the avia data to the package"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+This vignette is only needed for the developers of `{chronicler}`.
+
+```{r, eval = F}
+avia <- readr::read_tsv("~/Downloads/avia_par_lu.tsv") %>%
+  as_tibble()
+```
