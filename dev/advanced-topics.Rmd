@@ -1,20 +1,10 @@
 ---
 title: "A non-mathematician's introduction to monads"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{A non-mathematician's introduction to monads}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
-```{r setup, include = FALSE}
+```{r include = FALSE}
 library(chronicler)
 library(testthat)
 ```

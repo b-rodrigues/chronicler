@@ -14,3 +14,4 @@ pkgdown/
 ^\.here$
 ^LICENSE\.md$
 ^codecov\.yml$
+^codemeta\.json$

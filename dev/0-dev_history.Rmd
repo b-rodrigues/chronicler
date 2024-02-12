@@ -29,13 +29,14 @@ fusen::fill_description(
     Version = "0.2.1.9999",
 
     `Authors@R` = c(
-    person(given = "Bruno", family = "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
+    person(given = "Bruno", family = "Rodrigues", email = "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689")),
-    person(given = "Matouš", family = "Eibich", "matous.eibich@seznam.cz", role = "ctb")
+    person(given = "Matouš", family = "Eibich", email = "matous.eibich@seznam.cz", role = "ctb")
      )
-    )
-  )
+  ),
+  overwrite = TRUE
 )
+
 # Define License with use_*_license()
 usethis::use_gpl3_license()
 ```
@@ -106,8 +107,9 @@ usethis::use_github()
 usethis::use_github_action_check_standard()
 usethis::use_github_action("pkgdown")
 usethis::use_github_action("test-coverage")
-# _GitLab
-gitlabr::use_gitlab_ci(type = "check-coverage-pkgdown")
+
+# Unit tests
+usethis::use_testthat()
 ```
 
 ```{r development-inflate, eval=FALSE}
@@ -115,12 +117,13 @@ gitlabr::use_gitlab_ci(type = "check-coverage-pkgdown")
 # Execute in the console directly
 fusen::inflate(flat_file = "dev/z-save_avia.Rmd",
                vignette_name = "Developer Vignette: Including the avia data to the package",
-               overwrite = TRUE)
+               overwrite = TRUE,
+               check = FALSE)
 ```
 
 ```{r}
 local({
-  knitr::knit("vignettes/z-developers-vignette-including-the-avia-data-to-the-package.Rmd",
+  knitr::knit("vignettes/developer-vignette-including-the-avia-data-to-the-package.Rmd",
               output = tempfile())
   usethis::use_data(avia,
                     overwrite = TRUE)
@@ -129,27 +132,65 @@ local({
 ```
 
 ```{r}
-fusen::inflate(flat_file = "dev/flat_data_doc.Rmd",
-               vignette_name = NA,
-               overwrite = TRUE)
+fusen::inflate(
+         flat_file = "dev/flat_data_doc.Rmd",
+         vignette_name = NA,
+         overwrite = TRUE,
+         check = FALSE
+       )
 ```
 
 ```{r}
-fusen::inflate(flat_file = "dev/flat_chronicle.Rmd",
-               vignette_name = NA,
-               overwrite = TRUE)
+fusen::inflate(
+         flat_file = "dev/flat_pipe.Rmd",
+         vignette_name = NA,
+         overwrite = TRUE,
+         check = FALSE
+       )
 ```
 
 ```{r}
-fusen::inflate(flat_file = "dev/flat_ggplot.Rmd",
-               vignette_name = NA,
-               overwrite = TRUE)
+fusen::inflate(
+         flat_file = "dev/flat_chronicle.Rmd",
+         vignette_name = NA,
+         overwrite = TRUE,
+         check = FALSE
+       )
+```
+
+```{r}
+fusen::inflate(
+         flat_file = "dev/flat_purely.Rmd",
+         vignette_name = NA,
+         overwrite = TRUE,
+         check = FALSE
+       )
+```
+
+```{r}
+fusen::inflate(
+         flat_file = "dev/flat_ggplot.Rmd",
+         vignette_name = NA,
+         overwrite = TRUE,
+         check = FALSE
+       )
+```
+
+```{r}
+fusen::inflate(
+         flat_file = "dev/flat_bind_fmap.Rmd",
+         vignette_name = NA,
+         overwrite = TRUE,
+         check = FALSE
+       )
 ```
 
 ```{r}
 fusen::inflate(flat_file = "dev/flat_zzz.Rmd",
                vignette_name = NA,
-               overwrite = TRUE)
+               overwrite = TRUE,
+               check = FALSE
+       )
 ```
 
 # Vignettes for users
@@ -157,19 +198,25 @@ fusen::inflate(flat_file = "dev/flat_zzz.Rmd",
 ```{r}
 fusen::inflate(flat_file = "dev/maybe-monad.Rmd",
                vignette_name = "The Maybe monad",
-               overwrite = TRUE)
+               overwrite = TRUE,
+               check = FALSE
+               )
 ```
 
 ```{r}
-fusen::inflate(flat_file = "dev/advanced-topics",
+fusen::inflate(flat_file = "dev/advanced-topics.Rmd",
                vignette_name = "A non-mathematician's introduction to monads",
-               overwrite = TRUE)
+               overwrite = TRUE,
+               check = FALSE
+               )
 ```
 
 ```{r}
-fusen::inflate(flat_file = "dev/read-world-example",
+fusen::inflate(flat_file = "dev/real-world-example.Rmd",
                vignette_name = "A real world example",
-               overwrite = TRUE)
+               overwrite = TRUE,
+               check = FALSE
+               )
 ```
 
 

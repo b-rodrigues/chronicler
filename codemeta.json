@@ -1,0 +1,64 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "identifier": "chronicler",
+  "description": "Decorate functions to make them return enhanced output. The enhanced output consists in an object of type 'chronicle' containing the result of the function applied to its arguments, as well as a log detailing when the function was run, what were its inputs, what were the errors (if the function failed to run) and other useful information. Tools to handle decorated functions are included, such as a forward pipe operator that makes chaining decorated functions possible.",
+  "name": "chronicler: Add Logging To Functions",
+  "license": "https://spdx.org/licenses/GPL-3.0",
+  "version": "0.2.1.9999",
+  "programmingLanguage": {
+    "@type": "ComputerLanguage",
+    "name": "R",
+    "url": "https://r-project.org"
+  },
+  "runtimePlatform": "R version 4.3.2 (2023-10-31)",
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Bruno",
+      "familyName": "Rodrigues",
+      "email": "bruno@brodrigues.co",
+      "@id": "https://orcid.org/0000-0002-3211-3689"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Matouš",
+      "familyName": "Eibich",
+      "email": "matous.eibich@seznam.cz"
+    }
+  ],
+  "copyrightHolder": [
+    {
+      "@type": "Person",
+      "givenName": "Bruno",
+      "familyName": "Rodrigues",
+      "email": "bruno@brodrigues.co",
+      "@id": "https://orcid.org/0000-0002-3211-3689"
+    }
+  ],
+  "maintainer": [
+    {
+      "@type": "Person",
+      "givenName": "Bruno",
+      "familyName": "Rodrigues",
+      "email": "bruno@brodrigues.co",
+      "@id": "https://orcid.org/0000-0002-3211-3689"
+    }
+  ],
+  "softwareRequirements": {
+    "SystemRequirements": null
+  },
+  "fileSize": "277.443KB",
+  "codeRepository": "https://github.com/b-rodrigues/chronicler",
+  "releaseNotes": "https://github.com/b-rodrigues/chronicler/blob/master/NEWS.md",
+  "readme": "https://github.com/b-rodrigues/chronicler/blob/master/README.md",
+  "contIntegration": ["https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/b-rodrigues/chronicler?branch=master"]
+}

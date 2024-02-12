@@ -13,364 +13,7 @@ library(testthat)
  You need to run the 'description' chunk in the '0-dev_history.Rmd' file before continuing your code there.
 -->
 
-```{r development-load}
-# Load already included functions if relevant
-pkgload::load_all(export_all = FALSE)
-```
-
-# make_log_df
-
-
-```{r function-make_log_df}
-#' Creates the log_df element of a chronicle object.
-#' @param ops_number Tracks the number of the operation in a chain of operations.
-#' @param success Did the operation succeed?
-#' @param fstring The function call.
-#' @param args The arguments of the call.
-#' @param res_pure The result of the purely call.
-#' @param start Starting time.
-#' @param end Ending time.
-#' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
-#' @param diff_obj Optional. Output of the `diff` parameter in `record()`.
-#' @importFrom tibble tibble
-#' @importFrom maybe from_maybe nothing
-#' @return A tibble containing the log.
-make_log_df <- function(ops_number = 1,
-                        success,
-                        fstring,
-                        args,
-                        res_pure,
-                        start = Sys.time(),
-                        end = Sys.time(),
-                        .g = (\(x) NA),
-                        diff_obj = NULL){
-
-  outcome <- ifelse(success == 1,
-                    "OK! Success",
-                    "NOK! Caution - ERROR")
-
-  tibble::tibble(
-            "ops_number" = ops_number,
-            "outcome" = outcome,
-            "function" = fstring,
-            "arguments" = args,
-            "message" = paste0(res_pure$log_df, collapse = " "),
-            "start_time" = start,
-            "end_time" = end,
-            "run_time" = end - start,
-            "g" = list(.g(maybe::from_maybe(res_pure$value,
-                                            default = maybe::nothing()))),
-            "diff_obj" = list(diff_obj),
-            "lag_outcome" = NA
-          )
-
-}
-```
-
-# read_log
-
-```{r function-read_log}
-#' Reads the log of a chronicle.
-#' @param .c A chronicle object.
-#' @return The log of the object.
-#' @examples
-#' \dontrun{
-#' read_log(chronicle_object)
-#' }
-#' @export
-read_log <- function(.c){
-
-  log_df <- .c$log_df
-
-  make_func_call <- function(log_df, i){
-
-    paste0(paste0(log_df[i, c("function", "arguments")],
-                  collapse = "("),
-           ")")
-
-  }
-
-  is_success <- function(log_df, i){
-
-    ifelse(grepl("Success", log_df$outcome[i]),
-           "successfully",
-           paste0("unsuccessfully with following exception: ", log_df$message[i]))
-
-  }
-
-  success_symbol <- function(log_df, i){
-
-    ifelse(grepl("Success", log_df$outcome[i]),
-           "OK!",
-           "NOK!")
-
-  }
-
-  make_sentence <- function(log_df, i){
-
-    paste(success_symbol(log_df, i),
-          make_func_call(log_df, i),
-          "ran",
-          is_success(log_df, i),
-          "at",
-          log_df$start_time[i])
-
-  }
-
-  total_runtime <- function(log_df){
-
-    total_time <- log_df$run_time
-
-    unit <- attr(total_time, "units")
-
-    paste(as.numeric(sum(log_df$run_time)), unit)
-
-  }
-
-
-  sentences <- vector(length = nrow(log_df))
-
-  for(i in 1:nrow(log_df)){
-
-  sentences[i] <-  make_sentence(log_df, i)
-
-  }
-
-  c("Complete log:", sentences, paste("Total running time:", total_runtime(log_df)))
-
-}
-
-```
-
-# print.chronicle
-
-```{r function-print_chronicle}
-#' Print method for chronicle objects.
-#' @param x A chronicle object.
-#' @param ... Unused.
-#' @return No return value, called for side effects (printing the object on screen).
-#' @details
-#' `chronicle` object are, at their core, lists with the following elements:
-#' * "$value": a an object of type `maybe` containing the result of the computation (see the "Maybe monad" vignette for more details on `maybe`s).
-#' * "$log_df": a `data.frame` object containing the printed object’s log information.
-#'
-#' `print.chronicle()` prints the object on screen and shows:
-#' * the value using its `print()` method (for example, if the value is a data.frame, `print.data.frame()` will be used)
-#' * a message indicating to the user how to recuperate the value inside the `chronicle` object and how to read the object’s log
-#' @export
-print.chronicle <- function(x, ...){
-
-  if(all(grepl("Success", x$log_df$outcome))){
-
-    succeed <- "successfully"
-    success_symbol <- "OK!"
-
-  } else {
-
-    succeed <- "unsuccessfully"
-    success_symbol <- "NOK!"
-
-  }
-
-  cat(paste0(success_symbol, " Value computed ", succeed, ":\n"))
-  cat("---------------\n")
-  print(x$value, ...)
-  cat("\n")
-  cat("---------------\n")
-  cat("This is an object of type `chronicle`.\n")
-  cat("Retrieve the value of this object with pick(.c, \"value\").\n")
-  cat("To read the log of this object, call read_log(.c).\n")
-  cat("\n")
-
-}
-```
-
-# purely
-
-```{r function-purely}
-#' Capture all errors, warnings and messages.
-#' @param .f A function to decorate.
-#' @param strict Controls if the decorated function should catch only errors (1), errors and
-#'   warnings (2, the default) or errors, warnings and messages (3).
-#' @return A function which returns a list. The first element of the list, `$value`,
-#' is the result of the original function `.f` applied to its inputs. The second element, `$log` is
-#' `NULL` in case everything goes well. In case of error/warning/message, `$value` is NA and `$log`
-#' holds the message. `purely()` is used by `record()` to allow the latter to handle errors.
-#' @importFrom rlang try_fetch eval_tidy cnd_message
-#' @importFrom maybe just nothing is_nothing
-#' @examples
-#' purely(log)(10)
-#' purely(log)(-10)
-#' purely(log, strict = 1)(-10) # This produces a warning, so with strict = 1 nothing gets captured.
-#' @export
-purely <- function(.f, strict = 2){
-
-  function(.value, ..., .log_df = "Log start..."){
-
-    if(maybe::is_nothing(.value)){
-
-      final_result <- list(
-        value = maybe::nothing(),
-        log_df = "A `Nothing` was given as input."
-      )
-
-    } else {
-
-      res <- switch(strict,
-                    only_errors(.f, .value,  ...),
-                    errors_and_warnings(.f, .value, ...),
-                    errs_warn_mess(.f, .value, ...))
-
-      final_result <- list(
-        value = NULL,
-        log_df = NULL
-      )
-
-      final_result$value <- if(any(c("error", "warning", "message") %in% class(res))){
-                              maybe::nothing()
-                            } else {
-                              maybe::just(res)
-                            }
-
-      final_result$log_df <- if(any(c("error", "warning", "message") %in% class(res))){
-                               rlang::cnd_message(res)
-                             } else {
-                               NA
-                             }
-
-
-    }
-
-    final_result
-
-  }
-}
-
-
-
-#' @noRd
-only_errors <- function(.f, ...){
-
-  rlang::try_fetch(
-           rlang::eval_tidy(.f(...)),
-           error = function(err) err,
-           )
-
-}
-
-#' @noRd
-errors_and_warnings <- function(.f, ...){
-
-  rlang::try_fetch(
-           rlang::eval_tidy(.f(...)),
-           error = function(err) err,
-           warning = function(warn) warn,
-           )
-}
-
-#' @noRd
-errs_warn_mess <- function(.f, ...){
-
-  rlang::try_fetch(
-           rlang::eval_tidy(.f(...)),
-           error = function(err) err,
-           warning = function(warn) warn,
-           message = function(message) message,
-           )
-}
-```
-
-```{r tests-purely}
-test_that("purely decorated function provides correct result", {
-  expect_equal((purely(log)(10))$value, maybe::just(log(10)))
-})
-
-
-test_that("purely decorated function provides right result", {
-  expect_equal((purely(log)(seq(1, 10)))$value, maybe::just(log(seq(1, 10))))
-})
-
-test_that("purely decorated function provides NA if problem", {
-  expect_equal((purely(log)(-10))$value, maybe::nothing())
-})
-
-test_that("purely decorated function log", {
-  expect_type((purely(log)(-10))$log_df, "character")
-})
-
-test_that("compose purely decorated functions", {
-
-  pure_sqrt <- purely(sqrt)
-  pure_mean <- purely(mean)
-  pure_exp <- purely(exp)
-
-  result_pipe <- 1:10 |>
-    pure_sqrt() %>=%
-    pure_exp() %>=%
-    pure_mean()
-
-  expect_equal(result_pipe$value, maybe::just(mean(exp(sqrt(1:10)))))
-
-})
-
-
-test_that("compose purely decorated dplyr functions on data.frame", {
-
-  pure_select <- purely(dplyr::select)
-  pure_filter <- purely(dplyr::filter)
-  pure_summarise <- purely(dplyr::summarise)
-
-  result_pure <- mtcars |>
-    pure_select(am, starts_with("c")) %>=%
-    pure_filter(am == 1) %>=%
-    pure_summarise(mean_cyl = mean(cyl))
-
-  result_impure <- mtcars |>
-    dplyr::select(am, starts_with("c")) |>
-    dplyr::filter(am == 1) |>
-    dplyr::summarise(mean_cyl = mean(cyl))
-
-  expect_equal(result_pure$value, maybe::just(result_impure))
-
-})
-
-
-test_that("compose purely decorated dplyr functions on tibbles", {
-
-  pure_select <- purely(dplyr::select)
-  pure_filter <- purely(dplyr::filter)
-  pure_summarise <- purely(dplyr::summarise)
-
-  result_pure <- mtcars |>
-    tibble::as_tibble() |>
-    pure_select(am, starts_with("c")) %>=%
-    pure_filter(am == 1) %>=%
-    pure_summarise(mean_cyl = mean(cyl))
-
-  result_impure <- mtcars |>
-    tibble::as_tibble() |>
-    dplyr::select(am, starts_with("c")) |>
-    dplyr::filter(am == 1) |>
-    dplyr::summarise(mean_cyl = mean(cyl))
-
-  expect_equal(result_pure$value, maybe::just(result_impure))
-
-})
-
-
-test_that("test group_by", {
-
-  pure_group_by <- purely(dplyr::group_by)
-
-  expect_equal(maybe::just(dplyr::group_by(mtcars, carb)), pure_group_by(mtcars, carb)$value)
-
-})
-```
-
-# record
-
-
-```
+```{r function-record}
 #' Decorates a function to output objects of type `chronicle`.
 #' @param .f A function to decorate.
 #' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
@@ -560,78 +203,173 @@ record_many <- function(list_funcs, .g = (function(x) NA), strict = 2, diff = "n
 
 ```
 
-```{r function-bind_record}
-#' Evaluate a decorated function; used to chain multiple decorated functions.
-#' @param .c A chronicle object.
-#' @param .f A chronicle function to apply to the returning value of .c.
-#' @param ... Further parameters to pass to .f.
-#' @return A chronicle object.
+
+```{r function-make_log_df}
+#' Creates the log_df element of a chronicle object.
+#' @param ops_number Tracks the number of the operation in a chain of operations.
+#' @param success Did the operation succeed?
+#' @param fstring The function call.
+#' @param args The arguments of the call.
+#' @param res_pure The result of the purely call.
+#' @param start Starting time.
+#' @param end Ending time.
+#' @param .g Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
+#' @param diff_obj Optional. Output of the `diff` parameter in `record()`.
+#' @importFrom tibble tibble
 #' @importFrom maybe from_maybe nothing
-#' @examples
-#' r_sqrt <- record(sqrt)
-#' r_exp <- record(exp)
-#' 3 |> r_sqrt() |> bind_record(r_exp)
-#' @export
-bind_record <- function(.c, .f, ...){
+#' @return A tibble containing the log.
+make_log_df <- function(ops_number = 1,
+                        success,
+                        fstring,
+                        args,
+                        res_pure,
+                        start = Sys.time(),
+                        end = Sys.time(),
+                        .g = (\(x) NA),
+                        diff_obj = NULL){
 
-  .f(maybe::from_maybe(.c$value, default = maybe::nothing()), ..., .log_df = .c$log_df)
+  outcome <- ifelse(success == 1,
+                    "OK! Success",
+                    "NOK! Caution - ERROR")
+
+  tibble::tibble(
+            "ops_number" = ops_number,
+            "outcome" = outcome,
+            "function" = fstring,
+            "arguments" = args,
+            "message" = paste0(res_pure$log_df, collapse = " "),
+            "start_time" = start,
+            "end_time" = end,
+            "run_time" = end - start,
+            "g" = list(.g(maybe::from_maybe(res_pure$value,
+                                            default = maybe::nothing()))),
+            "diff_obj" = list(diff_obj),
+            "lag_outcome" = NA
+          )
 
 }
 ```
 
-```{r function-flatten_record}
-#' Flatten nested chronicle objects
-#' @param .c A nested chronicle object, where the $value element is itself a chronicle object
-#' @return Returns `.c` where value is the actual value, and logs are concatenated.
-#' @export
-#' @examples
-#' r_sqrt <- record(sqrt)
-#' r_log <- record(log)
-#' a <- as_chronicle(r_log(10))
-#' a
-#' flatten_record(a)
-flatten_record <- function(.c){
 
-  list(value = .c$value$content$value,
-       log_df = dplyr::bind_rows(.c$value$log_df,
-                                 .c$log_df)) |>
-    structure(class = "chronicle")
-
-}
-```
-
-```{r function-fmap_record}
-#' Evaluate a non-chronicle function on a chronicle object.
+```{r function-read_log}
+#' Reads the log of a chronicle.
 #' @param .c A chronicle object.
-#' @param .f A non-chronicle function.
-#' @param ... Further parameters to pass to `.f`.
-#' @importFrom maybe fmap
-#' @importFrom dplyr bind_rows
-#' @return Returns the result of `.f(.c$value)` as a new chronicle object.
+#' @return The log of the object.
 #' @examples
-#' as_chronicle(3) |> fmap_record(sqrt)
+#' \dontrun{
+#' read_log(chronicle_object)
+#' }
 #' @export
-fmap_record <- function(.c, .f, ...){
+read_log <- function(.c){
 
-  res_pure <- list("log" = NA,
-                   "value" = NA)
+  log_df <- .c$log_df
 
-  log_df <- make_log_df(
-    success = 1,
-    fstring = "fmap_chronicle",
-    args = NA,
-    res_pure = res_pure,
-    start = Sys.time(),
-    end = Sys.time())
+  make_func_call <- function(log_df, i){
 
-  list(value = maybe::fmap(.c$value, .f, ...),
-       log_df = dplyr::bind_rows(.c$log_df,
-                                 log_df)) |>
-  structure(class = "chronicle")
+    paste0(paste0(log_df[i, c("function", "arguments")],
+                  collapse = "("),
+           ")")
+
+  }
+
+  is_success <- function(log_df, i){
+
+    ifelse(grepl("Success", log_df$outcome[i]),
+           "successfully",
+           paste0("unsuccessfully with following exception: ", log_df$message[i]))
+
+  }
+
+  success_symbol <- function(log_df, i){
+
+    ifelse(grepl("Success", log_df$outcome[i]),
+           "OK!",
+           "NOK!")
+
+  }
+
+  make_sentence <- function(log_df, i){
+
+    paste(success_symbol(log_df, i),
+          make_func_call(log_df, i),
+          "ran",
+          is_success(log_df, i),
+          "at",
+          log_df$start_time[i])
+
+  }
+
+  total_runtime <- function(log_df){
+
+    total_time <- log_df$run_time
+
+    unit <- attr(total_time, "units")
+
+    paste(as.numeric(sum(log_df$run_time)), unit)
+
+  }
+
+
+  sentences <- vector(length = nrow(log_df))
+
+  for(i in 1:nrow(log_df)){
+
+  sentences[i] <-  make_sentence(log_df, i)
+
+  }
+
+  c("Complete log:", sentences, paste("Total running time:", total_runtime(log_df)))
+
+}
+
+```
+
+
+```{r function-print_chronicle}
+#' Print method for chronicle objects.
+#' @param x A chronicle object.
+#' @param ... Unused.
+#' @return No return value, called for side effects (printing the object on screen).
+#' @details
+#' `chronicle` object are, at their core, lists with the following elements:
+#' * "$value": a an object of type `maybe` containing the result of the computation (see the "Maybe monad" vignette for more details on `maybe`s).
+#' * "$log_df": a `data.frame` object containing the printed object’s log information.
+#'
+#' `print.chronicle()` prints the object on screen and shows:
+#' * the value using its `print()` method (for example, if the value is a data.frame, `print.data.frame()` will be used)
+#' * a message indicating to the user how to recuperate the value inside the `chronicle` object and how to read the object’s log
+#' @export
+print.chronicle <- function(x, ...){
+
+  if(all(grepl("Success", x$log_df$outcome))){
+
+    succeed <- "successfully"
+    success_symbol <- "OK!"
+
+  } else {
+
+    succeed <- "unsuccessfully"
+    success_symbol <- "NOK!"
+
+  }
+
+  cat(paste0(success_symbol, " Value computed ", succeed, ":\n"))
+  cat("---------------\n")
+  print(x$value, ...)
+  cat("\n")
+  cat("---------------\n")
+  cat("This is an object of type `chronicle`.\n")
+  cat("Retrieve the value of this object with pick(.c, \"value\").\n")
+  cat("To read the log of this object, call read_log(.c).\n")
+  cat("\n")
+
 }
 ```
 
-# is_chronicle
+
+
+
+
 
 ```{r function-is_chronicle}
 #' Checks whether an object is of class "chronicle"
@@ -676,111 +414,6 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 
 ```
 
-# pipe
-
-```{r function-pipe}
-#' Pipe a chronicle object to a decorated function.
-#' @param .c A value returned by record.
-#' @param .f A chronicle function to apply to the returning value of .c.
-#' @return A chronicle object.
-#' @importFrom rlang enquo quo_get_expr quo_get_env call_match call2 eval_tidy
-#' @importFrom maybe from_maybe nothing
-#' @examples
-#' r_sqrt <- record(sqrt)
-#' r_exp <- record(exp)
-#' 3 |> r_sqrt() %>=% r_exp()
-#' @export
-`%>=%` <- function(.c, .f) {
-
-  f_quo <- rlang::enquo(.f)
-  f_exp <- rlang::quo_get_expr(f_quo)
-  f_env <- rlang::quo_get_env(f_quo)
-  f_chr <- deparse(f_exp[[1]])
-
-  f <- get(f_chr, envir = f_env)
-
-  q_ex_std <- rlang::call_match(call = f_exp, fn = f)
-  expr_ls <- as.list(q_ex_std)
-
-  # need to set .value to empty, if not .value will be matched multiple times in call2
-  names(expr_ls)[names(expr_ls) == ".value"] <- ""
-
-  rlang::eval_tidy(rlang::call2(f,
-                                .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
-                                !!!expr_ls[-1],
-                                .log_df = .c$log_df))
-
-}
-
-```
-
-```{r tests-pipe}
-test_that("errors get captured and logs composed", {
-
-  r_sqrt <- record(sqrt)
-  r_mean <- record(mean)
-  r_exp <- record(exp)
-
-  result_pipe <- -1:-10 |>
-    r_mean() %>=%
-    r_sqrt() %>=%
-    r_exp()
-
-  expect_equal(nrow(result_pipe$log_df), 3)
-
-})
-
-
-test_that("test that pipe and bind_loud give same results", {
-
-  r_sqrt <- record(sqrt)
-  r_mean <- record(mean)
-  r_exp <- record(exp)
-
-  result_pipe <- 1:10 |>
-    r_sqrt() %>=%
-    r_exp() %>=%
-    r_mean()
-
-  result_bind <- 1:10 |>
-    r_sqrt() |>
-    bind_record(r_exp) |>
-    bind_record(r_mean)
-
-  expect_equal(result_pipe$value, result_bind$value)
-
-})
-
-
-test_that("test that pipe and bind_loud give same results for dplyr functions", {
-
-  r_select <- record(dplyr::select)
-  r_filter <- record(dplyr::filter)
-  r_group_by <- record(dplyr::group_by)
-  r_summarise <- record(dplyr::summarise)
-
-  result_pipe <- mtcars |>
-    as_chronicle() %>=%
-    r_select(am, starts_with("c")) %>=%
-    r_filter(am == 1) %>=%
-    r_group_by(carb) %>=%
-    r_summarise(mean_cyl = mean(cyl))
-
-  result_bind <- mtcars |>
-    as_chronicle() |>
-    bind_record(r_select, am, starts_with("c")) |>
-    bind_record(r_filter, am == 1) |>
-    bind_record(r_group_by, carb) |>
-    bind_record(r_summarise, mean_cyl = mean(cyl))
-
-  expect_equal(result_pipe$value, result_bind$value)
-
-})
-
-
-```
-
-# pick
 
 ```{r function-pick}
 #' Retrieve an element from a chronicle object.
@@ -810,7 +443,6 @@ pick <- function(.c, .e){
 
 ```
 
-# checkers
 
 ```{r function-check_g}
 #' Check the output of the .g function

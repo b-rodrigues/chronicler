@@ -1,23 +1,44 @@
 Package: chronicler
-Version: 0.2.1.9999
 Title: Add Logging To Functions
+Version: 0.2.1.9999
+Authors@R: c(
+    person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "0000-0002-3211-3689")),
+    person("Matouš", "Eibich", , "matous.eibich@seznam.cz", role = "ctb")
+  )
 Description: Decorate functions to make them return enhanced output. The
-  enhanced output consists in an object of type 'chronicle' containing the
-  result of the function applied to its arguments, as well as a log detailing
-  when the function was run, what were its inputs, what were the errors (if the
-  function failed to run) and other useful information. Tools to handle
-  decorated functions are included, such as a forward pipe operator that makes
-  chaining decorated functions possible.
-Authors@R: c(person(given = "Bruno",
-         family = "Rodrigues",
-         role = c("aut", "cre", "cph"),
-         email = "bruno@brodrigues.co",
-         comment = c(ORCID = "0000-0002-3211-3689")),
-  person(given = "Matouš",
-         family = "Eibich",
-         role = "ctb",
-         email = "matous.eibich@seznam.cz"))
+    enhanced output consists in an object of type 'chronicle' containing
+    the result of the function applied to its arguments, as well as a log
+    detailing when the function was run, what were its inputs, what were
+    the errors (if the function failed to run) and other useful
+    information. Tools to handle decorated functions are included, such as
+    a forward pipe operator that makes chaining decorated functions
+    possible.
 License: GPL (>= 3)
+Depends: 
+    R (>= 2.10)
+Imports: 
+    clipr,
+    diffobj,
+    dplyr,
+    maybe,
+    rlang,
+    stringr,
+    tibble,
+    utils
+Suggests: 
+    knitr,
+    lubridate,
+    purrr,
+    readr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    tidyr
+VignetteBuilder: 
+    knitr
+Config/fusen/version: 0.5.2
+Config/testthat/edition: 3
 Encoding: UTF-8
+LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

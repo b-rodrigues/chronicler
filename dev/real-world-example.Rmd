@@ -1,19 +1,7 @@
 ---
 title: "A real world example"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{A real world example}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{dplyr, tidyr, stringr, lubridate}
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 This is practically the same code you can find on this blog post of mine:
 https://www.brodrigues.co/blog/2018-11-14-luxairport/
@@ -22,7 +10,7 @@ as logging using `{chronicler}`.
 
 Let's first load the required packages, and the `avia` dataset included in the `{chronicler}` package:
 
-```{r setup}
+```{r}
 library(chronicler)
 library(dplyr)
 library(tidyr)
