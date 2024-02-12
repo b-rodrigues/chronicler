@@ -29,9 +29,9 @@ fusen::fill_description(
     Version = "0.2.1.9999",
 
     `Authors@R` = c(
-    person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
+    person(given = "Bruno", family = "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689")),
-    person("Matouš", "Eibich", "matous.eibich@seznam.cz", role = "ctb")
+    person(given = "Matouš", family = "Eibich", "matous.eibich@seznam.cz", role = "ctb")
      )
     )
   )

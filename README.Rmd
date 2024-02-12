@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/b-rodrigues/chronicler/branch/master/graph/badge.svg)](https://app.codecov.io/gh/b-rodrigues/chronicler?branch=master)
 <!-- badges: end -->
 
 Easily add logs to your functions, without interfering with the global environment.

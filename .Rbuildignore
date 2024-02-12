@@ -12,3 +12,5 @@ pkgdown/
 ^\.github$
 ^dev$
 ^\.here$
+^LICENSE\.md$
+^codecov\.yml$
