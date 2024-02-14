@@ -78,6 +78,8 @@ record_ggplot <- function(ggplot_expression, strict = 2) {
 ```
 
 ```{r tests-ggplot}
+library(ggplot2)
+
 # Test 1: Verify that record_ggplot returns a chronicle object
 test_that("record_ggplot returns a chronicle object", {
 
