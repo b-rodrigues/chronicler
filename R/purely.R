@@ -17,21 +17,21 @@
 #' @export
 purely <- function(.f, strict = 2){
 
-  function(.value, ..., .log_df = "Log start..."){
+  function(..., .log_df = "Log start..."){
 
-    if(maybe::is_nothing(.value)){
-
-      final_result <- list(
-        value = maybe::nothing(),
-        log_df = "A `Nothing` was given as input."
-      )
-
+    if(any(purrr::map_lgl(list(...), maybe::is_nothing))){
+    
+          final_result <- list(
+            value = maybe::nothing(),
+            log_df = "A `Nothing` was given as input."
+          )
+    
     } else {
 
       res <- switch(strict,
-                    only_errors(.f, .value,  ...),
-                    errors_and_warnings(.f, .value, ...),
-                    errs_warn_mess(.f, .value, ...))
+                    only_errors(.f, ...),
+                    errors_and_warnings(.f, ...),
+                    errs_warn_mess(.f, ...))
 
       final_result <- list(
         value = NULL,

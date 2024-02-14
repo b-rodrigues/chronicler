@@ -43,16 +43,17 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none"){
 
   fstring <- deparse1(substitute(.f))
 
-  function(.value, ..., .log_df = data.frame()){
+  function(..., .log_df = data.frame()){
 
     args <- paste0(rlang::enexprs(...), collapse = ",")
 
     start <- Sys.time()
     pure_f <- purely(.f, strict = strict)
-    res_pure <- (pure_f(.value, ...))
+    res_pure <- (pure_f(...))
     end <- Sys.time()
 
-    input <- .value
+    input <- "hu"
+    #input <- .value
     output <- maybe::from_maybe(res_pure$value, default = maybe::nothing())
     diff_obj <- switch(diff,
                        "none" = NULL,
