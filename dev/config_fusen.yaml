@@ -63,6 +63,19 @@ flat_ggplot.Rmd:
     check: false
     document: true
     overwrite: 'yes'
+flat_named_args.Rmd:
+  path: dev/flat_named_args.Rmd
+  state: active
+  R: []
+  tests: tests/testthat/test-named_args.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_named_args.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: 'yes'
 flat_pipe.Rmd:
   path: dev/flat_pipe.Rmd
   state: active

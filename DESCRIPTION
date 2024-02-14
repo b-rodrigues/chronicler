@@ -23,6 +23,7 @@ Imports:
     dplyr,
     ggplot2,
     maybe,
+    purrr,
     rlang,
     stringr,
     tibble,
@@ -30,7 +31,6 @@ Imports:
 Suggests: 
     knitr,
     lubridate,
-    purrr,
     rmarkdown,
     testthat (>= 3.0.0),
     tidyr

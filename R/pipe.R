@@ -24,10 +24,10 @@
   expr_ls <- as.list(q_ex_std)
 
   # need to set .value to empty, if not .value will be matched multiple times in call2
-  names(expr_ls)[names(expr_ls) == ".value"] <- ""
+  names(expr_ls)[names(expr_ls) == "..1"] <- ""
 
   rlang::eval_tidy(rlang::call2(f,
-                                .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
+                                ..1 = maybe::from_maybe(.c$value, default = maybe::nothing()),
                                 !!!expr_ls[-1],
                                 .log_df = .c$log_df))
 

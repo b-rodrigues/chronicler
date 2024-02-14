@@ -169,6 +169,15 @@ fusen::inflate(
 
 ```{r}
 fusen::inflate(
+         flat_file = "dev/flat_named_args.Rmd",
+         vignette_name = NA,
+         overwrite = TRUE,
+         check = FALSE
+       )
+```
+
+```{r}
+fusen::inflate(
          flat_file = "dev/flat_ggplot.Rmd",
          vignette_name = NA,
          overwrite = TRUE,
