@@ -1,0 +1,82 @@
+---
+title: "Bind, fmap, flatten"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+
+```{r function-bind_record}
+#' Evaluate a decorated function; used to chain multiple decorated functions.
+#' @param .c A chronicle object.
+#' @param .f A chronicle function to apply to the returning value of .c.
+#' @param ... Further parameters to pass to .f.
+#' @return A chronicle object.
+#' @importFrom maybe from_maybe nothing
+#' @examples
+#' r_sqrt <- record(sqrt)
+#' r_exp <- record(exp)
+#' 3 |> r_sqrt() |> bind_record(r_exp)
+#' @export
+bind_record <- function(.c, .f, ...){
+
+  .f(maybe::from_maybe(.c$value, default = maybe::nothing()), ..., .log_df = .c$log_df)
+
+}
+```
+
+```{r function-flatten_record}
+#' Flatten nested chronicle objects
+#' @param .c A nested chronicle object, where the $value element is itself a chronicle object
+#' @return Returns `.c` where value is the actual value, and logs are concatenated.
+#' @export
+#' @examples
+#' r_sqrt <- record(sqrt)
+#' r_log <- record(log)
+#' a <- as_chronicle(r_log(10))
+#' a
+#' flatten_record(a)
+flatten_record <- function(.c){
+
+  list(value = .c$value$content$value,
+       log_df = dplyr::bind_rows(.c$value$log_df,
+                                 .c$log_df)) |>
+    structure(class = "chronicle")
+
+}
+```
+
+```{r function-fmap_record}
+#' Evaluate a non-chronicle function on a chronicle object.
+#' @param .c A chronicle object.
+#' @param .f A non-chronicle function.
+#' @param ... Further parameters to pass to `.f`.
+#' @importFrom maybe fmap
+#' @importFrom dplyr bind_rows
+#' @return Returns the result of `.f(.c$value)` as a new chronicle object.
+#' @examples
+#' as_chronicle(3) |> fmap_record(sqrt)
+#' @export
+fmap_record <- function(.c, .f, ...){
+
+  res_pure <- list("log" = NA,
+                   "value" = NA)
+
+  log_df <- make_log_df(
+    success = 1,
+    fstring = "fmap_chronicle",
+    args = NA,
+    res_pure = res_pure,
+    start = Sys.time(),
+    end = Sys.time())
+
+  list(value = maybe::fmap(.c$value, .f, ...),
+       log_df = dplyr::bind_rows(.c$log_df,
+                                 log_df)) |>
+  structure(class = "chronicle")
+}
+```

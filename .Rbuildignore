@@ -10,3 +10,8 @@ cran-comments.md
 pkgdown/
 ^CRAN-SUBMISSION$
 ^\.github$
+^dev$
+^\.here$
+^LICENSE\.md$
+^codecov\.yml$
+^codemeta\.json$

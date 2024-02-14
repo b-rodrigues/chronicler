@@ -1,2 +1,10 @@
 /doc/
 /Meta/
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+.httr-oauth
+.Rdata
+.quarto
+inst/doc
