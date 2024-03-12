@@ -15,3 +15,5 @@ pkgdown/
 ^LICENSE\.md$
 ^codecov\.yml$
 ^codemeta\.json$
+default.nix
+result
