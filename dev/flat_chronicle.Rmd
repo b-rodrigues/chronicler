@@ -130,7 +130,7 @@ test_that("first and only error message is ok", {
     r_select(bm)
 
 
-  expect_true(grepl("Can't subset columns that don't exist", result_pipe$log_df$message))
+  expect_true(grepl("Can't select columns that don't exist", result_pipe$log_df$message))
 
 })
 
@@ -147,7 +147,7 @@ test_that("if multiple error messages, next ones are 'pipe failed'", {
     r_mutate(bm = 3)
 
 
-  expect_true(grepl("Can't subset columns that don't exist", result_pipe$log_df$message[1]))
+  expect_true(grepl("Can't select columns that don't exist", result_pipe$log_df$message[1]))
   expect_true(grepl("Pipeline failed upstream", result_pipe$log_df$message[2]))
   expect_true(grepl("Pipeline failed upstream", result_pipe$log_df$message[3]))
 
