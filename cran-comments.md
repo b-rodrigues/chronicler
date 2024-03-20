@@ -1,7 +1,8 @@
 # Submission of version 0.2.2
 
 Minor update, to take tidyselect v 1.2.1 into account: two unit tests
-didn't pass anymore due to his update, so this has been fixed.
+didn't pass anymore due to his update, so this has been fixed as requested
+by CRAN team before 2024-03-26.
 
 Running checks on Rhub resulted in notes, but I believe it's not
 relevant for releasing on CRAN.
