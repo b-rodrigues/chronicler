@@ -1,3 +1,40 @@
+# Submission of version 0.2.2
+
+Minor update, to take tidyselect v 1.2.1 into account: two unit tests
+didn't pass anymore due to his update, so this has been fixed as requested
+by CRAN team before 2024-03-26.
+
+Running checks on Rhub resulted in notes, but I believe it's not
+relevant for releasing on CRAN.
+
+## Test environments
+
+## R CMD check results
+
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
+
+
+> On windows-x86_64-devel (r-devel)
+  NOTES:
+  * checking for non-standard things in the check directory ... NOTE
+  Found the following files/directories:
+    ''NULL''
+  * checking for detritus in the temp directory ... NOTE
+  Found the following files/directories:
+    'lastMiKTeXException'
+
+> RHUB_PLATFORM=linux-x86_64-fedora-clang
+  NOTES:
+  * checking HTML version of manual ... NOTE
+  Skipping checking HTML validation: no command 'tidy' found
+
+> RHUB_PLATFORM=linux-x86_64-ubuntu-gcc
+  NOTES:
+  * checking HTML version of manual ... NOTE
+  Skipping checking HTML validation: no command 'tidy' found
+
 # Submission of version 0.2.1
 
 Minor update, to take dplyr v 1.1.0 into account.

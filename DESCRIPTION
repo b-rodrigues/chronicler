@@ -1,6 +1,6 @@
 Package: chronicler
 Title: Add Logging To Functions
-Version: 0.2.1.9999
+Version: 0.2.2.9999
 Authors@R: c(
     person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689")),
@@ -14,9 +14,8 @@ Description: Decorate functions to make them return enhanced output. The
     information. Tools to handle decorated functions are included, such as
     a forward pipe operator that makes chaining decorated functions
     possible.
-License: GPL (>= 3)
-Depends: 
-    R (>= 2.10)
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
 Imports: 
     clipr,
     diffobj,
@@ -32,13 +31,11 @@ Suggests:
     lubridate,
     purrr,
     rmarkdown,
-    testthat (>= 3.0.0),
+    testthat,
     tidyr
 VignetteBuilder: 
     knitr
 Config/fusen/version: 0.5.2
-Config/testthat/edition: 3
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1

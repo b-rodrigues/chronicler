@@ -26,7 +26,7 @@ fusen::fill_description(
   decorated functions are included, such as a forward pipe operator that makes
   chaining decorated functions possible.",
 
-    Version = "0.2.1.9999",
+    Version = "0.2.2.9999",
 
     `Authors@R` = c(
     person(given = "Bruno", family = "Rodrigues", email = "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
