@@ -14,8 +14,7 @@ Description: Decorate functions to make them return enhanced output. The
     information. Tools to handle decorated functions are included, such as
     a forward pipe operator that makes chaining decorated functions
     possible.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: GPL (>= 3)
 Imports: 
     clipr,
     diffobj,
@@ -37,5 +36,6 @@ VignetteBuilder:
     knitr
 Config/fusen/version: 0.5.2
 Encoding: UTF-8
+LazyData: TRUE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1

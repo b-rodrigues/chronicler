@@ -42,14 +42,14 @@ flat_data_doc.Rmd:
   state: active
   R: R/included-datasets.R
   tests: []
-  vignettes: []
+  vignettes: vignettes/get-started.Rmd
   inflate:
     flat_file: dev/flat_data_doc.Rmd
-    vignette_name: .na
+    vignette_name: Get started
     open_vignette: true
-    check: false
+    check: true
     document: true
-    overwrite: 'yes'
+    overwrite: ask
 flat_ggplot.Rmd:
   path: dev/flat_ggplot.Rmd
   state: active

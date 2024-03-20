@@ -32,7 +32,9 @@ fusen::fill_description(
     person(given = "Bruno", family = "Rodrigues", email = "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689")),
     person(given = "Matouš", family = "Eibich", email = "matous.eibich@seznam.cz", role = "ctb")
-     )
+    ),
+
+  LazyData = TRUE
   ),
   overwrite = TRUE
 )
