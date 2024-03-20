@@ -5,6 +5,9 @@ let
 };
  r_packages = builtins.attrValues {
   inherit (pkgs.rPackages) devtools clipr diffobj dplyr ggplot2 maybe rlang stringr tibble knitr lubridate purrr rmarkdown testthat tidyr rhub fusen;
+ tex = (pkgs.texlive.combine {
+  inherit (pkgs.texlive) scheme-small;
+});
 };
   in
   pkgs.mkShell {
