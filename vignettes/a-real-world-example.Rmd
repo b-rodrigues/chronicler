@@ -29,7 +29,7 @@ Let's first load the required packages, and the `avia` dataset included in the
 `{chronicler}` package:
 
 
-```{r}
+```{r parsermd-chunk-1}
 library(chronicler)
 library(dplyr)
 library(tidyr)
@@ -48,7 +48,7 @@ will make it possible to see how the dimensions of the data change inside the
 pipeline:
 
 
-```{r}
+```{r parsermd-chunk-2}
 # Define required functions
 # You can use `record_many()` to avoid having to write everything
 
@@ -64,7 +64,7 @@ r_summarise <- record(summarise, .g = dim)
 We can now start by preparing the data:
 
 
-```{r}
+```{r parsermd-chunk-3}
 avia_clean <- avia %>%
   r_select(1, contains("20")) %>% # select the first column and every column starting with 20
   bind_record(r_pivot_longer,
@@ -80,7 +80,7 @@ avia_clean <- avia %>%
 Let's take a look at the data:
 
 
-```{r}
+```{r parsermd-chunk-4}
 avia_clean
 ```
 
@@ -88,7 +88,7 @@ The passengers column contains `":"` characters instead of `NA`s, and it's a
 character column. Let's convert this column to numbers:
 
 
-```{r}
+```{r parsermd-chunk-5}
 r_mutate <- record(mutate, .g = dim)
 
 avia_clean2 <- avia_clean %>%
@@ -100,14 +100,14 @@ Let's look at the data:
 
 
 
-```{r}
+```{r parsermd-chunk-6}
 avia_clean2
 ```
 
 What happened? Let's read the log to find out!
 
 
-```{r}
+```{r parsermd-chunk-7}
 read_log(avia_clean2)
 ```
 
@@ -120,7 +120,7 @@ But in this case, we want to ignore the warning: let's record `mutate()` with
 `strict = 1`, so that only errors can stop the pipeline:
 
 
-```{r}
+```{r parsermd-chunk-8}
 r_mutate_lenient <- record(mutate, .g = dim, strict = 1)
 
 avia_clean2 <- avia_clean %>%
@@ -135,14 +135,14 @@ take a look at the data and see that `":"` characters where successfully replace
 by `NA`s:
 
 
-```{r}
+```{r parsermd-chunk-9}
 avia_clean2
 ```
 
 Let’s continue and focus on monthly data:
 
 
-```{r}
+```{r parsermd-chunk-10}
 avia_monthly <- avia_clean2 %>%
   bind_record(r_filter,
               freq == "M",
@@ -163,7 +163,7 @@ because I only need it this once, I could instead use `fmap_record()`, which
 makes it possible to apply an undecorated function to a `chronicle` object:
 
 
-```{r}
+```{r parsermd-chunk-11}
 fmap_record(avia_monthly, count, date)
 ```
 
@@ -171,14 +171,14 @@ fmap_record(avia_monthly, count, date)
 list, with its own print method:
 
 
-```{r}
+```{r parsermd-chunk-12}
 avia_monthly
 ```
 
 Now that the data is clean, we can read the log:
 
 
-```{r}
+```{r parsermd-chunk-13}
 read_log(avia_monthly)
 ```
 
@@ -189,7 +189,7 @@ happened and reproduce the steps if necessary.
 Let's take a look at the final data set:
 
 
-```{r}
+```{r parsermd-chunk-14}
 avia_monthly %>%
   pick("value")
 ```
@@ -199,11 +199,11 @@ contains more details, and see the output of the `.g` argument (which was
 defined in the beginning as the `dim()` function):
 
 
-```{r}
+```{r parsermd-chunk-15}
 check_g(avia_monthly)
 ```
 
-```{r include = FALSE}
+```{r parsermd-chunk-16, include = FALSE}
 hu <- check_g(avia_monthly)$g
 ```
 
