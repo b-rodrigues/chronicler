@@ -26,7 +26,7 @@ test_that("the chronicle object produced by record_ggplot contains a ggplot obje
   gg_chronicle_value <- pick(gg_chronicle, "value")
 
   # Verify that the value is a ggplot object
-  expect_true(is.ggplot(gg_chronicle_value))
+  expect_true(is_ggplot(gg_chronicle_value))
 })
 
 # Test 3: Verify that record_ggplot returns expected ggplot "recipe"
