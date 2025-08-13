@@ -24,16 +24,36 @@
 #' @importFrom utils tail
 #' @examples
 #' record(sqrt)(10)
+#' record(sqrt)(x = 10)
 #' @export
 record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
   fstring <- deparse1(substitute(.f))
 
-  function(.value, ..., .log_df = data.frame()) {
-    args <- paste0(rlang::enexprs(...), collapse = ",")
+  function(..., .log_df = data.frame()) {
+    all_args <- list(...)
+    .value <- all_args[[1]]
+    other_args <- all_args[-1]
+
+    args_str <- sapply(
+      # do not show .value in the arguments, only other_args
+      # other_args can be named or not
+      names(other_args),
+      function(nm) {
+        if (nm == "") {
+          # unnamed arg
+          paste(other_args[[nm]])
+        } else {
+          # named arg
+          paste(nm, "=", other_args[[nm]])
+        }
+      }
+    )
+    args <- paste0(args_str, collapse = ",")
+
 
     start <- Sys.time()
     pure_f <- purely(.f, strict = strict)
-    res_pure <- pure_f(.value, ...)
+    res_pure <- do.call(pure_f, c(list(.value), other_args))
     end <- Sys.time()
 
     input <- .value
