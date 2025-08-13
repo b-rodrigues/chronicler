@@ -18,7 +18,6 @@ test_that("purely decorated function log", {
 })
 
 test_that("compose purely decorated functions", {
-
   pure_sqrt <- purely(sqrt)
   pure_mean <- purely(mean)
   pure_exp <- purely(exp)
@@ -29,12 +28,10 @@ test_that("compose purely decorated functions", {
     pure_mean()
 
   expect_equal(result_pipe$value, maybe::just(mean(exp(sqrt(1:10)))))
-
 })
 
 
 test_that("compose purely decorated dplyr functions on data.frame", {
-
   pure_select <- purely(dplyr::select)
   pure_filter <- purely(dplyr::filter)
   pure_summarise <- purely(dplyr::summarise)
@@ -50,12 +47,10 @@ test_that("compose purely decorated dplyr functions on data.frame", {
     dplyr::summarise(mean_cyl = mean(cyl))
 
   expect_equal(result_pure$value, maybe::just(result_impure))
-
 })
 
 
 test_that("compose purely decorated dplyr functions on tibbles", {
-
   pure_select <- purely(dplyr::select)
   pure_filter <- purely(dplyr::filter)
   pure_summarise <- purely(dplyr::summarise)
@@ -73,14 +68,14 @@ test_that("compose purely decorated dplyr functions on tibbles", {
     dplyr::summarise(mean_cyl = mean(cyl))
 
   expect_equal(result_pure$value, maybe::just(result_impure))
-
 })
 
 
 test_that("test group_by", {
-
   pure_group_by <- purely(dplyr::group_by)
 
-  expect_equal(maybe::just(dplyr::group_by(mtcars, carb)), pure_group_by(mtcars, carb)$value)
-
+  expect_equal(
+    maybe::just(dplyr::group_by(mtcars, carb)),
+    pure_group_by(mtcars, carb)$value
+  )
 })
