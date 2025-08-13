@@ -35,7 +35,7 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none"){
 
     start <- Sys.time()
     pure_f <- purely(.f, strict = strict)
-    res_pure <- (pure_f(.value, ...))
+    res_pure <- pure_f(.value, ...)
     end <- Sys.time()
 
     input <- .value
@@ -46,62 +46,35 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none"){
                        "full" = diffobj::diffObj(input, output)
                        )
 
-    if(maybe::is_nothing(res_pure$value)){
+    was_successful <- !maybe::is_nothing(res_pure$value)
 
-      log_df <- make_log_df(
-        success = 0,
-        fstring = fstring,
-        args = args,
-        res_pure = res_pure,
-        start = start,
-        end = end,
-        .g = .g
-      )
-
-    } else {
-
-      log_df <- make_log_df(
-        success = 1,
-        fstring = fstring,
-        args = args,
-        res_pure = res_pure,
-        start = start,
-        end = end,
-        .g = .g,
-        diff_obj = diff_obj
-      )
-
-    }
-
-    # Columns ops_number and lag_outcome
-    # help with writing meaningful error message
-    log_df <- dplyr::mutate(
-          rbind(.log_df,
-                log_df),
-          ops_number = dplyr::row_number(),
-          lag_outcome = dplyr::lag(outcome, 1)
-          )
-
-    # correct error message for first operation
-    # if there's only one ops which failed, we need to keep the error message
-    # if some ops where successful, but then one fails, we need to keep its error message
-    # the following failures can then all have a generic message
-    if(maybe::is_nothing(res_pure$value)
-       & tail(log_df, 1)$ops_number == 1){
-      log_df$message <- paste0(res_pure$log_df, collapse = " ")
-    } else if (maybe::is_nothing(res_pure$value)
-               & !grepl("Success", tail(log_df, 1)$lag_outcome)
-               & tail(log_df, 1)$ops_number > 1){
-      log_df[nrow(log_df), ]$message <- "Pipeline failed upstream"
-    }
-
-    list_result <- list(
-      value = res_pure$value,
-      log_df = log_df
+    log_df_entry <- make_log_df(
+      success = as.integer(was_successful),
+      fstring = fstring,
+      args = args,
+      res_pure = res_pure,
+      start = start,
+      end = end,
+      .g = .g,
+      diff_obj = diff_obj
     )
 
-    structure(list_result, class = "chronicle")
+    log_df <- dplyr::bind_rows(.log_df, log_df_entry) |>
+      dplyr::mutate(
+        ops_number = dplyr::row_number(),
+        lag_outcome = dplyr::lag(outcome, 1)
+      )
 
+    # Correct the message for chained failures
+    current_row <- nrow(log_df)
+    if (!was_successful && current_row > 1 && grepl("NOK!", log_df$lag_outcome[current_row])) {
+      log_df$message[current_row] <- "Pipeline failed upstream"
+    }
+
+    list(
+      value = res_pure$value,
+      log_df = log_df
+    ) |> structure(class = "chronicle")
   }
 }
 
@@ -209,63 +182,26 @@ read_log <- function(.c){
 
   log_df <- .c$log_df
 
-  make_func_call <- function(log_df, i){
+  make_sentence <- function(i) {
+    func_call <- paste0(log_df[i, "function"], "(", log_df[i, "arguments"], ")")
+    success_status <- if (grepl("Success", log_df$outcome[i])) {
+      "successfully"
+    } else {
+      paste0("unsuccessfully with following exception: ", log_df$message[i])
+    }
+    success_symbol <- ifelse(grepl("Success", log_df$outcome[i]), "OK!", "NOK!")
 
-    paste0(paste0(log_df[i, c("function", "arguments")],
-                  collapse = "("),
-           ")")
-
+    paste(success_symbol, func_call, "ran", success_status, "at", log_df$start_time[i])
   }
 
-  is_success <- function(log_df, i){
+  total_runtime <- sum(log_df$run_time)
+  units(total_runtime) <- "secs"
 
-    ifelse(grepl("Success", log_df$outcome[i]),
-           "successfully",
-           paste0("unsuccessfully with following exception: ", log_df$message[i]))
+  sentences <- sapply(1:nrow(log_df), make_sentence)
 
-  }
-
-  success_symbol <- function(log_df, i){
-
-    ifelse(grepl("Success", log_df$outcome[i]),
-           "OK!",
-           "NOK!")
-
-  }
-
-  make_sentence <- function(log_df, i){
-
-    paste(success_symbol(log_df, i),
-          make_func_call(log_df, i),
-          "ran",
-          is_success(log_df, i),
-          "at",
-          log_df$start_time[i])
-
-  }
-
-  total_runtime <- function(log_df){
-
-    total_time <- log_df$run_time
-
-    unit <- attr(total_time, "units")
-
-    paste(as.numeric(sum(log_df$run_time)), unit)
-
-  }
-
-
-  sentences <- vector(length = nrow(log_df))
-
-  for(i in 1:nrow(log_df)){
-
-  sentences[i] <-  make_sentence(log_df, i)
-
-  }
-
-  c("Complete log:", sentences, paste("Total running time:", total_runtime(log_df)))
-
+  c("Complete log:", sentences, paste("Total running time:", total_runtime))
 }
+
 
 
 #' Print method for chronicle objects.
@@ -358,15 +294,17 @@ as_chronicle <- function(.x, .log_df = data.frame()){
 #' @export
 pick <- function(.c, .e){
 
-  stopifnot('.e must be either "value", "log_df"' = .e %in% c("value", "log_df"))
+  if (!is_chronicle(.c)) {
+    stop("`.c` must be a chronicle object.")
+  }
+
+  stopifnot('.e must be either "value" or "log_df"' = .e %in% c("value", "log_df"))
 
   if(.e == "value"){
     maybe::from_maybe(.c[[.e]], default = maybe::nothing())
     } else {
       .c[[.e]]
     }
-
-
 }
 
 
