@@ -12,12 +12,23 @@ create_error_plot <- function(error_message) {
   ggplot2::ggplot() +
     ggplot2::aes(x = 0, y = 0) +
     ggplot2::annotate(
-      "text", x = 0, y = 0, label = error_text, color = "black", size = 4
+      "text",
+      x = 0,
+      y = 0,
+      label = error_text,
+      color = "black",
+      size = 4
     ) +
     ggplot2::theme_void() +
     ggplot2::theme(
-      plot.background = ggplot2::element_rect(fill = background_color, color = NA),
-      panel.background = ggplot2::element_rect(fill = background_color, color = NA)
+      plot.background = ggplot2::element_rect(
+        fill = background_color,
+        color = NA
+      ),
+      panel.background = ggplot2::element_rect(
+        fill = background_color,
+        color = NA
+      )
     )
 }
 
@@ -42,7 +53,6 @@ create_error_plot <- function(error_message) {
 #' @importFrom ggplot2 ggplot_build
 #' @export
 record_ggplot <- function(ggplot_expression, strict = 2) {
-
   ggplot_expr_quo <- rlang::enquo(ggplot_expression)
   fstring <- rlang::quo_text(ggplot_expr_quo)
   start <- Sys.time()
@@ -54,11 +64,15 @@ record_ggplot <- function(ggplot_expression, strict = 2) {
       # The main expression to evaluate
       {
         ggplot_obj <- rlang::eval_tidy(ggplot_expr_quo)
-        ggplot2::ggplot_build(ggplot_obj) # This line triggers render-time conditions
-        ggplot_obj # The successful return value
+        # Force complete rendering instead of just building
+        tmp_file <- tempfile(fileext = ".png")
+        grDevices::pdf(NULL)
+        print(ggplot_obj)
+        grDevices::dev.off()
+        ggplot_obj
       },
       # This handler specifically targets the class of warnings from ggplot2/cli.
-      rlang_warning = function(w) {
+      warning = function(w) {
         if (strict >= 2) {
           # Promote the warning to an error to force an exit,
           # chaining the original warning for later inspection.
@@ -66,7 +80,7 @@ record_ggplot <- function(ggplot_expression, strict = 2) {
         }
       },
       # This handler specifically targets messages from ggplot2/cli.
-      rlang_message = function(m) {
+      message = function(m) {
         if (strict >= 3) {
           # Promote the message to an error.
           rlang::abort("promoted_message", parent = m)
@@ -112,5 +126,5 @@ record_ggplot <- function(ggplot_expression, strict = 2) {
     value = final_value,
     log_df = log_df
   ) |>
-  structure(class = "chronicle")
+    structure(class = "chronicle")
 }

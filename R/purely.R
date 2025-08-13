@@ -41,7 +41,7 @@ purely <- function(.f, strict = 2) {
 }
 
 #' @noRd
-only_errors <- function(.f, ...){
+only_errors <- function(.f, ...) {
   tryCatch(
     .f(...),
     error = function(err) err
@@ -49,7 +49,7 @@ only_errors <- function(.f, ...){
 }
 
 #' @noRd
-errors_and_warnings <- function(.f, ...){
+errors_and_warnings <- function(.f, ...) {
   tryCatch(
     .f(...),
     error = function(err) err,
@@ -58,7 +58,7 @@ errors_and_warnings <- function(.f, ...){
 }
 
 #' @noRd
-errs_warn_mess <- function(.f, ...){
+errs_warn_mess <- function(.f, ...) {
   tryCatch(
     .f(...),
     error = function(err) err,

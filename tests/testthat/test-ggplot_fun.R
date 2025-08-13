@@ -1,8 +1,8 @@
 # tests/testthat/test-ggplot_fun.R
+library(ggplot2)
 
 # Test that the function correctly records a successful ggplot expression
 test_that("record_ggplot captures a successful plot correctly", {
-
   # Create a valid ggplot object using the function
   chronicled_plot <- record_ggplot(
     ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point()
@@ -29,7 +29,6 @@ test_that("record_ggplot captures a successful plot correctly", {
 
 # Test that the function handles a plot failure and returns an error plot
 test_that("record_ggplot handles a plot failure and creates an error plot", {
-
   # Create a plot with an invalid aesthetic mapping ('mpgg')
   chronicled_plot <- record_ggplot(
     ggplot(mtcars, aes(x = mpgg, y = hp)) + geom_point()
@@ -58,26 +57,24 @@ test_that("record_ggplot handles a plot failure and creates an error plot", {
 
 # Test the behavior of the `strict` parameter
 test_that("record_ggplot respects the 'strict' parameter for warnings", {
-
   # Create a dataframe with a missing value
   df_with_na <- data.frame(x = 1:5, y = c(1, 2, 100, 4, 5))
 
   # ---- Scenario 1: strict = 2 (default, captures warnings) ----
   chronicled_plot_strict2 <- record_ggplot(
-    ggplot(df_with_na, aes(x, y)) + geom_line() + ylim(0,3),
+    ggplot(df_with_na, aes(x, y)) + geom_line() + ylim(0, 3),
     strict = 2
   )
 
   # Log should show failure because a warning was caught
   log_df_strict2 <- pick(chronicled_plot_strict2, "log_df")
   expect_true(grepl("NOK! Caution - ERROR", log_df_strict2$outcome))
-  expect_true(grepl("Removed 1 row", log_df_strict2$message))
+  expect_true(grepl("Removed 3 row", log_df_strict2$message))
 
   # Value should be the error plot displaying the warning
   plot_value_strict2 <- pick(chronicled_plot_strict2, "value")
   expect_s3_class(plot_value_strict2, "ggplot")
   expect_equal(plot_value_strict2$theme$plot.background$fill, "#FFDDDD")
-
 
   # ---- Scenario 2: strict = 1 (errors only, ignores warnings) ----
   chronicled_plot_strict1 <- record_ggplot(
@@ -99,7 +96,6 @@ test_that("record_ggplot respects the 'strict' parameter for warnings", {
 
 # Test that the error plot contains the correct message in its layer
 test_that("The error plot's annotation layer contains the correct error message", {
-
   error_message <- "object 'mpgg' not found"
 
   chronicled_plot <- record_ggplot(
@@ -115,5 +111,9 @@ test_that("The error plot's annotation layer contains the correct error message"
   log_message <- pick(chronicled_plot, "log_df")$message
   expect_true(grepl(error_message, log_message))
   # The label in the plot is wrapped, so we test if the log message is contained within it
-  expect_true(grepl(stringr::str_wrap(log_message, 40), error_label_in_plot, fixed = TRUE))
+  expect_true(grepl(
+    stringr::str_wrap(log_message, 40),
+    error_label_in_plot,
+    fixed = TRUE
+  ))
 })

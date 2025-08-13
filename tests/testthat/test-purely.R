@@ -87,7 +87,6 @@ test_that("test group_by", {
 # --- New tests for the 'strict' parameter ---
 
 test_that("purely's strict parameter behaves as expected for all conditions", {
-
   # Helper functions to generate specific conditions
   f_error <- function(x) stop("This is a custom error")
   f_warning <- function(x) {
@@ -117,7 +116,6 @@ test_that("purely's strict parameter behaves as expected for all conditions", {
   expect_equal(res_msg_s1$value, maybe::just(10))
   expect_true(is.na(res_msg_s1$log_df))
 
-
   # ---- strict = 2 (Default: Catches errors and warnings) ----
   context("purely: strict = 2")
 
@@ -125,11 +123,10 @@ test_that("purely's strict parameter behaves as expected for all conditions", {
   res_err_s2 <- purely(f_error, strict = 2)(10)
   expect_equal(res_err_s2$value, maybe::nothing())
   expect_equal(res_err_s2$log_df, "This is a custom error")
-  
+
   # Test the default behavior is the same as strict = 2
   res_err_s2_default <- purely(f_error)(10)
   expect_equal(res_err_s2_default$value, maybe::nothing())
-
 
   # It SHOULD catch the warning
   res_warn_s2 <- purely(f_warning, strict = 2)(10)
@@ -140,7 +137,6 @@ test_that("purely's strict parameter behaves as expected for all conditions", {
   expect_message(res_msg_s2 <- purely(f_message, strict = 2)(10))
   expect_equal(res_msg_s2$value, maybe::just(10))
   expect_true(is.na(res_msg_s2$log_df))
-
 
   # ---- strict = 3 (Catches errors, warnings, and messages) ----
   context("purely: strict = 3")
