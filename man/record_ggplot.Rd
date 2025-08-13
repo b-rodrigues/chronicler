@@ -9,8 +9,7 @@ record_ggplot(ggplot_expression, strict = 2)
 \arguments{
 \item{ggplot_expression}{The entire \code{{ggplot2}} expression to be recorded.}
 
-\item{strict}{An optional integer argument controlling the behavior of the
-error catching, consistent with \code{record()}:
+\item{strict}{An optional integer argument controlling what is treated as a failure:
 \itemize{
 \item \code{1}: Catches only errors.
 \item \code{2}: Catches errors and warnings (the default).
@@ -18,43 +17,14 @@ error catching, consistent with \code{record()}:
 }}
 }
 \value{
-A \code{chronicle} object. On success, its value is the ggplot object. On failure,
-its value is a new ggplot object displaying the error message.
+A \code{chronicle} object.
 }
 \description{
 \code{record_ggplot} captures a complete \code{{ggplot2}} expression, evaluates it, and
-creates a \code{chronicle} object. The log will show the entire expression that was
-evaluated.
+creates a \code{chronicle} object. This function uses a robust \code{tryCatch} and
+\code{withCallingHandlers} pattern to reliably capture errors and modern \code{rlang}
+warnings and messages according to the \code{strict} level.
 
-If the expression evaluates successfully, the \code{chronicle} object will contain the
-ggplot. If the expression fails (e.g., due to a typo in a mapping), the log will
-capture the error, and the \code{value} of the chronicle object will be a \strong{new ggplot
-object that visually displays the error message}. This ensures that rendering a
-document (like Quarto or R Markdown) does not fail.
-}
-\examples{
-\dontrun{
-library(ggplot2)
-
-# Successful example
-success_plot <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
-
-# This will return the actual mtcars plot
-pick(success_plot, "value")
-
-# Unsuccessful example with a typo in 'mpgg'
-error_plot_chronicled <- record_ggplot(
-  ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg))
-)
-
-# The log will show the failing expression and the error
-read_log(error_plot_chronicled)
-#> [1] "Complete log:"
-#> [2] "NOK! ggplot(data = mtcars) + ... ran unsuccessfully with exception:
-#>      object 'mpgg' not found at ..."
-#> [3] "Total running time: ..."
-
-# This now returns the *error plot* instead of failing or returning NULL
-pick(error_plot_chronicled, "value")
-}
+If the expression fails, the log will capture the condition, and the \code{value} of
+the chronicle object will be a new ggplot object that visually displays the message.
 }

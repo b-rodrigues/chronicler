@@ -36,8 +36,8 @@ library(tidyr)
 library(stringr)
 library(lubridate)
 
-# Ensure chronicler version of `pick()` is being used
-pick <- chronicler::pick
+# Ensure chronicler version of `unveil()` is being used
+unveil <- chronicler::unveil
 
 data("avia")
 ```
@@ -191,7 +191,7 @@ Let's take a look at the final data set:
 
 ```{r parsermd-chunk-14}
 avia_monthly %>%
-  pick("value")
+  unveil("value")
 ```
 
 It is also possible to take a look at the underlying `.log_df` object that

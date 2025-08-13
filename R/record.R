@@ -251,7 +251,7 @@ print.chronicle <- function(x, ...) {
   cat("\n")
   cat("---------------\n")
   cat("This is an object of type `chronicle`.\n")
-  cat("Retrieve the value of this object with pick(.c, \"value\").\n")
+  cat("Retrieve the value of this object with unveil(.c, \"value\").\n")
   cat("To read the log of this object, call read_log(.c).\n")
   cat("\n")
 }
@@ -299,9 +299,9 @@ as_chronicle <- function(.x, .log_df = data.frame()) {
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_exp <- record(exp)
-#' 3 |> r_sqrt() %>=% r_exp() |> pick("value")
+#' 3 |> r_sqrt() %>=% r_exp() |> unveil("value")
 #' @export
-pick <- function(.c, .e) {
+unveil <- function(.c, .e) {
   if (!is_chronicle(.c)) {
     stop("`.c` must be a chronicle object.")
   }

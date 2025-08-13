@@ -82,15 +82,15 @@ there's more to it:
 ```
 ---------------
 This is an object of type `chronicle`.
-Retrieve the value of this object with pick(.c, "value").
+Retrieve the value of this object with unveil(.c, "value").
 To read the log of this object, call read_log().
 ```
 
-The value of the `sqrt()` function applied to its arguments can be obtained using `pick()`, as
+The value of the `sqrt()` function applied to its arguments can be obtained using `unveil()`, as
 explained:
 
 ```{r}
-pick(a, "value")
+unveil(a, "value")
 ```
 
 A log also gets generated and can be read using `read_log()`:
@@ -119,7 +119,7 @@ detail in the next section.)
 ```{r}
 read_log(b)
 
-pick(b, "value")
+unveil(b, "value")
 ```
 
 `record()` works with any function, but not yet with `{ggplot2}`.
@@ -165,10 +165,10 @@ output <- starwars %>%
 read_log(output)
 ```
 
-The value can then be accessed and worked on as usual using `pick()`, as explained above:
+The value can then be accessed and worked on as usual using `unveil()`, as explained above:
 
 ```{r}
-pick(output, "value")
+unveil(output, "value")
 ```
 
 This package also ships with a dedicated pipe, `%>=%` which you can use instead of `bind_record()`:
@@ -183,7 +183,7 @@ output_pipe <- starwars %>%
 ```
 
 ```{r}
-pick(output_pipe, "value")
+unveil(output_pipe, "value")
 ```
 
 Using the `%>=%` is not recommended in non-interactive sessions and `bind_record()`
@@ -266,7 +266,7 @@ output_pipe <- starwars %>%
 The `$log_df` element of a `chronicle` object contains detailed information:
 
 ```{r}
-pick(output_pipe, "log_df")
+unveil(output_pipe, "log_df")
 ```
 
 It is thus possible to take a look at the output of the function provided (`dim()`) using
@@ -364,7 +364,7 @@ r_plot_1 <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg
 The output of this function is the same as for `record()`:
 
 ```{r}
-pick(r_plot_1, "value")
+unveil(r_plot_1, "value")
 ```
 
 ```{r}

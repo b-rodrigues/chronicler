@@ -70,14 +70,14 @@ If `Nothing` is passed to a function decorated by `record()`, `Nothing` gets imm
 Users of `{chronicle}` do not need to be familiar with the `{maybe}` package to use it, as conversion
 to and from `maybe` objects is handled automatically.
 
-To recuperate the value from a `chronicler` object, users can use `pick()`:
+To recuperate the value from a `chronicler` object, users can use `unveil()`:
 
 
 ```{r parsermd-chunk-6}
-pick(r_sqrt(16), "value")
+unveil(r_sqrt(16), "value")
 ```
 
-`pick()` converts the value from the `maybe` type to the underlying type of the object. Compare
+`unveil()` converts the value from the `maybe` type to the underlying type of the object. Compare
 to:
 
 
