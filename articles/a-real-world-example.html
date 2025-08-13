@@ -87,9 +87,6 @@ dataset included in the <code>{chronicler}</code> package:</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:chronicler':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     pick</span></span>
 <span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     filter, lag</span></span>
@@ -105,8 +102,8 @@ dataset included in the <code>{chronicler}</code> package:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     date, intersect, setdiff, union</span></span>
 <span></span>
-<span><span class="co"># Ensure chronicler version of `pick()` is being used</span></span>
-<span><span class="va">pick</span> <span class="op">&lt;-</span> <span class="fu">chronicler</span><span class="fu">::</span><span class="va"><a href="../reference/pick.html">pick</a></span></span>
+<span><span class="co"># Ensure chronicler version of `unveil()` is being used</span></span>
+<span><span class="va">unveil</span> <span class="op">&lt;-</span> <span class="fu">chronicler</span><span class="fu">::</span><span class="va"><a href="../reference/unveil.html">unveil</a></span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"avia"</span><span class="op">)</span></span></code></pre></div>
 <p>Now I need to define the needed functions for the analysis. To
@@ -159,7 +156,7 @@ pipeline:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
-<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p>The passengers column contains <code>":"</code> characters instead of
 <code>NA</code>s, and it’s a character column. Let’s convert this column
@@ -179,17 +176,17 @@ to numbers:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
-<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p>What happened? Let’s read the log to find out!</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_clean2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                                                                                                                                                       </span></span>
-<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 13:18:28.537686"                                                                                                                                                                                                                                       </span></span>
-<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 13:18:28.53758"                                                                                                                                                                                                              </span></span>
-<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 13:18:28.537257"                                                                                                                                                                                            </span></span>
-<span><span class="co">#&gt; [5] "NOK! mutate(as.numeric(passengers)) ran unsuccessfully with following exception: \033[1m\033[22mThere was 1 warning in `.f()`.\n\033[1m\033[22m\033[36mℹ\033[39m In argument: `passengers = as.numeric(passengers)`.\nCaused by warning:\n\033[33m!\033[39m NAs introduced by coercion at 2025-08-13 13:18:33.693891"</span></span>
-<span><span class="co">#&gt; [6] "Total running time: 5.2558274269104"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 13:41:55.231005"                                                                                                                                                                                                                                       </span></span>
+<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 13:41:55.230937"                                                                                                                                                                                                             </span></span>
+<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 13:41:55.230629"                                                                                                                                                                                            </span></span>
+<span><span class="co">#&gt; [5] "NOK! mutate(as.numeric(passengers)) ran unsuccessfully with following exception: \033[1m\033[22mThere was 1 warning in `.f()`.\n\033[1m\033[22m\033[36mℹ\033[39m In argument: `passengers = as.numeric(passengers)`.\nCaused by warning:\n\033[33m!\033[39m NAs introduced by coercion at 2025-08-13 13:42:00.294138"</span></span>
+<span><span class="co">#&gt; [6] "Total running time: 5.16464424133301"</span></span></code></pre></div>
 <p>So what happened is that <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code> introduced
 <code>NA</code>s by coercion. This is what happens when trying to
 convert a character to a number, for example
@@ -236,7 +233,7 @@ where successfully replaced by <code>NA</code>s:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
-<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p>Let’s continue and focus on monthly data:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -280,7 +277,7 @@ object:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
-<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p><code>avia_monthly</code> is an object of class
 <code>chronicle</code>, but in essence, it is just a list, with its own
@@ -307,20 +304,20 @@ print method:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
-<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p>Now that the data is clean, we can read the log:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                           </span></span>
-<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 13:18:28.537686"                                           </span></span>
-<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 13:18:28.53758"                  </span></span>
-<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 13:18:28.537257"</span></span>
-<span><span class="co">#&gt; [5] "OK! mutate(as.numeric(passengers)) ran successfully at 2025-08-13 13:18:34.014721"                                       </span></span>
-<span><span class="co">#&gt; [6] "OK! filter(freq == \"M\",tra_meas == \"PAS_BRD_ARR\",!is.na(passengers)) ran successfully at 2025-08-13 13:18:34.450771" </span></span>
-<span><span class="co">#&gt; [7] "OK! mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2025-08-13 13:18:34.450698"                               </span></span>
-<span><span class="co">#&gt; [8] "OK! select(air_pr\\time,date,passengers) ran successfully at 2025-08-13 13:18:34.450597"                                 </span></span>
-<span><span class="co">#&gt; [9] "Total running time: 5.47198009490967"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 13:41:55.231005"                                           </span></span>
+<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 13:41:55.230937"                 </span></span>
+<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 13:41:55.230629"</span></span>
+<span><span class="co">#&gt; [5] "OK! mutate(as.numeric(passengers)) ran successfully at 2025-08-13 13:42:00.617489"                                       </span></span>
+<span><span class="co">#&gt; [6] "OK! filter(freq == \"M\",tra_meas == \"PAS_BRD_ARR\",!is.na(passengers)) ran successfully at 2025-08-13 13:42:01.042728" </span></span>
+<span><span class="co">#&gt; [7] "OK! mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2025-08-13 13:42:01.042651"                               </span></span>
+<span><span class="co">#&gt; [8] "OK! select(air_pr\\time,date,passengers) ran successfully at 2025-08-13 13:42:01.042577"                                 </span></span>
+<span><span class="co">#&gt; [9] "Total running time: 5.37063312530518"</span></span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code>
 gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People can then read this
 object, can read the log to know what happened and reproduce the steps
@@ -328,7 +325,7 @@ if necessary.</p>
 <p>Let’s take a look at the final data set:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">avia_monthly</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/pick.html">pick</a></span><span class="op">(</span><span class="st">"value"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/unveil.html">unveil</a></span><span class="op">(</span><span class="st">"value"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6,643 × 3</span></span></span>
 <span><span class="co">#&gt;    destination     date       passengers</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>

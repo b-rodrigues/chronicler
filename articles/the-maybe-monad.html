@@ -111,7 +111,7 @@ the program crash and stop.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
-<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p>and when computations succeed, <code>Just</code> values are also
 returned:</p>
@@ -126,7 +126,7 @@ returned:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
-<span><span class="co">#&gt; Retrieve the value of this object with pick(.c, "value").</span></span>
+<span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span></code></pre></div>
 <p>If <code>Nothing</code> is passed to a function decorated by
 <code><a href="../reference/record.html">record()</a></code>, <code>Nothing</code> gets immediately
@@ -135,11 +135,11 @@ returned.</p>
 <a href="https://github.com/armcn/maybe" class="external-link">maybe</a> package to use it, as conversion to and from
 <code>maybe</code> objects is handled automatically.</p>
 <p>To recuperate the value from a <code>chronicler</code> object, users
-can use <code><a href="../reference/pick.html">pick()</a></code>:</p>
+can use <code><a href="../reference/unveil.html">unveil()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/pick.html">pick</a></span><span class="op">(</span><span class="fu">r_sqrt</span><span class="op">(</span><span class="fl">16</span><span class="op">)</span>, <span class="st">"value"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/unveil.html">unveil</a></span><span class="op">(</span><span class="fu">r_sqrt</span><span class="op">(</span><span class="fl">16</span><span class="op">)</span>, <span class="st">"value"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 4</span></span></code></pre></div>
-<p><code><a href="../reference/pick.html">pick()</a></code> converts the value from the <code>maybe</code>
+<p><code><a href="../reference/unveil.html">unveil()</a></code> converts the value from the <code>maybe</code>
 type to the underlying type of the object. Compare to:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="fu">r_sqrt</span><span class="op">(</span><span class="fl">16</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">value</span></span>
