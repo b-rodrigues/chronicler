@@ -9,3 +9,6 @@
 .quarto
 inst/doc
 result
+.envrc
+.direnv
+.aider*
