@@ -10,7 +10,8 @@ output: github_document
 
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml)
+[![R-hub
+v2](https://github.com/b-rodrigues/chronicler/actions/workflows/rhub.yaml/badge.svg)](https://github.com/b-rodrigues/chronicler/actions/workflows/rhub.yaml/)
 [![Codecov test coverage](https://codecov.io/gh/b-rodrigues/chronicler/branch/master/graph/badge.svg)](https://app.codecov.io/gh/b-rodrigues/chronicler?branch=master)
 <!-- badges: end -->
 
