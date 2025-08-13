@@ -41,13 +41,16 @@ purely <- function(.f, strict = 2) {
 }
 
 #' @noRd
-only_errors <- function(.f, ...) {
-  rlang::try_fetch(.f(...), error = function(err) err)
+only_errors <- function(.f, ...){
+  tryCatch(
+    .f(...),
+    error = function(err) err
+  )
 }
 
 #' @noRd
-errors_and_warnings <- function(.f, ...) {
-  rlang::try_fetch(
+errors_and_warnings <- function(.f, ...){
+  tryCatch(
     .f(...),
     error = function(err) err,
     warning = function(warn) warn
@@ -55,8 +58,8 @@ errors_and_warnings <- function(.f, ...) {
 }
 
 #' @noRd
-errs_warn_mess <- function(.f, ...) {
-  rlang::try_fetch(
+errs_warn_mess <- function(.f, ...){
+  tryCatch(
     .f(...),
     error = function(err) err,
     warning = function(warn) warn,

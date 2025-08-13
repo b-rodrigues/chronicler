@@ -79,3 +79,85 @@ test_that("test group_by", {
     pure_group_by(mtcars, carb)$value
   )
 })
+
+# tests/testthat/test-purely.R
+
+# (Your existing tests go here...)
+
+# --- New tests for the 'strict' parameter ---
+
+test_that("purely's strict parameter behaves as expected for all conditions", {
+
+  # Helper functions to generate specific conditions
+  f_error <- function(x) stop("This is a custom error")
+  f_warning <- function(x) {
+    warning("This is a custom warning")
+    return(x) # Still returns a value
+  }
+  f_message <- function(x) {
+    message("This is a custom message")
+    return(x) # Still returns a value
+  }
+
+  # ---- strict = 1 (Only catches errors) ----
+  context("purely: strict = 1")
+
+  # It SHOULD catch the error
+  res_err_s1 <- purely(f_error, strict = 1)(10)
+  expect_equal(res_err_s1$value, maybe::nothing())
+  expect_equal(res_err_s1$log_df, "This is a custom error")
+
+  # It should IGNORE the warning and return the value
+  expect_warning(res_warn_s1 <- purely(f_warning, strict = 1)(10))
+  expect_equal(res_warn_s1$value, maybe::just(10))
+  expect_true(is.na(res_warn_s1$log_df))
+
+  # It should IGNORE the message and return the value
+  expect_message(res_msg_s1 <- purely(f_message, strict = 1)(10))
+  expect_equal(res_msg_s1$value, maybe::just(10))
+  expect_true(is.na(res_msg_s1$log_df))
+
+
+  # ---- strict = 2 (Default: Catches errors and warnings) ----
+  context("purely: strict = 2")
+
+  # It SHOULD catch the error
+  res_err_s2 <- purely(f_error, strict = 2)(10)
+  expect_equal(res_err_s2$value, maybe::nothing())
+  expect_equal(res_err_s2$log_df, "This is a custom error")
+  
+  # Test the default behavior is the same as strict = 2
+  res_err_s2_default <- purely(f_error)(10)
+  expect_equal(res_err_s2_default$value, maybe::nothing())
+
+
+  # It SHOULD catch the warning
+  res_warn_s2 <- purely(f_warning, strict = 2)(10)
+  expect_equal(res_warn_s2$value, maybe::nothing())
+  expect_equal(res_warn_s2$log_df, "This is a custom warning")
+
+  # It should IGNORE the message and return the value
+  expect_message(res_msg_s2 <- purely(f_message, strict = 2)(10))
+  expect_equal(res_msg_s2$value, maybe::just(10))
+  expect_true(is.na(res_msg_s2$log_df))
+
+
+  # ---- strict = 3 (Catches errors, warnings, and messages) ----
+  context("purely: strict = 3")
+
+  # It SHOULD catch the error
+  res_err_s3 <- purely(f_error, strict = 3)(10)
+  expect_equal(res_err_s3$value, maybe::nothing())
+  expect_equal(res_err_s3$log_df, "This is a custom error")
+
+  # It SHOULD catch the warning
+  res_warn_s3 <- purely(f_warning, strict = 3)(10)
+  expect_equal(res_warn_s3$value, maybe::nothing())
+  expect_equal(res_warn_s3$log_df, "This is a custom warning")
+
+  # It SHOULD catch the message
+  res_msg_s3 <- purely(f_message, strict = 3)(10)
+  expect_equal(res_msg_s3$value, maybe::nothing())
+  # Note: rlang::cnd_message adds a newline to messages
+  expect_equal(res_msg_s3$log_df, "This is a custom message\n")
+})

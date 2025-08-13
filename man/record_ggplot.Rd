@@ -2,35 +2,59 @@
 % Please edit documentation in R/ggplot_fun.R
 \name{record_ggplot}
 \alias{record_ggplot}
-\title{Record ggplot}
+\title{Record a ggplot expression}
 \usage{
 record_ggplot(ggplot_expression, strict = 2)
 }
 \arguments{
-\item{ggplot_expression}{A ggplot expression.}
+\item{ggplot_expression}{The entire \code{{ggplot2}} expression to be recorded.}
 
-\item{strict}{An optional integer argument controlling the behavior of the record() function from chronicler. Default is 2.}
+\item{strict}{An optional integer argument controlling the behavior of the
+error catching, consistent with \code{record()}:
+\itemize{
+\item \code{1}: Catches only errors.
+\item \code{2}: Catches errors and warnings (the default).
+\item \code{3}: Catches errors, warnings, and messages.
+}}
 }
 \value{
-A chronicler object.
+A \code{chronicle} object. On success, its value is the ggplot object. On failure,
+its value is a new ggplot object displaying the error message.
 }
 \description{
-record_ggplot takes a ggplot_expression and an optional strict argument as input and does the following steps:
-\enumerate{
-\item Records the ggplot_fun function with the given strict argument using the record function from chronicler
-\item Passes the ggplot_expression to the recorded ggplot_fun function
-\item Returns the result of the recorded ggplot_fun function
-}
+\code{record_ggplot} captures a complete \code{{ggplot2}} expression, evaluates it, and
+creates a \code{chronicle} object. The log will show the entire expression that was
+evaluated.
+
+If the expression evaluates successfully, the \code{chronicle} object will contain the
+ggplot. If the expression fails (e.g., due to a typo in a mapping), the log will
+capture the error, and the \code{value} of the chronicle object will be a \strong{new ggplot
+object that visually displays the error message}. This ensures that rendering a
+document (like Quarto or R Markdown) does not fail.
 }
 \examples{
 \dontrun{
 library(ggplot2)
-# Unsuccessful example
-x <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg)))
-print(x)
 
 # Successful example
-z <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
-print(z)
+success_plot <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
+
+# This will return the actual mtcars plot
+pick(success_plot, "value")
+
+# Unsuccessful example with a typo in 'mpgg'
+error_plot_chronicled <- record_ggplot(
+  ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg))
+)
+
+# The log will show the failing expression and the error
+read_log(error_plot_chronicled)
+#> [1] "Complete log:"
+#> [2] "NOK! ggplot(data = mtcars) + ... ran unsuccessfully with exception:
+#>      object 'mpgg' not found at ..."
+#> [3] "Total running time: ..."
+
+# This now returns the *error plot* instead of failing or returning NULL
+pick(error_plot_chronicled, "value")
 }
 }
