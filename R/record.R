@@ -30,29 +30,40 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
   fstring <- deparse1(substitute(.f))
 
   function(..., .log_df = data.frame()) {
-    all_args <- list(...)
-    .value <- all_args[[1]]
+    # Capture the call without evaluating arguments to support NSE (e.g., dplyr)
+    call <- match.call()
+    # Extract arguments from the call object. First element is the function name.
+    all_args <- as.list(call[-1])
+
+    # The first argument is our main input value. It needs to be evaluated.
+    # The name of the first argument can be specified or not.
+    # If not specified, it's just the value. If specified, it's name=value.
+    # We need to evaluate it to get the actual value.
+    .value <- eval(all_args[[1]], envir = parent.frame())
+
+    # The rest of the arguments are for the decorated function .f
+    # We keep them as they are (unevaluated)
     other_args <- all_args[-1]
 
+    # For logging, deparse the other_args to get a string representation
     args_str <- sapply(
-      # do not show .value in the arguments, only other_args
-      # other_args can be named or not
       names(other_args),
       function(nm) {
+        arg_val_str <- deparse(other_args[[nm]])
         if (nm == "") {
           # unnamed arg
-          paste(other_args[[nm]])
+          arg_val_str
         } else {
           # named arg
-          paste(nm, "=", other_args[[nm]])
+          paste(nm, "=", arg_val_str)
         }
       }
     )
-    args <- paste0(args_str, collapse = ",")
-
+    args <- paste0(args_str, collapse = ", ")
 
     start <- Sys.time()
     pure_f <- purely(.f, strict = strict)
+    # We pass the evaluated .value and the unevaluated other_args to pure_f
     res_pure <- do.call(pure_f, c(list(.value), other_args))
     end <- Sys.time()
 
