@@ -182,11 +182,11 @@ to numbers:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_clean2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                                                                                                                                                                       </span></span>
-<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 13:41:55.231005"                                                                                                                                                                                                                                       </span></span>
-<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 13:41:55.230937"                                                                                                                                                                                                             </span></span>
-<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 13:41:55.230629"                                                                                                                                                                                            </span></span>
-<span><span class="co">#&gt; [5] "NOK! mutate(as.numeric(passengers)) ran unsuccessfully with following exception: \033[1m\033[22mThere was 1 warning in `.f()`.\n\033[1m\033[22m\033[36mℹ\033[39m In argument: `passengers = as.numeric(passengers)`.\nCaused by warning:\n\033[33m!\033[39m NAs introduced by coercion at 2025-08-13 13:42:00.294138"</span></span>
-<span><span class="co">#&gt; [6] "Total running time: 5.16464424133301"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 19:36:42.264066"                                                                                                                                                                                                                                       </span></span>
+<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 19:36:42.263997"                                                                                                                                                                                                             </span></span>
+<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 19:36:42.263723"                                                                                                                                                                                            </span></span>
+<span><span class="co">#&gt; [5] "NOK! mutate(as.numeric(passengers)) ran unsuccessfully with following exception: \033[1m\033[22mThere was 1 warning in `.f()`.\n\033[1m\033[22m\033[36mℹ\033[39m In argument: `passengers = as.numeric(passengers)`.\nCaused by warning:\n\033[33m!\033[39m NAs introduced by coercion at 2025-08-13 19:36:47.509986"</span></span>
+<span><span class="co">#&gt; [6] "Total running time: 5.3476722240448"</span></span></code></pre></div>
 <p>So what happened is that <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code> introduced
 <code>NA</code>s by coercion. This is what happens when trying to
 convert a character to a number, for example
@@ -310,14 +310,14 @@ print method:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                           </span></span>
-<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 13:41:55.231005"                                           </span></span>
-<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 13:41:55.230937"                 </span></span>
-<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 13:41:55.230629"</span></span>
-<span><span class="co">#&gt; [5] "OK! mutate(as.numeric(passengers)) ran successfully at 2025-08-13 13:42:00.617489"                                       </span></span>
-<span><span class="co">#&gt; [6] "OK! filter(freq == \"M\",tra_meas == \"PAS_BRD_ARR\",!is.na(passengers)) ran successfully at 2025-08-13 13:42:01.042728" </span></span>
-<span><span class="co">#&gt; [7] "OK! mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2025-08-13 13:42:01.042651"                               </span></span>
-<span><span class="co">#&gt; [8] "OK! select(air_pr\\time,date,passengers) ran successfully at 2025-08-13 13:42:01.042577"                                 </span></span>
-<span><span class="co">#&gt; [9] "Total running time: 5.37063312530518"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "OK! select(1,contains(\"20\")) ran successfully at 2025-08-13 19:36:42.264066"                                           </span></span>
+<span><span class="co">#&gt; [3] "OK! pivot_longer(-starts_with(\"freq\"),date,passengers) ran successfully at 2025-08-13 19:36:42.263997"                 </span></span>
+<span><span class="co">#&gt; [4] "OK! separate(1,c(\"freq\", \"unit\", \"tra_meas\", \"air_pr\\\\time\"),,) ran successfully at 2025-08-13 19:36:42.263723"</span></span>
+<span><span class="co">#&gt; [5] "OK! mutate(as.numeric(passengers)) ran successfully at 2025-08-13 19:36:47.835607"                                       </span></span>
+<span><span class="co">#&gt; [6] "OK! filter(freq == \"M\",tra_meas == \"PAS_BRD_ARR\",!is.na(passengers)) ran successfully at 2025-08-13 19:36:48.277573" </span></span>
+<span><span class="co">#&gt; [7] "OK! mutate(paste0(date, \"01\"),ymd(date)) ran successfully at 2025-08-13 19:36:48.277503"                               </span></span>
+<span><span class="co">#&gt; [8] "OK! select(air_pr\\time,date,passengers) ran successfully at 2025-08-13 19:36:48.2774"                                   </span></span>
+<span><span class="co">#&gt; [9] "Total running time: 5.57061529159546"</span></span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code>
 gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People can then read this
 object, can read the log to know what happened and reproduce the steps
