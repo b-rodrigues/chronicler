@@ -1,6 +1,6 @@
 Package: chronicler
 Title: Add Logging To Functions
-Version: 0.2.2.9999
+Version: 0.2.3.9999
 Authors@R: c(
     person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689")),
@@ -38,4 +38,4 @@ Config/fusen/version: 0.5.2
 Encoding: UTF-8
 LazyData: TRUE
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
