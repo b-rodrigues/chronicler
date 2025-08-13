@@ -10,7 +10,6 @@
 #' 3 |> r_sqrt() %>=% r_exp()
 #' @export
 `%>=%` <- function(.c, .f) {
-
   # Capture the right-hand side expression and its environment
   f_quo <- rlang::enquo(.f)
   f_exp <- rlang::quo_get_expr(f_quo)
@@ -31,9 +30,10 @@
 
   # Evaluate the function call with the value from the chronicle object
   # and the accumulated log.
-  rlang::eval_tidy(rlang::call2(f,
-                                .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
-                                !!!expr_ls[-1],
-                                .log_df = .c$log_df))
-
+  rlang::eval_tidy(rlang::call2(
+    f,
+    .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
+    !!!expr_ls[-1],
+    .log_df = .c$log_df
+  ))
 }

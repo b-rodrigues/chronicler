@@ -13,11 +13,9 @@
 #' purely(log)(-10)
 #' purely(log, strict = 1)(-10) # This produces a warning, so with strict = 1 nothing gets captured.
 #' @export
-purely <- function(.f, strict = 2){
-
-  function(.value, ..., .log_df = "Log start..."){
-
-    if(maybe::is_nothing(.value)){
+purely <- function(.f, strict = 2) {
+  function(.value, ..., .log_df = "Log start...") {
+    if (maybe::is_nothing(.value)) {
       return(
         list(
           value = maybe::nothing(),
@@ -26,31 +24,42 @@ purely <- function(.f, strict = 2){
       )
     }
 
-    res <- switch(strict,
-                  only_errors(.f, .value,  ...),
-                  errors_and_warnings(.f, .value, ...),
-                  errs_warn_mess(.f, .value, ...))
+    res <- switch(
+      strict,
+      only_errors(.f, .value, ...),
+      errors_and_warnings(.f, .value, ...),
+      errs_warn_mess(.f, .value, ...)
+    )
 
     is_condition <- inherits(res, c("error", "warning", "message"))
 
     list(
-      value = if(is_condition) maybe::nothing() else maybe::just(res),
-      log_df = if(is_condition) rlang::cnd_message(res) else NA
+      value = if (is_condition) maybe::nothing() else maybe::just(res),
+      log_df = if (is_condition) rlang::cnd_message(res) else NA
     )
   }
 }
 
 #' @noRd
-only_errors <- function(.f, ...){
+only_errors <- function(.f, ...) {
   rlang::try_fetch(.f(...), error = function(err) err)
 }
 
 #' @noRd
-errors_and_warnings <- function(.f, ...){
-  rlang::try_fetch(.f(...), error = function(err) err, warning = function(warn) warn)
+errors_and_warnings <- function(.f, ...) {
+  rlang::try_fetch(
+    .f(...),
+    error = function(err) err,
+    warning = function(warn) warn
+  )
 }
 
 #' @noRd
-errs_warn_mess <- function(.f, ...){
-  rlang::try_fetch(.f(...), error = function(err) err, warning = function(warn) warn, message = function(msg) msg)
+errs_warn_mess <- function(.f, ...) {
+  rlang::try_fetch(
+    .f(...),
+    error = function(err) err,
+    warning = function(warn) warn,
+    message = function(msg) msg
+  )
 }

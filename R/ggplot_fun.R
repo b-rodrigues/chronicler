@@ -17,11 +17,9 @@
 #' }
 #' @noRd
 ggplot_fun <- function(ggplot_expression) {
-
   ggplot_obj <- eval_tidy(ggplot_expression)
   ggplot_build(ggplot_obj)
   return(ggplot_obj)
-
 }
 
 #' Record ggplot
@@ -47,8 +45,6 @@ ggplot_fun <- function(ggplot_expression) {
 #' }
 #' @export
 record_ggplot <- function(ggplot_expression, strict = 2) {
-
   r_ggplot_fun <- record(ggplot_fun, strict = strict)
   r_ggplot_fun(rlang::enquo(ggplot_expression))
-
 }

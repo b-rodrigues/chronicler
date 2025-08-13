@@ -4,7 +4,6 @@ library(ggplot2)
 
 # Test 1: Verify that record_ggplot returns a chronicle object
 test_that("record_ggplot returns a chronicle object", {
-
   # Define the ggplot expression
   gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
@@ -17,7 +16,6 @@ test_that("record_ggplot returns a chronicle object", {
 
 # Test 2: Verify that the chronicle object contains a ggplot object
 test_that("the chronicle object produced by record_ggplot contains a ggplot object", {
-
   # Define the ggplot expression
   gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
@@ -33,7 +31,6 @@ test_that("the chronicle object produced by record_ggplot contains a ggplot obje
 
 # Test 3: Verify that record_ggplot returns expected ggplot "recipe"
 test_that("record_ggplot returns expected ggplot recipe", {
-
   # Create a ggplot expression
   gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
@@ -50,14 +47,12 @@ test_that("record_ggplot returns expected ggplot recipe", {
   # and these are different in record_ggplot() output. This shouldn't have a negative
   # impact on the performance of record_ggplot.
   expect_identical(as.character(gg_expr), as.character(gg_chronicle_recipe))
-
 })
 
 # Test 4: Verify that record_ggplot returns expected ggplot "recipe" components
 # I have introduced this test because of the usage of as.character above,
 # to make sure that the ggplot "recipe" is really correct.
 test_that("record_ggplot returns expected ggplot recipe", {
-
   # Define the ggplot expression
   gg_expr <- ggplot(data = mtcars) +
     geom_point(aes(y = hp, x = mpg)) +
@@ -76,16 +71,28 @@ test_that("record_ggplot returns expected ggplot recipe", {
   gg_chronicle_recipe_list <- ggplot_build(gg_chronicle_value)
 
   # Check the aes mapping
-  expect_identical(gg_expr_list$data[[1]]$mapping, gg_chronicle_recipe_list$data[[1]]$mapping)
+  expect_identical(
+    gg_expr_list$data[[1]]$mapping,
+    gg_chronicle_recipe_list$data[[1]]$mapping
+  )
 
   # Check the geom layer
-  expect_identical(gg_expr_list$layers[[1]]$geom$geomname, gg_chronicle_recipe_list$layers[[1]]$geom$geomname)
+  expect_identical(
+    gg_expr_list$layers[[1]]$geom$geomname,
+    gg_chronicle_recipe_list$layers[[1]]$geom$geomname
+  )
 
   # Check the x scale
-  expect_identical(gg_expr_list$scales$x[[1]]$name, gg_chronicle_recipe_list$scales$x[[1]]$name)
+  expect_identical(
+    gg_expr_list$scales$x[[1]]$name,
+    gg_chronicle_recipe_list$scales$x[[1]]$name
+  )
 
   # Check the y scale
-  expect_identical(gg_expr_list$scales$y[[1]]$name, gg_chronicle_recipe_list$scales$y[[1]]$name)
+  expect_identical(
+    gg_expr_list$scales$y[[1]]$name,
+    gg_chronicle_recipe_list$scales$y[[1]]$name
+  )
 
   # Check the plot title
   expect_identical(gg_expr_list$plot$title, gg_chronicle_recipe_list$plot$title)
@@ -94,7 +101,6 @@ test_that("record_ggplot returns expected ggplot recipe", {
 # Test 5: Verify that record_ggplot produces the same output as the original expression
 # Probably the main test
 test_that("record_ggplot produces the same output as the original expression", {
-
   # Define the ggplot expression
   gg_expr <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))
 
@@ -112,6 +118,8 @@ test_that("record_ggplot produces the same output as the original expression", {
   ggsave(chronicle_plot_file, chronicle_plot)
 
   # Verify that the rendered plots are identical
-  expect_identical(readBin(orig_plot_file, what = "raw"), readBin(chronicle_plot_file, what = "raw"))
+  expect_identical(
+    readBin(orig_plot_file, what = "raw"),
+    readBin(chronicle_plot_file, what = "raw")
+  )
 })
-

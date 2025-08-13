@@ -9,10 +9,12 @@
 #' r_exp <- record(exp)
 #' 3 |> r_sqrt() |> bind_record(r_exp)
 #' @export
-bind_record <- function(.c, .f, ...){
-
-  .f(maybe::from_maybe(.c$value, default = maybe::nothing()), ..., .log_df = .c$log_df)
-
+bind_record <- function(.c, .f, ...) {
+  .f(
+    maybe::from_maybe(.c$value, default = maybe::nothing()),
+    ...,
+    .log_df = .c$log_df
+  )
 }
 
 #' Flatten nested chronicle objects
@@ -25,8 +27,7 @@ bind_record <- function(.c, .f, ...){
 #' a <- as_chronicle(r_log(10))
 #' a
 #' flatten_record(a)
-flatten_record <- function(.c){
-
+flatten_record <- function(.c) {
   nested_chronicle <- maybe::from_maybe(.c$value, default = NULL)
 
   if (!is_chronicle(nested_chronicle)) {
@@ -34,11 +35,11 @@ flatten_record <- function(.c){
     return(.c)
   }
 
-  list(value = nested_chronicle$value,
-       log_df = dplyr::bind_rows(nested_chronicle$log_df,
-                                 .c$log_df)) |>
+  list(
+    value = nested_chronicle$value,
+    log_df = dplyr::bind_rows(nested_chronicle$log_df, .c$log_df)
+  ) |>
     structure(class = "chronicle")
-
 }
 
 #' Evaluate a non-chronicle function on a chronicle object.
@@ -51,12 +52,10 @@ flatten_record <- function(.c){
 #' @examples
 #' as_chronicle(3) |> fmap_record(sqrt)
 #' @export
-fmap_record <- function(.c, .f, ...){
-
+fmap_record <- function(.c, .f, ...) {
   f_string <- deparse(substitute(.f))
 
-  res_pure <- list("log" = NA,
-                   "value" = NA)
+  res_pure <- list("log" = NA, "value" = NA)
 
   log_df <- make_log_df(
     success = 1,
@@ -64,10 +63,12 @@ fmap_record <- function(.c, .f, ...){
     args = f_string,
     res_pure = res_pure,
     start = Sys.time(),
-    end = Sys.time())
+    end = Sys.time()
+  )
 
-  list(value = maybe::fmap(.c$value, .f, ...),
-       log_df = dplyr::bind_rows(.c$log_df,
-                                 log_df)) |>
-  structure(class = "chronicle")
+  list(
+    value = maybe::fmap(.c$value, .f, ...),
+    log_df = dplyr::bind_rows(.c$log_df, log_df)
+  ) |>
+    structure(class = "chronicle")
 }
