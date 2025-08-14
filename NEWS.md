@@ -3,6 +3,7 @@
 ## New features
 
 - New `write_chronicle_df` function which writes data frames to .csv or .xlsx formats alongside their logs.
+- New `zap_log` function that resets the log of a `chronicle` object.
 - Named arguments can now be passed to functions.
 - ggplots can now be recorded as well. If a plot fails, it returns "an error" plot: a red box with the error message shown on it.
   This allows documents that use plots that might need more tweaking to still be compiled.
