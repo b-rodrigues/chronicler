@@ -24,6 +24,8 @@
 #' containing the dataset, and \code{log} containing the log of operations as a
 #' data frame for better readability.
 #'
+#' @importFrom utils write.table
+#'
 #' @examples
 #' \dontrun{
 #' # Assume `c` is a chronicler object
