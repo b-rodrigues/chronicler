@@ -93,21 +93,19 @@ using <code><a href="../reference/record_ggplot.html">record_ggplot()</a></code>
 <code class="sourceCode R"><span><span class="va">r_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record_ggplot.html">record_ggplot</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">mpg</span>, y <span class="op">=</span> <span class="va">hp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, formula <span class="op">=</span> <span class="va">y</span><span class="op">~</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The object <code>r_plot</code> is now a <strong>chronicle</strong>.
 You can access the actual ggplot object using <code><a href="../reference/unveil.html">unveil()</a></code>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/unveil.html">unveil</a></span><span class="op">(</span><span class="va">r_plot</span>, <span class="st">"value"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/unveil.html">unveil</a></span><span class="op">(</span><span class="va">r_plot</span>, <span class="st">"value"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="recording-ggplot_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <p>And inspect the log to see what happened during construction:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_plot</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Complete log:"                                                                                                                          </span></span>
-<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\")() ran successfully at 2025-08-14 14:36:04.355479"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.770904064178467"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                 </span></span>
+<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)() ran successfully at 2025-08-14 14:38:43.068978"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.728503465652466"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="why-record-ggplots">Why record ggplots<a class="anchor" aria-label="anchor" href="#why-record-ggplots"></a>
@@ -141,8 +139,8 @@ the log rather than stopping execution:</p>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span>
 <span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_bad</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                </span></span>
-<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 14:36:05.534294"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.0310990810394287"</span></span></code></pre>
+<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 14:38:44.197972"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.0434601306915283"</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
