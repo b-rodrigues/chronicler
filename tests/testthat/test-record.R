@@ -56,9 +56,10 @@ test_that("test running time", {
 
   r_sleep <- record(sleeping)
 
-  result_pipe <- r_sleep(1) %>=%
-    r_sleep(2)
+  result_pipe <- r_sleep(x = 1) %>=%
+    r_sleep(x = 2)
 
+  expect_equal(unveil(result_pipe, "value"), 3)
   expect_equal(sum(as.integer(result_pipe$log_df$run_time)), 3)
 })
 

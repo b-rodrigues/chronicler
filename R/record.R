@@ -29,27 +29,48 @@
 record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
   fstring <- deparse1(substitute(.f))
 
-  function(..., .log_df = data.frame()) {
-    # Capture all arguments as expressions to support NSE (e.g., dplyr)
-    all_args_exprs <- rlang::enexprs(...)
+  function(.value, ..., .log_df = data.frame()) {
+    # Capture the call and arguments
+    other_args_exprs <- rlang::enexprs(...)
 
-    # The first argument is our main input value.
-    # It needs to be evaluated in the calling environment.
-    .value <- eval(all_args_exprs[[1]], envir = parent.frame())
-    other_args <- all_args_exprs[-1]
+    # Determine the main data value and other arguments based on call type
+    if (missing(.value)) {
+      # This is a direct call, not from a pipe.
+      # e.g., r_sqrt(10) or r_select(df, col)
+      if (length(other_args_exprs) == 0) {
+        stop("At least one argument must be provided.", call. = FALSE)
+      }
+      # The first argument in ... is the data
+      data_val <- eval(other_args_exprs[[1]], envir = parent.frame())
+      func_args <- other_args_exprs[-1]
+      log_args_exprs <- other_args_exprs
+    } else {
+      # This is a piped call, either from `|>` or `%>=%` (bind_record)
+      # .value is the data from the pipe.
+      data_val <- .value
+      func_args <- other_args_exprs
+      # For logging, we need to represent the full call.
+      # deparse(substitute(.value)) will give the name of the variable if it came from a pipe.
+      # For bind_record, it might be complex, so we just represent it as the data itself.
+      # A simple deparse is sufficient for most logging cases.
+      log_args_exprs <- c(list(substitute(.value)), other_args_exprs)
+    }
 
     # For logging, deparse the expressions to get a string representation
-    # We log all arguments passed via ...
-    args <- paste0(sapply(all_args_exprs, deparse), collapse = ", ")
+    # For direct calls, this is perfect. For piped calls, it's an approximation.
+    mc <- match.call()
+    mc$.log_df <- NULL
+    mc[[1]] <- NULL
+    args <- paste0(sapply(mc, deparse), collapse = ", ")
+
 
     start <- Sys.time()
     pure_f <- purely(.f, strict = strict)
-    # We pass the evaluated .value and the unevaluated other_args to pure_f
-    # The first argument to the wrapped function is always the data.
-    res_pure <- do.call(pure_f, c(list(.value), other_args))
+    # We pass the evaluated data_val and the unevaluated other args to pure_f
+    res_pure <- do.call(pure_f, c(list(data_val), func_args))
     end <- Sys.time()
 
-    input <- .value
+    input <- data_val
     output <- maybe::from_maybe(res_pure$value, default = maybe::nothing())
     diff_obj <- switch(
       diff,
