@@ -17,3 +17,8 @@ pkgdown/
 ^codemeta\.json$
 default.nix
 result
+.aider.chat.history.md
+.env
+.envrc
+.aider.tags.cache.v4
+.direnv

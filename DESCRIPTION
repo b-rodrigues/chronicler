@@ -1,5 +1,5 @@
 Package: chronicler
-Title: Add Logging To Functions
+Title: Add Logging to Functions
 Version: 0.3.0
 Authors@R: c(
     person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
