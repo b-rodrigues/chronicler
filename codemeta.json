@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "identifier": "chronicler",
   "description": "Decorate functions to make them return enhanced output. The enhanced output consists in an object of type 'chronicle' containing the result of the function applied to its arguments, as well as a log detailing when the function was run, what were its inputs, what were the errors (if the function failed to run) and other useful information. Tools to handle decorated functions are included, such as a forward pipe operator that makes chaining decorated functions possible.",
-  "name": "chronicler: Add Logging To Functions",
+  "name": "chronicler: Add Logging to Functions",
   "license": "https://spdx.org/licenses/GPL-3.0",
   "version": "0.3.0",
   "programmingLanguage": {
@@ -142,6 +142,12 @@
   "softwareRequirements": {
     "1": {
       "@type": "SoftwareApplication",
+      "identifier": "R",
+      "name": "R",
+      "version": ">= 4.1.0"
+    },
+    "2": {
+      "@type": "SoftwareApplication",
       "identifier": "clipr",
       "name": "clipr",
       "provider": {
@@ -152,7 +158,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=clipr"
     },
-    "2": {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "diffobj",
       "name": "diffobj",
@@ -164,7 +170,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=diffobj"
     },
-    "3": {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
@@ -176,7 +182,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    "4": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
@@ -188,7 +194,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggplot2"
     },
-    "5": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "maybe",
       "name": "maybe",
@@ -200,7 +206,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=maybe"
     },
-    "6": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -212,7 +218,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    "7": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "stringr",
       "name": "stringr",
@@ -224,7 +230,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=stringr"
     },
-    "8": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -236,14 +242,14 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "9": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
-  "fileSize": "452.347KB",
+  "fileSize": "463.346KB",
   "codeRepository": "https://github.com/b-rodrigues/chronicler",
   "releaseNotes": "https://github.com/b-rodrigues/chronicler/blob/main/NEWS.md",
   "readme": "https://github.com/b-rodrigues/chronicler/blob/master/README.md",
