@@ -52,11 +52,13 @@ And inspect the log to see what happened during construction:
 read_log(r_plot)
 ```
 
-# Benefits of Recording ggplots
+# Why record ggplots
 
-1. **Deferred Evaluation:** Errors in layer definitions do not immediately throw — they are logged.
-2. **Debugging:** Warnings, errors, and messages in plot construction are captured.
-3. **Stepwise Inspection:** You can record intermediate layers or manipulations separately.
+The main benefit is to capture errors and return an "error" plot, which is a
+simple plot that shows the error message that was logged during the build
+process. This is especially useful when working on a document, because this way,
+if the plot fails, rendering can continue. This allows you to preview documents
+and fix plots later.
 
 # Handling Errors and Warnings
 
