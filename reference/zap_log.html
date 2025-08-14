@@ -96,10 +96,10 @@ its <code>log_df</code> replaced by a single entry.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"--- Original Log ---\n"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Original Log ---</span>
 <span class="r-in"><span><span class="fu"><a href="read_log.html">read_log</a></span><span class="op">(</span><span class="va">original_chronicle</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Complete log:"                                                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "OK! select(., name, height, mass, species) ran successfully at 2025-08-14 15:42:06.136889"                              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "OK! filter(maybe::from_maybe(.c$value, default = maybe::nothing()), ..1) ran successfully at 2025-08-14 15:42:06.142199"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Total running time: 0.00229454040527344"                                                                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Complete log:"                                                                                                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "OK! select(., name, height, mass, species) ran successfully at 2025-08-14 16:03:47.104513"                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "OK! filter(maybe::from_maybe(.c$value, default = maybe::nothing()), ..1) ran successfully at 2025-08-14 16:03:47.1101"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Total running time: 0.0023958683013916"                                                                               </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 3. Zap the log</span></span></span>
 <span class="r-in"><span><span class="va">zapped_chronicle</span> <span class="op">&lt;-</span> <span class="fu">zap_log</span><span class="op">(</span><span class="va">original_chronicle</span><span class="op">)</span></span></span>
@@ -110,7 +110,7 @@ its <code>log_df</code> replaced by a single entry.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> --- Zapped Log ---</span>
 <span class="r-in"><span><span class="fu"><a href="read_log.html">read_log</a></span><span class="op">(</span><span class="va">zapped_chronicle</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Complete log:"                                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "OK! zap_log(NA) ran successfully at 2025-08-14 15:42:06.148932"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "OK! zap_log(NA) ran successfully at 2025-08-14 16:03:47.117051"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Total running time: 0"                                         </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 5. The underlying data value is unaffected</span></span></span>
