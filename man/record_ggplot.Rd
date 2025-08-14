@@ -17,14 +17,18 @@ record_ggplot(ggplot_expression, strict = 2)
 }}
 }
 \value{
-A \code{chronicle} object.
+A \code{chronicle} object. When printed, it will display the plot if successful
+or an error plot if it failed.
 }
 \description{
 \code{record_ggplot} captures a complete \code{{ggplot2}} expression, evaluates it, and
-creates a \code{chronicle} object. This function uses a robust \code{tryCatch} and
-\code{withCallingHandlers} pattern to reliably capture errors and modern \code{rlang}
-warnings and messages according to the \code{strict} level.
+creates a \code{chronicle} object. It uses a robust \code{tryCatch} and \code{withCallingHandlers}
+pattern to reliably capture errors, warnings, and messages.
 
-If the expression fails, the log will capture the condition, and the \code{value} of
-the chronicle object will be a new ggplot object that visually displays the message.
+To trigger all conditions, including rendering-time warnings and messages, it
+forces a full render of the plot. This is achieved safely by opening a null
+graphics device (\code{pdf(NULL)}), scheduling its closure with \code{on.exit(dev.off())},
+and then printing the plot. This guarantees that the temporary device is always
+closed, even if an error occurs, preventing any side effects on the user's
+active graphics session.
 }

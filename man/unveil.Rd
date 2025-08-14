@@ -4,12 +4,12 @@
 \alias{unveil}
 \title{Retrieve an element from a chronicle object.}
 \usage{
-unveil(.c, .e)
+unveil(.c, .e = "value")
 }
 \arguments{
 \item{.c}{A chronicle object.}
 
-\item{.e}{Element of interest to retrieve, one of "value" or "log_df".}
+\item{.e}{Element of interest to retrieve, one of "value" (default) or "log_df".}
 }
 \value{
 The \code{value} or \code{log_df} element of the chronicle object .c.

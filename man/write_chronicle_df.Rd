@@ -9,30 +9,33 @@ write_chronicle_df(.c, path, row.names = FALSE, sep = ",", ...)
 \arguments{
 \item{.c}{A \code{chronicler} object.}
 
-\item{path}{A single character string specifying the output file path. The file
-extension must be either \code{.csv} or \code{.xlsx}.}
+\item{path}{A single character string specifying the output file path. The
+file extension must be either \code{.csv} or \code{.xlsx}.}
 
-\item{row.names}{Logical, whether to include row names when writing to CSV. Defaults
-to \code{FALSE}.}
+\item{row.names}{Logical, whether to include row names when writing to CSV.
+Defaults to \code{FALSE}.}
 
 \item{sep}{Character. Field separator for CSV output. Defaults to \code{","}.}
 
-\item{...}{Additional arguments passed to \code{\link[utils]{write.table}} when writing CSV.}
+\item{...}{Additional arguments passed to \code{\link[utils]{write.table}}
+when writing CSV.}
 }
 \value{
 Invisibly returns \code{NULL}. The function is called for its side effect of
 writing files.
 }
 \description{
-Saves the contents of a \code{chronicler} object to a CSV or Excel file, including
-both the dataset and the log of operations. The data is stored in the \code{value}
-component of the chronicler object, and the log is included as metadata in the output.
+Saves the contents of a \code{chronicler} object to a CSV or Excel file,
+including both the dataset and the log of operations. The data is stored in
+the \code{value} component of the chronicler object, and the log is included
+as metadata in the output.
 }
 \details{
-When writing a CSV file, the first few lines contain the log of operations performed
-on the data. Users should skip these lines when reading the data back in.
-When writing an Excel file, two sheets are created: \code{value} containing the dataset,
-and \code{log} containing the log of operations as a data frame for better readability.
+When writing a CSV file, the first few lines contain the log of operations
+performed on the data. Users should skip these lines when reading the data
+back in. When writing an Excel file, two sheets are created: \code{value}
+containing the dataset, and \code{log} containing the log of operations as a
+data frame for better readability.
 }
 \examples{
 \dontrun{
