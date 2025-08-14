@@ -231,9 +231,9 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "383.175KB",
+  "fileSize": "443.166KB",
   "codeRepository": "https://github.com/b-rodrigues/chronicler",
   "releaseNotes": "https://github.com/b-rodrigues/chronicler/blob/main/NEWS.md",
   "readme": "https://github.com/b-rodrigues/chronicler/blob/master/README.md",
-  "contIntegration": ["https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/b-rodrigues/chronicler?branch=master"]
+  "contIntegration": ["https://github.com/b-rodrigues/chronicler/actions/workflows/rhub.yaml/", "https://app.codecov.io/gh/b-rodrigues/chronicler?branch=master"]
 }
