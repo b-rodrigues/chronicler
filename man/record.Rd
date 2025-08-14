@@ -34,4 +34,5 @@ viewed using \code{check_diff()}.
 }
 \examples{
 record(sqrt)(10)
+record(sqrt)(x = 10)
 }
