@@ -1,4 +1,3 @@
-# tests/testthat/test-ggplot_fun.R
 library(ggplot2)
 
 # Test that the function correctly records a successful ggplot expression

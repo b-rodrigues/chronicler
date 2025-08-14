@@ -36,14 +36,14 @@ Create a simple plot and record it:
 r_plot <- record_ggplot(
   ggplot(mtcars, aes(x = mpg, y = hp)) +
     geom_point() +
-    geom_smooth(method = "lm", formula = y~x)
+  geom_smooth(method = "lm", formula = y~x)
 )
 ```
 
 The object `r_plot` is now a **chronicle**. You can access the actual ggplot object using `unveil()`:
 
 ```{r}
-unveil(r_plot, "value")
+unveil(r_plot)
 ```
 
 And inspect the log to see what happened during construction:
@@ -51,6 +51,23 @@ And inspect the log to see what happened during construction:
 ```{r}
 read_log(r_plot)
 ```
+
+Just like for other objects, you can promote messages (or warnings)
+to errors. This will show an "error" plot with the error message:
+
+```{r}
+r_plot_strict <- record_ggplot(
+  ggplot(mtcars, aes(x = mpg, y = hp)) +
+    geom_point() +
+  geom_smooth(method = "lm"),
+  strict = 3
+)
+```
+
+```{r}
+unveil(r_plot_strict)
+```
+
 
 # Why record ggplots
 
@@ -73,12 +90,6 @@ r_bad <- record_ggplot(
 r_bad
 read_log(r_bad)
 ```
-
-# Tips
-
-- Use `unveil(..., "value")` to extract the ggplot object for rendering.
-- Use `read_log()` to review warnings, errors, and messages during plot construction.
-- Stepwise recording is useful in complex plotting pipelines or when experimenting interactively.
 
 # Conclusion
 
