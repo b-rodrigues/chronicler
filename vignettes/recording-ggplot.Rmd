@@ -1,0 +1,86 @@
+---
+title: "Recording ggplot Objects with chronicler"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Recording ggplot Objects with chronicler}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(chronicler)
+library(ggplot2)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+`{chronicler}` allows you to "record" ggplot objects so you can trace their
+creation, and debug plots without immediately rendering them. In case of an
+error, an "error plot" gets shown instead, which can be useful when rendering
+documents. This way, plots that fail don't stop the whole rendering process.
+Unlike typical functions, ggplots are lazily evaluated, so capturing their
+construction requires special handling.
+
+This vignette demonstrates how to record and inspect ggplot objects using
+`record_ggplot()`.
+
+# Basic Recording
+
+Create a simple plot and record it:
+
+```{r}
+r_plot <- record_ggplot(
+  ggplot(mtcars, aes(x = mpg, y = hp)) +
+    geom_point() +
+    geom_smooth(method = "lm")
+)
+```
+
+The object `r_plot` is now a **chronicle**. You can access the actual ggplot object using `unveil()`:
+
+```{r}
+unveil(r_plot, "value")
+```
+
+And inspect the log to see what happened during construction:
+
+```{r}
+read_log(r_plot)
+```
+
+# Benefits of Recording ggplots
+
+1. **Deferred Evaluation:** Errors in layer definitions do not immediately throw — they are logged.
+2. **Debugging:** Warnings, errors, and messages in plot construction are captured.
+3. **Stepwise Inspection:** You can record intermediate layers or manipulations separately.
+
+# Handling Errors and Warnings
+
+Typos in aesthetic mappings or layer definitions will be captured in the log rather than stopping execution:
+
+```{r}
+r_bad <- record_ggplot(
+  ggplot(mtcars, aes(x = mpg, y = hpp)) +  # typo: 'hpp'
+    geom_point()
+)
+
+r_bad
+read_log(r_bad)
+```
+
+# Tips
+
+- Use `unveil(..., "value")` to extract the ggplot object for rendering.
+- Use `read_log()` to review warnings, errors, and messages during plot construction.
+- Stepwise recording is useful in complex plotting pipelines or when experimenting interactively.
+
+# Conclusion
+
+`record_ggplot()` provides a safe, traceable way to build ggplot objects, making
+complex plots easier to debug and understand. By integrating ggplot recording
+with `{chronicler}`'s logging and chaining capabilities, you can maintain
+reproducible, debuggable plotting workflows.

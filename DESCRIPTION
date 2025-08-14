@@ -1,6 +1,6 @@
 Package: chronicler
 Title: Add Logging To Functions
-Version: 0.2.3.9999
+Version: 0.3.0
 Authors@R: c(
     person("Bruno", "Rodrigues", , "bruno@brodrigues.co", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-3211-3689")),
@@ -28,6 +28,7 @@ Imports:
 Suggests: 
     knitr,
     lubridate,
+    openxlsx,
     purrr,
     rmarkdown,
     testthat,

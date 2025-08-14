@@ -15,6 +15,7 @@ let
       languageserver
       lubridate
       maybe
+      openxlsx
       purrr
       rhub
       rlang
@@ -57,5 +58,5 @@ pkgs.mkShell {
    LC_MEASUREMENT = "en_US.UTF-8";
 
   buildInputs = [  rpkgs tex system_packages   ];
-  
+
 }

@@ -336,7 +336,7 @@ as_chronicle <- function(.x, .log_df = data.frame()) {
 
 #' Retrieve an element from a chronicle object.
 #' @param .c A chronicle object.
-#' @param .e Element of interest to retrieve, one of "value" or "log_df".
+#' @param .e Element of interest to retrieve, one of "value" (default) or "log_df".
 #' @return The `value` or `log_df` element of the chronicle object .c.
 #' @importFrom maybe from_maybe nothing
 #' @examples
@@ -344,7 +344,7 @@ as_chronicle <- function(.x, .log_df = data.frame()) {
 #' r_exp <- record(exp)
 #' 3 |> r_sqrt() %>=% r_exp() |> unveil("value")
 #' @export
-unveil <- function(.c, .e) {
+unveil <- function(.c, .e = "value") {
   if (!is_chronicle(.c)) {
     stop("`.c` must be a chronicle object.")
   }

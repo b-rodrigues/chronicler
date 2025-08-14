@@ -4,8 +4,14 @@
 
 ### New features
 
+- New `write_chronicle_df` function which writes data frames to .csv or .xlsx formats alongside their logs.
+- Named arguments can now be passed to functions.
 - ggplots can now be recorded as well. If a plot fails, it returns "an error" plot: a red box with the error message shown on it.
   This allows documents that use plots that might need more tweaking to still be compiled.
+
+### Chores
+
+- General code cleanup.
 
 ## chronicler 0.2.1
 
