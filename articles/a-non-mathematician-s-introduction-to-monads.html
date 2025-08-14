@@ -423,8 +423,8 @@ a value to a monadic function is the same.</p>
 <code class="sourceCode R"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_chronicle.html">as_chronicle</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">r_sqrt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">test_that</span><span class="op">(</span><span class="st">"first monadic law"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">r_sqrt</span><span class="op">)</span><span class="op">$</span><span class="va">value</span>, <span class="fu">r_sqrt</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span><span class="st">"first monadic law"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">r_sqrt</span><span class="op">)</span><span class="op">$</span><span class="va">value</span>, <span class="fu">r_sqrt</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🥇</span></span></code></pre></div>
 <p>Turns out that this is not quite the case here; the logs of the two
@@ -439,8 +439,8 @@ package, in other words, the function that coerces values to chronicler
 objects) does nothing. Here again we have an issue with the log, that’s
 why I focus on the value:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">test_that</span><span class="op">(</span><span class="st">"second monadic law"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">expect_equal</span><span class="op">(</span><span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">as_chronicle</span><span class="op">)</span><span class="op">$</span><span class="va">value</span>, <span class="va">a</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span><span class="st">"second monadic law"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span><span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">as_chronicle</span><span class="op">)</span><span class="op">$</span><span class="va">value</span>, <span class="va">a</span><span class="op">$</span><span class="va">value</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">Test passed</span> 🎊</span></span></code></pre></div>
 </div>
@@ -456,8 +456,8 @@ successively or composing them first gives the same result.</p>
 <span><span class="va">r_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="va">r_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/record.html">record</a></span><span class="op">(</span><span class="va">mean</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">test_that</span><span class="op">(</span><span class="st">"third monadic law"</span>, <span class="op">{</span></span>
-<span>  <span class="fu">expect_equal</span><span class="op">(</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_that.html" class="external-link">test_that</a></span><span class="op">(</span><span class="st">"third monadic law"</span>, <span class="op">{</span></span>
+<span>  <span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/equality-expectations.html" class="external-link">expect_equal</a></span><span class="op">(</span></span>
 <span>  <span class="op">(</span></span>
 <span>    <span class="op">(</span><span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">r_sqrt</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>   <span class="fu"><a href="../reference/bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_exp</span><span class="op">)</span></span>
