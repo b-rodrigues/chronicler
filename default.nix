@@ -46,34 +46,6 @@ let
       R;
   };
 
-    chronicler = (pkgs.rPackages.buildRPackage {
-      name = "chronicler";
-      src = pkgs.fetchgit {
-        url = "https://github.com/b-rodrigues/chronicler/";
-        rev = "e458b230b56349a62709d174cb4c4793b05684f1";
-        sha256 = "sha256-9ywPvsWp0Jxx4E35v0O40OaOz1rVSON8Q7i7eGHjTzM=";
-      };
-      propagatedBuildInputs = builtins.attrValues {
-        inherit (pkgs.rPackages) 
-          clipr
-          diffobj
-          dplyr
-          ggplot2
-          knitr
-          lubridate
-          maybe
-          openxlsx
-          purrr
-          rlang
-          rmarkdown
-          stringr
-          testthat
-          tibble
-          tidyr
-          ;
-      };
-    });
-  
 in
 
 pkgs.mkShell {
@@ -85,6 +57,6 @@ pkgs.mkShell {
    LC_PAPER = "en_US.UTF-8";
    LC_MEASUREMENT = "en_US.UTF-8";
 
-  buildInputs = [  rpkgs tex chronicler system_packages   ];
+  buildInputs = [  rpkgs tex system_packages   ];
 
 }
