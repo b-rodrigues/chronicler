@@ -1,3 +1,8 @@
+# Submission of version 0.3.0
+
+No notes, no errors nor warnings. Tested on win-devel and win-release as
+well as R-hub.
+
 # Submission of version 0.2.2
 
 Minor update, to take tidyselect v 1.2.1 into account: two unit tests
