@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/b-rodrigues/chronicler/actions/workflows/R-CMD-check.yaml)
+[![R-hub v2](https://github.com/b-rodrigues/chronicler/actions/workflows/rhub.yaml/badge.svg)](https://github.com/b-rodrigues/chronicler/actions/workflows/rhub.yaml/)
 [![Codecov test coverage](https://codecov.io/gh/b-rodrigues/chronicler/branch/master/graph/badge.svg)](https://app.codecov.io/gh/b-rodrigues/chronicler?branch=master)
 <!-- badges: end -->
 
@@ -41,12 +41,13 @@ devtools::install_github("b-rodrigues/chronicler")
 
 ## Introduction
 
-`{chronicler}` provides the `record()` function, which allows you to modify functions so that they
-provide enhanced output. This enhanced output consists in a detailed log, and by chaining decorated
-functions, it becomes possible to have a complete trace of the operations that led to the final
-output. These decorated functions work exactly the same as their undecorated counterparts, but some
-care is required for correctly handling them. This introduction will give you a quick overview of
-this package’s functionality.
+`{chronicler}` provides the `record()` function, which allows you to modify
+functions so that they provide enhanced output. This enhanced output consists in
+a detailed log, and by chaining decorated functions, it becomes possible to have
+a complete trace of the operations that led to the final output. These decorated
+functions work exactly the same as their undecorated counterparts, but some care
+is required for correctly handling them. This introduction will give you a quick
+overview of this package’s functionality.
 
 Let's first start with a simple example, by decorating the `sqrt()` function:
 
@@ -113,8 +114,8 @@ b <- 1:10 |>
 
 ```
 
-(`bind_record()` is used to chain multiple decorated functions and will be explained in
-detail in the next section.)
+(`bind_record()` is used to chain multiple decorated functions and will be
+explained in detail in the next section.)
 
 ```{r}
 read_log(b)
@@ -132,9 +133,10 @@ r_exp <- record(exp)
 r_mean <- record(mean)
 ```
 
-you can use the `record_many()` function. `record_many()` takes a list of functions (as strings)
-as an input and puts generated code in your system's clipboard. You can then paste the code
-into your text editor. The gif below illustrates how `record_many()` works:
+you can use the `record_many()` function. `record_many()` takes a list of
+functions (as strings) as an input and puts generated code in your system's
+clipboard. You can then paste the code into your text editor. The gif below
+illustrates how `record_many()` works:
 
 ![`record_many()` in action](https://raw.githubusercontent.com/b-rodrigues/chronicler/master/data-raw/record_many.gif)
 
