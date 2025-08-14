@@ -106,23 +106,17 @@ You can access the actual ggplot object using <code><a href="../reference/unveil
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_plot</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                          </span></span>
-<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\")() ran successfully at 2025-08-14 14:19:12.336575"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.824052095413208"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\")() ran successfully at 2025-08-14 14:36:04.355479"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.770904064178467"</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="benefits-of-recording-ggplots">Benefits of Recording ggplots<a class="anchor" aria-label="anchor" href="#benefits-of-recording-ggplots"></a>
+<h2 id="why-record-ggplots">Why record ggplots<a class="anchor" aria-label="anchor" href="#why-record-ggplots"></a>
 </h2>
-<ol style="list-style-type: decimal">
-<li>
-<strong>Deferred Evaluation:</strong> Errors in layer definitions do
-not immediately throw — they are logged.</li>
-<li>
-<strong>Debugging:</strong> Warnings, errors, and messages in plot
-construction are captured.</li>
-<li>
-<strong>Stepwise Inspection:</strong> You can record intermediate
-layers or manipulations separately.</li>
-</ol>
+<p>The main benefit is to capture errors and return an “error” plot,
+which is a simple plot that shows the error message that was logged
+during the build process. This is especially useful when working on a
+document, because this way, if the plot fails, rendering can continue.
+This allows you to preview documents and fix plots later.</p>
 </div>
 <div class="section level2">
 <h2 id="handling-errors-and-warnings">Handling Errors and Warnings<a class="anchor" aria-label="anchor" href="#handling-errors-and-warnings"></a>
@@ -138,16 +132,17 @@ the log rather than stopping execution:</p>
 <span><span class="va">r_bad</span></span>
 <span><span class="co">#&gt; NOK! Value computed unsuccessfully:</span></span>
 <span><span class="co">#&gt; ---------------</span></span>
-<span><span class="co">#&gt; Just</span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Just</span></span></code></pre></div>
+<p><img src="recording-ggplot_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<pre><code><span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ---------------</span></span>
 <span><span class="co">#&gt; This is an object of type `chronicle`.</span></span>
 <span><span class="co">#&gt; Retrieve the value of this object with unveil(.c, "value").</span></span>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span>
 <span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_bad</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                </span></span>
-<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 14:19:13.655795"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.0326986312866211"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 14:36:05.534294"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.0310990810394287"</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
