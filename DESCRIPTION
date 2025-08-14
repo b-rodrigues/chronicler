@@ -15,6 +15,7 @@ Description: Decorate functions to make them return enhanced output. The
     a forward pipe operator that makes chaining decorated functions
     possible.
 License: GPL (>= 3)
+Depends: R (>= 4.1.0)
 Imports: 
     clipr,
     diffobj,

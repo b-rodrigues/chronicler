@@ -348,7 +348,7 @@ list_log <- \(x)(as.list(log(x)))
 
 ```
 
-(thanks to [@armcn_](https://twitter.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw)
+(thanks to [@armcn_](https://x.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw)
 for showing me this)
 
 In sum, monads are useful when you need values to also carry something more with
@@ -358,7 +358,7 @@ monad](https://armcn.github.io/maybe/). `{chronicle}` actually takes advantage
 of the `{maybe}` package and uses the maybe monad to handle cases where
 functions fail. I provide a short introduction to the maybe monad in the [Maybe
 monad
-vignette](https://b-rodrigues.github.io/chronicler/articles/maybe-monad.html).
+vignette](https://b-rodrigues.github.io/chronicler/articles/the-maybe-monad.html).
 
 
 # Monadic laws

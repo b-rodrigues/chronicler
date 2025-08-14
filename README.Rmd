@@ -25,7 +25,7 @@ Easily add logs to your functions, without interfering with the global environme
 
 ## Installation
 
-The package is available on [CRAN](https://cran.r-project.org/web/packages/chronicler/).
+The package is available on [CRAN](https://cran.r-project.org/package=chronicler).
 Install it with:
 
 ```{r, eval = FALSE}
@@ -377,10 +377,10 @@ read_log(r_plot_1)
 ## Thanks
 
 I’d like to thank [armcn](https://github.com/armcn), [Kupac](https://github.com/Kupac) for their
-blog posts ([here](https://kupac.gitlab.io/biofunctor/2019/05/25/maybe-monad-in-r/)) and 
+blog posts ([here](https://www.biobits.be/biofunctor/2019/05/25/maybe-monad-in-r/)) and 
 packages ([maybe](https://armcn.github.io/maybe/)) which inspired me to build this package.
-Thank you as well to [TimTeaFan](https://community.rstudio.com/t/help-with-writing-a-custom-pipe-and-environments/133447/2?u=brodriguesco)
-for his help with writing the `%>=%` infix operator, [nigrahamuk](https://community.rstudio.com/t/best-way-to-catch-rlang-errors-consistently/131632/5?u=brodriguesco)
-for showing me a nice way to catch errors, and finally [Mwavu](https://community.rstudio.com/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco)
+Thank you as well to [TimTeaFan](https://forum.posit.co/t/help-with-writing-a-custom-pipe-and-environments/133447/2?u=brodriguesco)
+for his help with writing the `%>=%` infix operator, [nigrahamuk](https://forum.posit.co/t/best-way-to-catch-rlang-errors-consistently/131632/5?u=brodriguesco)
+for showing me a nice way to catch errors, and finally [Mwavu](https://forum.posit.co/t/how-to-do-call-a-dplyr-function/131396/2?u=brodriguesco)
 for pointing me towards the right direction with an issue I've had as I started working on this package.
-Thanks to [Putosaure](https://twitter.com/putosaure) for designing the hex logo.
+Thanks to [Putosaure](https://x.com/putosaure) for designing the hex logo.
