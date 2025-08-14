@@ -36,7 +36,7 @@ Create a simple plot and record it:
 r_plot <- record_ggplot(
   ggplot(mtcars, aes(x = mpg, y = hp)) +
     geom_point() +
-    geom_smooth(method = "lm")
+    geom_smooth(method = "lm", formula = y~x)
 )
 ```
 
