@@ -14,55 +14,35 @@
 #' purely(log, strict = 1)(-10) # This produces a warning, so with strict = 1 nothing gets captured.
 #' @export
 purely <- function(.f, strict = 2) {
+  force(.f)
+
   function(.value, ..., .log_df = "Log start...") {
     if (maybe::is_nothing(.value)) {
-      return(
-        list(
-          value = maybe::nothing(),
-          log_df = "A `Nothing` was given as input."
-        )
-      )
+      return(list(
+        value = maybe::nothing(),
+        log_df = "A `Nothing` was given as input."
+      ))
     }
 
+    handler <- function(cnd) cnd
     res <- switch(
-      strict,
-      only_errors(.f, .value, ...),
-      errors_and_warnings(.f, .value, ...),
-      errs_warn_mess(.f, .value, ...)
+      as.integer(strict),
+      tryCatch(.f(.value, ...), error = handler),
+      tryCatch(.f(.value, ...), error = handler, warning = handler),
+      tryCatch(
+        .f(.value, ...),
+        error = handler,
+        warning = handler,
+        message = handler
+      ),
+      stop("`strict` must be 1, 2, or 3.", call. = FALSE)
     )
 
-    is_condition <- inherits(res, c("error", "warning", "message"))
+    is_condition <- inherits(res, "condition")
 
     list(
       value = if (is_condition) maybe::nothing() else maybe::just(res),
-      log_df = if (is_condition) rlang::cnd_message(res) else NA
+      log_df = if (is_condition) rlang::cnd_message(res) else NA_character_
     )
   }
-}
-
-#' @noRd
-only_errors <- function(.f, ...) {
-  tryCatch(
-    .f(...),
-    error = function(err) err
-  )
-}
-
-#' @noRd
-errors_and_warnings <- function(.f, ...) {
-  tryCatch(
-    .f(...),
-    error = function(err) err,
-    warning = function(warn) warn
-  )
-}
-
-#' @noRd
-errs_warn_mess <- function(.f, ...) {
-  tryCatch(
-    .f(...),
-    error = function(err) err,
-    warning = function(warn) warn,
-    message = function(msg) msg
-  )
 }

@@ -15,16 +15,17 @@
 #' This diff can be found in the `log_df` element of the result, and can be
 #' viewed using `check_diff()`.
 #' @importFrom diffobj diffObj summary
-#' @importFrom dplyr mutate lag row_number select
-#' @importFrom maybe is_nothing
+#' @importFrom dplyr mutate lag row_number bind_rows
+#' @importFrom maybe is_nothing from_maybe nothing just
 #' @importFrom rlang enexprs
 #' @importFrom tibble tibble
-#' @importFrom utils tail
 #' @examples
 #' record(sqrt)(10)
 #' record(sqrt)(x = 10)
 #' @export
 record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
+  force(.f)
+  force(.g)
   fstring <- deparse1(substitute(.f))
 
   function(.value, ..., .log_df = data.frame()) {
@@ -69,17 +70,19 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
 
     input <- data_val
     output <- maybe::from_maybe(res_pure$value, default = maybe::nothing())
+
     diff_obj <- switch(
       diff,
       "none" = NULL,
       "summary" = diffobj::summary(diffobj::diffObj(input, output)),
-      "full" = diffobj::diffObj(input, output)
+      "full" = diffobj::diffObj(input, output),
+      stop('`diff` must be one of "none", "summary", "full".', call. = FALSE)
     )
 
     was_successful <- !maybe::is_nothing(res_pure$value)
 
     log_df_entry <- make_log_df(
-      success = as.integer(was_successful),
+      success = was_successful,
       fstring = fstring,
       args = args,
       res_pure = res_pure,
@@ -195,25 +198,33 @@ make_log_df <- function(
   .g = (\(x) NA),
   diff_obj = NULL
 ) {
-  outcome <- ifelse(success == 1, "OK! Success", "NOK! Caution - ERROR")
+  ok <- isTRUE(success) || identical(success, 1L)
+  outcome <- if (ok) "OK! Success" else "NOK! Caution - ERROR"
+
+  msg <- res_pure$log_df
+  if (is.null(msg) || length(msg) == 0) {
+    msg <- NA_character_
+  }
+  msg <- paste0(msg, collapse = " ")
 
   tibble::tibble(
-    "ops_number" = ops_number,
-    "outcome" = outcome,
+    ops_number = ops_number,
+    outcome = outcome,
     "function" = fstring,
-    "arguments" = args,
-    "message" = paste0(res_pure$log_df, collapse = " "),
-    "start_time" = start,
-    "end_time" = end,
-    "run_time" = end - start,
-    "g" = list(.g(maybe::from_maybe(
+    arguments = args,
+    message = msg,
+    start_time = start,
+    end_time = end,
+    run_time = end - start,
+    g = list(.g(maybe::from_maybe(
       res_pure$value,
       default = maybe::nothing()
     ))),
-    "diff_obj" = list(diff_obj),
-    "lag_outcome" = NA
+    diff_obj = list(diff_obj),
+    lag_outcome = NA_character_
   )
 }
+
 
 #' Reads the log of a chronicle.
 #' @param .c A chronicle object.
@@ -248,7 +259,7 @@ read_log <- function(.c) {
   total_runtime <- sum(log_df$run_time)
   units(total_runtime) <- "secs"
 
-  sentences <- sapply(1:nrow(log_df), make_sentence)
+  sentences <- sapply(seq_len(nrow(log_df)), make_sentence)
 
   c("Complete log:", sentences, paste("Total running time:", total_runtime))
 }
@@ -292,7 +303,7 @@ print.chronicle <- function(x, ...) {
 #' @export
 #' @return TRUE if .x is of class "chronicle", FALSE if not.
 is_chronicle <- function(.x) {
-  identical(class(.x), "chronicle")
+  inherits(.x, "chronicle")
 }
 
 #' Coerce an object to a chronicle object.
@@ -306,12 +317,13 @@ is_chronicle <- function(.x) {
 #' as_chronicle(3)
 #' @export
 as_chronicle <- function(.x, .log_df = data.frame()) {
-  res_pure <- list("log" = NA, "value" = NA)
+  # Match the shape expected by make_log_df()
+  res_pure <- list(log_df = NA_character_, value = NA)
 
   log_df <- make_log_df(
-    success = 1,
+    success = TRUE,
     fstring = "as_chronicle",
-    args = NA,
+    args = NA_character_,
     res_pure = res_pure,
     start = Sys.time(),
     end = Sys.time()

@@ -20,18 +20,17 @@ bind_record <- function(.c, .f, ...) {
 #' Flatten nested chronicle objects
 #' @param .c A nested chronicle object, where the $value element is itself a chronicle object
 #' @return Returns `.c` where value is the actual value, and logs are concatenated.
-#' @export
 #' @examples
 #' r_sqrt <- record(sqrt)
 #' r_log <- record(log)
 #' a <- as_chronicle(r_log(10))
 #' a
 #' flatten_record(a)
+#' @export
 flatten_record <- function(.c) {
   nested_chronicle <- maybe::from_maybe(.c$value, default = NULL)
 
   if (!is_chronicle(nested_chronicle)) {
-    # If the value is not a chronicle object, return the original object
     return(.c)
   }
 
@@ -55,10 +54,11 @@ flatten_record <- function(.c) {
 fmap_record <- function(.c, .f, ...) {
   f_string <- deparse(substitute(.f))
 
-  res_pure <- list("log" = NA, "value" = NA)
+  # Match the shape expected by make_log_df()
+  res_pure <- list(log_df = NA_character_, value = NA)
 
   log_df <- make_log_df(
-    success = 1,
+    success = TRUE,
     fstring = "fmap_record",
     args = f_string,
     res_pure = res_pure,

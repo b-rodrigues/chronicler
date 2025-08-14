@@ -1,33 +1,34 @@
 let
  pkgs = import (fetchTarball "https://github.com/rstats-on-nix/nixpkgs/archive/2025-08-13.tar.gz") {};
- 
+
   rpkgs = builtins.attrValues {
     inherit (pkgs.rPackages) 
-      codetools
-      codemetar
       clipr
+      codemetar
+      codetools
       devtools
-      diffviewer
       diffobj
+      diffviewer
       ggplot2
-      maybe
-      rlang
-      stringr
-      tibble
-      purrr
-      tidyr
       jsonlite
       knitr
       languageserver
       lubridate
+      maybe
+      purrr
       rhub
+      rlang
       rmarkdown
+      stringr
       styler
       sys
       testthat
-      urlchecker;
+      tibble
+      tidyr
+      urlchecker
+      ;
   };
-  
+
   tex = (pkgs.texlive.combine {
     inherit (pkgs.texlive) 
       scheme-small

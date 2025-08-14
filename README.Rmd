@@ -357,7 +357,8 @@ plot_1 <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg))
 
 The error will only be thrown when you force evaluation, for example by printing `plot_1`.
 
-The function `record_ggplot()` takes the ggplot specification as the first argument. It can also take the `strict` argument mentioned above. 
+The function `record_ggplot()` takes the ggplot specification as the first
+argument. It can also take the `strict` argument mentioned above.
 
 ```{r}
 r_plot_1 <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
