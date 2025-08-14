@@ -25,12 +25,15 @@ library(testthat)
 
 # Introduction
 
-This vignette introduces the functional programming concept of *monad*, without going into
-much technical detail. `{chronicler}` is an implementation of a logger monad, but in truth, 
-it is not necessary to know what monads are to use this package. However, if you are curious,
-read on. A monad is a computation device that offers two things:
+This vignette introduces the functional programming concept of *monad*, without
+going into much technical detail. `{chronicler}` is an implementation of a
+logger monad, but in truth, it is not necessary to know what monads are to use
+this package. However, if you are curious, read on. A monad is a computation
+device that offers two things:
 
-- the possibility to decorate functions so they can provide additional output without having to touch the function's core implementation;
+- the possibility to decorate functions so they can provide additional output
+  without having to touch the function's core implementation;
+
 - a way to compose these decorated functions;
 
 (This definition is an oversimplification of the actual definition of a monad,
@@ -71,7 +74,8 @@ There are two problems with such an implementation:
 - we need to rewrite every function we need to use so that they provide logs;
 - these functions don't compose.
 
-What do I mean with "these functions don't compose"? Consider another such function `my_log()`:
+What do I mean with "these functions don't compose"? Consider another such
+function `my_log()`:
 
 
 ```{r parsermd-chunk-4}
