@@ -98,9 +98,6 @@ test_that("purely's strict parameter behaves as expected for all conditions", {
     return(x) # Still returns a value
   }
 
-  # ---- strict = 1 (Only catches errors) ----
-  context("purely: strict = 1")
-
   # It SHOULD catch the error
   res_err_s1 <- purely(f_error, strict = 1)(10)
   expect_equal(res_err_s1$value, maybe::nothing())
@@ -115,9 +112,6 @@ test_that("purely's strict parameter behaves as expected for all conditions", {
   expect_message(res_msg_s1 <- purely(f_message, strict = 1)(10))
   expect_equal(res_msg_s1$value, maybe::just(10))
   expect_true(is.na(res_msg_s1$log_df))
-
-  # ---- strict = 2 (Default: Catches errors and warnings) ----
-  context("purely: strict = 2")
 
   # It SHOULD catch the error
   res_err_s2 <- purely(f_error, strict = 2)(10)
@@ -137,9 +131,6 @@ test_that("purely's strict parameter behaves as expected for all conditions", {
   expect_message(res_msg_s2 <- purely(f_message, strict = 2)(10))
   expect_equal(res_msg_s2$value, maybe::just(10))
   expect_true(is.na(res_msg_s2$log_df))
-
-  # ---- strict = 3 (Catches errors, warnings, and messages) ----
-  context("purely: strict = 3")
 
   # It SHOULD catch the error
   res_err_s3 <- purely(f_error, strict = 3)(10)
