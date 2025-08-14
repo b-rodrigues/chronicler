@@ -130,8 +130,8 @@ rendering (like the one from <code>geom_smooth</code>), use
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_plot</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                 </span></span>
-<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)() ran successfully at 2025-08-14 16:18:32.565669"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.792732954025269"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)() ran successfully at 2025-08-14 16:35:35.104134"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.791420936584473"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="handling-failures-gracefully">Handling Failures Gracefully<a class="anchor" aria-label="anchor" href="#handling-failures-gracefully"></a>
@@ -166,8 +166,8 @@ logged, and an informative error plot is generated instead.</p>
 <span><span class="co"># The log tells you exactly what went wrong</span></span>
 <span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_bad</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                </span></span>
-<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 16:18:33.811815"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.0434005260467529"</span></span></code></pre>
+<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 16:35:36.395531"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.0437648296356201"</span></span></code></pre>
 <p>The R session continues without interruption, and you have a clear
 record of the problem.</p>
 </div>
