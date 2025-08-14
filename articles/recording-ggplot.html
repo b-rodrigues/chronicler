@@ -21,7 +21,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-dark" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="../index.html">chronicler</a>
 
@@ -105,9 +105,9 @@ You can access the actual ggplot object using <code><a href="../reference/unveil
 <p>And inspect the log to see what happened during construction:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_plot</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "Complete log:"                                                                                                                          </span></span>
-<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\")() ran successfully at 2025-08-14 13:48:29.379242"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.813863039016724"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Complete log:"                                                                                                                         </span></span>
+<span><span class="co">#&gt; [2] "OK! ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\")() ran successfully at 2025-08-14 13:55:48.43179"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.816547870635986"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="benefits-of-recording-ggplots">Benefits of Recording ggplots<a class="anchor" aria-label="anchor" href="#benefits-of-recording-ggplots"></a>
@@ -146,8 +146,8 @@ the log rather than stopping execution:</p>
 <span><span class="co">#&gt; To read the log of this object, call read_log(.c).</span></span>
 <span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_bad</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Complete log:"                                                                                                                                                </span></span>
-<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 13:48:30.703079"</span></span>
-<span><span class="co">#&gt; [3] "Total running time: 0.0313618183135986"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2] "NOK! ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()() ran unsuccessfully with following exception: object 'hpp' not found at 2025-08-14 13:55:49.724622"</span></span>
+<span><span class="co">#&gt; [3] "Total running time: 0.0317497253417969"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
