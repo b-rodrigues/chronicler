@@ -18,19 +18,35 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-`{chronicler}` allows you to "record" ggplot objects so you can trace their
-creation, and debug plots without immediately rendering them. In case of an
-error, an "error plot" gets shown instead, which can be useful when rendering
-documents. This way, plots that fail don't stop the whole rendering process.
-Unlike typical functions, ggplots are lazily evaluated, so capturing their
-construction requires special handling.
+Working with `{ggplot2}` can present a unique challenge: **lazy evaluation**. An
+error in your plot code, like a typo in a variable name, won't stop execution
+when you define the plot. The error only appears when you try to print or render
+it. This can be especially frustrating when rendering a long R Markdown or
+Quarto document, where a single broken plot can cause the entire process to
+fail.
 
-This vignette demonstrates how to record and inspect ggplot objects using
-`record_ggplot()`.
+`{chronicler}` provides a solution with `record_ggplot()`. This function acts as
+a safety net, wrapping your entire ggplot expression in a recorder that safely
+evaluates it. It captures not only the final plot, but also all the errors,
+warnings, and messages that occur during its construction.
 
-# Basic Recording
+This process results in two key benefits:
 
-Create a simple plot and record it:
+1.  **Crash-Proof Rendering**: If a plot fails, `record_ggplot()` catches the
+    error and produces a placeholder **error plot** that displays the error
+    message. This allows your R Markdown documents to render completely, letting
+    you fix the broken plot later.
+2.  **Enhanced Debugging**: Every step is logged. You get a detailed,
+    reproducible trace of the plot's construction, making it much easier to
+    diagnose issues.
+
+This vignette demonstrates how to use `record_ggplot()` to make your plotting
+workflows more robust and debuggable.
+
+# Basic Recording and Inspection
+
+Let's start by recording a valid ggplot expression. `record_ggplot()` captures
+the entire call, including all the layers.
 
 ```{r}
 r_plot <- record_ggplot(
@@ -40,46 +56,32 @@ r_plot <- record_ggplot(
 )
 ```
 
-The object `r_plot` is now a **chronicle**. You can access the actual ggplot object using `unveil()`:
+The resulting `r_plot` object is a **chronicle**. When you print it, the ggplot
+object is rendered as usual. Behind the scenes, however, `{chronicler}` has
+logged the entire process.
+
+To get the raw ggplot object back, you can use `unveil()`:
 
 ```{r}
 unveil(r_plot)
 ```
 
-And inspect the log to see what happened during construction:
+To see the detailed log, including any messages generated during rendering (like
+the one from `geom_smooth`), use `read_log()`:
 
 ```{r}
 read_log(r_plot)
 ```
 
-Just like for other objects, you can promote messages (or warnings)
-to errors. This will show an "error" plot with the error message:
+# Handling Failures Gracefully
 
-```{r}
-r_plot_strict <- record_ggplot(
-  ggplot(mtcars, aes(x = mpg, y = hp)) +
-    geom_point() +
-  geom_smooth(method = "lm"),
-  strict = 3
-)
-```
+The real power of `record_ggplot()` becomes apparent when something goes wrong.
 
-```{r}
-unveil(r_plot_strict)
-```
+### Capturing Errors
 
-
-# Why record ggplots
-
-The main benefit is to capture errors and return an "error" plot, which is a
-simple plot that shows the error message that was logged during the build
-process. This is especially useful when working on a document, because this way,
-if the plot fails, rendering can continue. This allows you to preview documents
-and fix plots later.
-
-# Handling Errors and Warnings
-
-Typos in aesthetic mappings or layer definitions will be captured in the log rather than stopping execution:
+Consider a common typo, where `hp` is misspelled as `hpp`. A standard ggplot
+call would throw an error upon printing. With `record_ggplot()`, the error is
+caught and logged, and an informative error plot is generated instead.
 
 ```{r}
 r_bad <- record_ggplot(
@@ -87,13 +89,42 @@ r_bad <- record_ggplot(
     geom_point()
 )
 
+# Printing the object shows the error plot, not a crash
 r_bad
+
+# The log tells you exactly what went wrong
 read_log(r_bad)
+```
+
+The R session continues without interruption, and you have a clear record of the problem.
+
+### Controlling Strictness
+
+Sometimes, you may want to treat messages or warnings as if they were failures.
+The `strict` argument gives you this control. For example, `geom_smooth()`
+produces a message about the formula it's using. By setting `strict = 3`, we can
+tell `record_ggplot` to treat any message as a critical event and generate an
+error plot.
+
+```{r}
+r_plot_strict <- record_ggplot(
+  ggplot(mtcars, aes(x = mpg, y = hp)) +
+    geom_point() +
+    geom_smooth(method = "lm"),
+  strict = 3
+)
+```
+
+Now, instead of the plot, we see the captured message displayed in the error plot:
+
+```{r}
+unveil(r_plot_strict)
 ```
 
 # Conclusion
 
-`record_ggplot()` provides a safe, traceable way to build ggplot objects, making
-complex plots easier to debug and understand. By integrating ggplot recording
-with `{chronicler}`'s logging and chaining capabilities, you can maintain
-reproducible, debuggable plotting workflows.
+`record_ggplot()` provides a safe and traceable way to build ggplot objects. By
+wrapping your plot code, it makes complex plots easier to debug and prevents
+common errors from halting your analysis or document rendering. It transforms
+plot creation from a potentially disruptive step into a logged, reproducible,
+and robust part of your workflow.
