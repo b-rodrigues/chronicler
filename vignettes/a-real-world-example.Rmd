@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(chronicler)
-```
-
 This is practically the same code you can find on this blog post of mine:
 https://www.brodrigues.co/blog/2018-11-14-luxairport/ but with some minor
 updates to reflect the current state of the `{tidyverse}` packages as well as
@@ -33,9 +29,6 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(lubridate)
-
-# Ensure chronicler version of `unveil()` is being used
-unveil <- chronicler::unveil
 
 data("avia")
 ```

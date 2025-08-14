@@ -14,13 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r}
 library(chronicler)
-```
-
-```{r parsermd-chunk-1, include = FALSE}
-library(chronicler)
-library(testthat)
 ```
 
 # Introduction
@@ -324,16 +319,18 @@ by:
 
 ```
 
-and we get the same result (well, not quite, since the log is different). I prefer introducing 
-monads using `bind()`, because `bind()` comes as a natural solution to the problem of decorated
-functions not composing. Not so with `flatmap()`, but in some applications it might be easier
-to first define `flatten()` and `join()` and get `flatmap()` instead of trying to write `bind()`
+and we get the same result (well, not quite, since the log is different). I
+prefer introducing monads using `bind()`, because `bind()` comes as a natural
+solution to the problem of decorated functions not composing. Not so with
+`flatmap()`, but in some applications it might be easier to first define
+`flatten()` and `join()` and get `flatmap()` instead of trying to write `bind()`
 directly, so it’s good to know both approaches.
 
-Before continuing with the final part of this introduction, I just want to share with you that
-lists are also monads. We have everything we need: `as.list()` is `unit()`, `purrr::map()` is `fmap()`
-and `purrr::flatten()` is `flatten()`. This means we can obtain `flatmap()` from composing
-`purrr::flatten()` and `purrr::map()`:
+Before continuing with the final part of this introduction, I just want to share
+with you that lists are also monads. We have everything we need: `as.list()` is
+`unit()`, `purrr::map()` is `fmap()` and `purrr::flatten()` is `flatten()`. This
+means we can obtain `flatmap()` from composing `purrr::flatten()` and
+`purrr::map()`:
 
 
 ```{r parsermd-chunk-22}
@@ -354,34 +351,35 @@ list_log <- \(x)(as.list(log(x)))
 (thanks to [@armcn_](https://twitter.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw)
 for showing me this)
 
-In sum, monads are useful when you need values to also carry something more with them.
-This *something* can be a log, as shown here, but there are many examples.
-For another example of a monad implemented as an R package, see the 
-[maybe monad](https://armcn.github.io/maybe/). `{chronicle}` actually takes advantage of the 
-`{maybe}` package and uses the maybe monad to handle cases where functions fail.
-I provide a short introduction to the maybe monad in the 
-[Maybe monad vignette](https://b-rodrigues.github.io/chronicler/articles/maybe-monad.html).
+In sum, monads are useful when you need values to also carry something more with
+them. This *something* can be a log, as shown here, but there are many examples.
+For another example of a monad implemented as an R package, see the [maybe
+monad](https://armcn.github.io/maybe/). `{chronicle}` actually takes advantage
+of the `{maybe}` package and uses the maybe monad to handle cases where
+functions fail. I provide a short introduction to the maybe monad in the [Maybe
+monad
+vignette](https://b-rodrigues.github.io/chronicler/articles/maybe-monad.html).
 
 
 # Monadic laws
 
-Monads need to satisfy the so-called "monadic laws". We're going to verify if the monad implemented
-in `{chronicler}` satisfies these monadic laws.
+Monads need to satisfy the so-called "monadic laws". We're going to verify if
+the monad implemented in `{chronicler}` satisfies these monadic laws.
 
 
 ## First law
 
-The first law states that passing a monadic value to a monadic function using `bind()` 
-(or in the case of the `{chronicler}` package `bind_record()`) or passing a value to a monadic
-function is the same.
+The first law states that passing a monadic value to a monadic function using
+`bind()` (or in the case of the `{chronicler}` package `bind_record()`) or
+passing a value to a monadic function is the same.
 
 
 ```{r parsermd-chunk-23}
 a <- as_chronicle(10)
 r_sqrt <- record(sqrt)
 
-test_that("first monadic law", {
-  expect_equal(bind_record(a, r_sqrt)$value, r_sqrt(10)$value)
+testthat::test_that("first monadic law", {
+  testthat::expect_equal(bind_record(a, r_sqrt)$value, r_sqrt(10)$value)
 })
 
 ```
@@ -398,8 +396,8 @@ nothing. Here again we have an issue with the log, that's why I focus on the val
 
 
 ```{r parsermd-chunk-24}
-test_that("second monadic law", {
-  expect_equal(bind_record(a, as_chronicle)$value, a$value)
+testthat::test_that("second monadic law", {
+  testthat::expect_equal(bind_record(a, as_chronicle)$value, a$value)
 })
 
 ```
@@ -417,8 +415,8 @@ r_sqrt <- record(sqrt)
 r_exp <- record(exp)
 r_mean <- record(mean)
 
-test_that("third monadic law", {
-  expect_equal(
+testthat::test_that("third monadic law", {
+  testthat::expect_equal(
   (
     (bind_record(a, r_sqrt)) |>
    bind_record(r_exp)
@@ -434,8 +432,8 @@ test_that("third monadic law", {
 
 # flatmap() for `chronicle` objects
 
-For exhaustivity's sake, I check that I can get `flatmap_record()` by composing `flatten_record()` and
-`fmap_record()`:
+For exhaustivity's sake, I check that I can get `flatmap_record()` by composing
+`flatten_record()` and `fmap_record()`:
 
 
 ```{r parsermd-chunk-26}
