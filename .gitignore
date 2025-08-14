@@ -12,3 +12,4 @@ result
 .envrc
 .direnv
 .aider*
+.env
