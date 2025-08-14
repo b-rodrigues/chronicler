@@ -20,7 +20,6 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/a-non-mathematician-s-introduction-to-monads.html">A non-mathematician's introduction to monads</a></li>
     <li><a class="dropdown-item" href="../articles/a-real-world-example.html">A real world example</a></li>
-    <li><a class="dropdown-item" href="../articles/developer-vignette-including-the-avia-data-to-the-package.html">Developer Vignette: Including the avia data to the package</a></li>
     <li><a class="dropdown-item" href="../articles/the-maybe-monad.html">The Maybe monad</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -88,6 +87,17 @@ viewed using <code><a href="check_diff.html">check_diff()</a></code>.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">record</span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> OK! Value computed successfully:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.162278</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> This is an object of type `chronicle`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Retrieve the value of this object with unveil(.c, "value").</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To read the log of this object, call read_log(.c).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="fu">record</span><span class="op">(</span><span class="va">sqrt</span><span class="op">)</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> OK! Value computed successfully:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---------------</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Just</span>

@@ -4,9 +4,8 @@ pkgdown_sha: ~
 articles:
   a-non-mathematician-s-introduction-to-monads: a-non-mathematician-s-introduction-to-monads.html
   a-real-world-example: a-real-world-example.html
-  developer-vignette-including-the-avia-data-to-the-package: developer-vignette-including-the-avia-data-to-the-package.html
   the-maybe-monad: the-maybe-monad.html
-last_built: 2025-08-13T19:36Z
+last_built: 2025-08-14T10:23Z
 urls:
   reference: https://b-rodrigues.github.io/chronicler/reference
   article: https://b-rodrigues.github.io/chronicler/articles
