@@ -220,18 +220,6 @@
     },
     "7": {
       "@type": "SoftwareApplication",
-      "identifier": "stringr",
-      "name": "stringr",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=stringr"
-    },
-    "8": {
-      "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
       "provider": {
@@ -242,14 +230,14 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
-  "fileSize": "467.891KB",
+  "fileSize": "467.398KB",
   "codeRepository": "https://github.com/b-rodrigues/chronicler",
   "releaseNotes": "https://github.com/b-rodrigues/chronicler/blob/main/NEWS.md",
   "readme": "https://github.com/b-rodrigues/chronicler/blob/master/README.md",
