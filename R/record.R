@@ -134,7 +134,6 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
 #' @param strict Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
 #' @param diff Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)
 #' @return Puts a string into the systems clipboard.
-#' @importFrom stringr str_remove_all
 #' @importFrom clipr write_clip
 #' @export
 #' @examples
@@ -148,23 +147,33 @@ record_many <- function(
   strict = 2,
   diff = "none"
 ) {
-  sanitized_list <- stringr::str_remove_all(list_funcs, "(.*?)\\:")
+  if (!requireNamespace("clipr", quietly = TRUE)) {
+    stop(
+      sprintf(
+        "The 'clipr' package is required to use 'record_many()'.\n  Please install it to use this feature.",
+        ext
+      )
+    )
+  }
+  sanitized_list <- gsub(".*?:", "", list_funcs)
+
+  string_to_paste <- paste0(
+    "r_",
+    sanitized_list,
+    " <- ",
+    "record(",
+    list_funcs,
+    ", .g = ",
+    deparse(substitute(.g)),
+    ", strict = ",
+    strict,
+    ", diff = ",
+    paste0("\"", diff, "\""),
+    ")"
+  )
 
   clipr::write_clip(
-    paste0(
-      "r_",
-      sanitized_list,
-      " <- ",
-      "record(",
-      list_funcs,
-      ", .g = ",
-      deparse(substitute(.g)),
-      ", strict = ",
-      strict,
-      ", diff = ",
-      paste0("\"", diff, "\""),
-      ")"
-    )
+    string_to_paste
   )
 
   message(

@@ -17,7 +17,6 @@ Description: Decorate functions to make them return enhanced output. The
 License: GPL (>= 3)
 Depends: R (>= 4.1.0)
 Imports: 
-    clipr,
     diffobj,
     dplyr,
     ggplot2,
@@ -27,6 +26,7 @@ Imports:
     tibble,
     utils
 Suggests: 
+    clipr,
     knitr,
     lubridate,
     openxlsx,
