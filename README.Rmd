@@ -344,6 +344,7 @@ first input throughout the pipeline.
 `diff` functionality is provided by the `{diffobj}` package.
 
 ## Recording ggplot
+
 This package provides a `record()` implementation for `{ggplot2}` called `record_ggplot()`. It is a separate function for two main reasons: 
 
 * ggplot specifications are composed of multiple function calls.

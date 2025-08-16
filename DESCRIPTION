@@ -22,7 +22,6 @@ Imports:
     ggplot2,
     maybe,
     rlang,
-    stringr,
     tibble,
     utils
 Suggests: 
