@@ -111,7 +111,7 @@ test_that("The error plot's annotation layer contains the correct error message"
   expect_true(grepl(error_message, log_message))
   # The label in the plot is wrapped, so we test if the log message is contained within it
   expect_true(grepl(
-    stringr::str_wrap(log_message, 40),
+    strwrap(log_message),
     error_label_in_plot,
     fixed = TRUE
   ))

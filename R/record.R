@@ -149,8 +149,7 @@ record_many <- function(
   if (!requireNamespace("clipr", quietly = TRUE)) {
     stop(
       sprintf(
-        "The 'clipr' package is required to use 'record_many()'.\n  Please install it to use this feature.",
-        ext
+        "The 'clipr' package is required to use 'record_many()'.\n  Please install it to use this feature."
       )
     )
   }
@@ -263,9 +262,9 @@ make_log_df <- function(
 #' r_group_by <- record(dplyr::group_by)
 #' r_summarise <- record(dplyr::summarise)
 #'
-#' output <- dplyr::starwars %>%
-#'   r_select(height, mass, species, sex) %>%
-#'   bind_record(r_group_by, species, sex) %>%
+#' output <- dplyr::starwars |>
+#'   r_select(height, mass, species, sex) |>
+#'   bind_record(r_group_by, species, sex) |>
 #'   bind_record(r_summarise, mass = mean(mass, na.rm = TRUE))
 #'
 #' read_log(output, style = "pretty")

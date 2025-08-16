@@ -27,7 +27,6 @@ Let's first load the required packages, and the `avia` dataset included in the
 library(chronicler)
 library(dplyr)
 library(tidyr)
-library(stringr)
 library(lubridate)
 
 data("avia")

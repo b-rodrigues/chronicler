@@ -39,9 +39,9 @@ r_select <- record(dplyr::select)
 r_group_by <- record(dplyr::group_by)
 r_summarise <- record(dplyr::summarise)
 
-output <- dplyr::starwars \%>\%
-  r_select(height, mass, species, sex) \%>\%
-  bind_record(r_group_by, species, sex) \%>\%
+output <- dplyr::starwars |>
+  r_select(height, mass, species, sex) |>
+  bind_record(r_group_by, species, sex) |>
   bind_record(r_summarise, mass = mean(mass, na.rm = TRUE))
 
 read_log(output, style = "pretty")

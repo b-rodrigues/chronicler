@@ -40,7 +40,10 @@ write_chronicle_df <- function(.c, path, row.names = FALSE, sep = ",", ...) {
   value <- chronicler::unveil(.c, "value")
   stopifnot("Value must be of class data.frame!" = is.data.frame(value))
 
-  ext <- stringr::str_extract(path, "\\.([0-9a-z]+)(?=[?#])|(\\.)(?:[\\w]+)$")
+  ext <- regmatches(
+    path,
+    regexpr("\\.([0-9a-z]+)(?=[?#])|(\\.)(?:[\\w]+)$", path, perl = TRUE)
+  )
 
   if (
     any(ext %in% c(".xlsx", ".xls")) &&
