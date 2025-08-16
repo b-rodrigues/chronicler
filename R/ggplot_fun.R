@@ -3,7 +3,7 @@
 #' @importFrom ggplot2 ggplot aes annotate theme_void theme element_rect
 create_error_plot <- function(error_message) {
   background_color <- "#FFDDDD"
-  error_text <- strwrap(error_message, width = 40)
+  error_text <- strwrap(error_message)
 
   ggplot2::ggplot() +
     ggplot2::aes(x = 0, y = 0) +
