@@ -56,6 +56,18 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "clipr",
+      "name": "clipr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=clipr"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "knitr",
       "name": "knitr",
       "provider": {
@@ -148,18 +160,6 @@
     },
     "2": {
       "@type": "SoftwareApplication",
-      "identifier": "clipr",
-      "name": "clipr",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=clipr"
-    },
-    "3": {
-      "@type": "SoftwareApplication",
       "identifier": "diffobj",
       "name": "diffobj",
       "provider": {
@@ -170,7 +170,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=diffobj"
     },
-    "4": {
+    "3": {
       "@type": "SoftwareApplication",
       "identifier": "dplyr",
       "name": "dplyr",
@@ -182,7 +182,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=dplyr"
     },
-    "5": {
+    "4": {
       "@type": "SoftwareApplication",
       "identifier": "ggplot2",
       "name": "ggplot2",
@@ -194,7 +194,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ggplot2"
     },
-    "6": {
+    "5": {
       "@type": "SoftwareApplication",
       "identifier": "maybe",
       "name": "maybe",
@@ -206,7 +206,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=maybe"
     },
-    "7": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "rlang",
       "name": "rlang",
@@ -218,7 +218,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rlang"
     },
-    "8": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "stringr",
       "name": "stringr",
@@ -230,7 +230,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=stringr"
     },
-    "9": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "tibble",
       "name": "tibble",
@@ -242,14 +242,14 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
-    "10": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "utils",
       "name": "utils"
     },
     "SystemRequirements": null
   },
-  "fileSize": "463.346KB",
+  "fileSize": "467.891KB",
   "codeRepository": "https://github.com/b-rodrigues/chronicler",
   "releaseNotes": "https://github.com/b-rodrigues/chronicler/blob/main/NEWS.md",
   "readme": "https://github.com/b-rodrigues/chronicler/blob/master/README.md",
