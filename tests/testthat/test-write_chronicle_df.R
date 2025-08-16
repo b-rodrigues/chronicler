@@ -21,7 +21,7 @@ test_that("write_chronicle_df csv output matches snapshot", {
     dplyr::filter(sex != "male") |>
     dplyr::summarise(mass = mean(mass, na.rm = TRUE))
 
-  actual <- read.csv(temp_csv_path, skip = 8)
+  actual <- read.csv(temp_csv_path, skip = 7)
 
   # Can't test the log because of the timestamp
   # so no snapshot tests
