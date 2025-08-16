@@ -238,7 +238,7 @@ read_log <- function(.c) {
   log_df <- .c$log_df
 
   make_sentence <- function(i) {
-    func_call <- paste0(log_df[i, "function"], "(", log_df[i, "arguments"], ")")
+    func_call <- paste0("`", log_df[i, "function"], "`")
     success_status <- if (grepl("Success", log_df$outcome[i])) {
       "successfully"
     } else {
