@@ -129,7 +129,7 @@ rendering (like the one from <code>geom_smooth</code>), use
 <code><a href="../reference/read_log.html">read_log()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_plot</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 10:19:03 (0.780s)"</span></span>
+<span><span class="co">#&gt; [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 10:29:09 (0.780s)"</span></span>
 <span><span class="co">#&gt; [2] "Total: 0.780 secs"</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -164,7 +164,7 @@ logged, and an informative error plot is generated instead.</p>
 <span></span>
 <span><span class="co"># The log tells you exactly what went wrong</span></span>
 <span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_bad</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 10:19:05 (0.044s)"</span></span>
+<span><span class="co">#&gt; [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 10:29:10 (0.044s)"</span></span>
 <span><span class="co">#&gt; [2] "Total: 0.044 secs"</span></span></code></pre>
 <p>The R session continues without interruption, and you have a clear
 record of the problem.</p>
