@@ -226,42 +226,112 @@ make_log_df <- function(
 }
 
 
-#' Reads the log of a chronicle.
+#' Read and display the log of a chronicle
+#'
+#' @description
+#' `read_log()` provides different human-readable views of the log information
+#' stored in a `chronicle` object. It can show a pretty, narrative-style summary,
+#' a tabular summary suitable for inspection or debugging, or a compact
+#' error-focused report.
+#'
 #' @param .c A chronicle object.
-#' @return The log of the object.
+#' @param style A string indicating the display style. One of:
+#'   * `"pretty"`: a short, human-friendly log with OK/NOK status, function names,
+#'   timestamps, and runtimes.
+#'   * `"table"`: a tabular summary of the log as a data frame, including
+#'   function names, status, runtime, and messages.
+#'   * `"errors-only"`: a minimal report. If all steps succeed, only a single
+#'   success message is shown. If any step fails, only the failures are listed.
+#'
+#' @return
+#' * If `style = "pretty"`: a character vector of sentences.
+#' * If `style = "table"`: a data frame summarising the log (with an attribute
+#'   `"total_runtime_secs"` storing the total runtime in seconds).
+#' * If `style = "errors-only"`: a character string if all succeeded, or a
+#'   character vector listing only the failed steps.
+#'
 #' @examples
-#' \dontrun{
-#' read_log(chronicle_object)
-#' }
+#' r_select <- record(dplyr::select)
+#' r_group_by <- record(dplyr::group_by)
+#' r_summarise <- record(dplyr::summarise)
+#'
+#' output <- dplyr::starwars %>%
+#'   r_select(height, mass, species, sex) %>%
+#'   bind_record(r_group_by, species, sex) %>%
+#'   bind_record(r_summarise, mass = mean(mass, na.rm = TRUE))
+#'
+#' read_log(output, style = "pretty")
+#' read_log(output, style = "table")
+#' read_log(output, style = "errors-only")
+#'
 #' @export
-read_log <- function(.c) {
+read_log <- function(.c, style = c("pretty", "table", "errors-only")) {
+  style <- match.arg(style)
   log_df <- .c$log_df
 
-  make_sentence <- function(i) {
-    func_call <- paste0("`", log_df[i, "function"], "`")
-    success_status <- if (grepl("Success", log_df$outcome[i])) {
-      "successfully"
-    } else {
-      paste0("unsuccessfully with following exception: ", log_df$message[i])
-    }
-    success_symbol <- ifelse(grepl("Success", log_df$outcome[i]), "OK!", "NOK!")
+  # Status text (no emojis)
+  status_symbol <- ifelse(grepl("Success", log_df$outcome), "OK", "NOK")
 
-    paste(
-      success_symbol,
-      func_call,
-      "ran",
-      success_status,
-      "at",
-      log_df$start_time[i]
-    )
-  }
-
+  # Total runtime as seconds
   total_runtime <- sum(log_df$run_time)
   units(total_runtime) <- "secs"
+  total_secs <- as.numeric(total_runtime, units = "secs")
 
-  sentences <- sapply(seq_len(nrow(log_df)), make_sentence)
+  # Access the 'function' column safely
+  fn_col <- log_df[["function"]]
 
-  c("Complete log:", sentences, paste("Total running time:", total_runtime))
+  if (style == "pretty") {
+    lines <- sprintf(
+      "%s `%s` at %s (%.3fs)",
+      status_symbol,
+      fn_col,
+      format(log_df$start_time, "%H:%M:%S"),
+      as.numeric(log_df$run_time, units = "secs")
+    )
+    return(c(lines, paste("Total:", sprintf("%.3f", total_secs), "secs")))
+  }
+
+  if (style == "table") {
+    df <- data.frame(
+      step = seq_len(nrow(log_df)),
+      func = fn_col,
+      status = status_symbol,
+      runtime = round(as.numeric(log_df$run_time, units = "secs"), 3),
+      message = log_df$message,
+      stringsAsFactors = FALSE
+    )
+    attr(df, "total_runtime_secs") <- total_secs
+    return(df)
+  }
+
+  if (style == "errors-only") {
+    errors <- log_df[!grepl("Success", log_df$outcome), , drop = FALSE]
+
+    # Drop the "Pipeline failed upstream" noise
+    errors <- errors[
+      errors$message != "Pipeline failed upstream",
+      ,
+      drop = FALSE
+    ]
+
+    if (nrow(errors) == 0) {
+      return(paste(
+        "Pipeline ran",
+        nrow(log_df),
+        "steps successfully in",
+        sprintf("%.3f", total_secs),
+        "secs"
+      ))
+    } else {
+      lines <- sprintf(
+        "NOK `%s` failed: %s (at %s)",
+        errors[["function"]],
+        errors$message,
+        format(errors$start_time, "%H:%M:%S")
+      )
+      return(c(lines, paste("Total:", sprintf("%.3f", total_secs), "secs")))
+    }
+  }
 }
 
 

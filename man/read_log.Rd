@@ -2,21 +2,50 @@
 % Please edit documentation in R/record.R
 \name{read_log}
 \alias{read_log}
-\title{Reads the log of a chronicle.}
+\title{Read and display the log of a chronicle}
 \usage{
-read_log(.c)
+read_log(.c, style = c("pretty", "table", "errors-only"))
 }
 \arguments{
 \item{.c}{A chronicle object.}
+
+\item{style}{A string indicating the display style. One of:
+\itemize{
+\item \code{"pretty"}: a short, human-friendly log with OK/NOK status, function names,
+timestamps, and runtimes.
+\item \code{"table"}: a tabular summary of the log as a data frame, including
+function names, status, runtime, and messages.
+\item \code{"errors-only"}: a minimal report. If all steps succeed, only a single
+success message is shown. If any step fails, only the failures are listed.
+}}
 }
 \value{
-The log of the object.
+\itemize{
+\item If \code{style = "pretty"}: a character vector of sentences.
+\item If \code{style = "table"}: a data frame summarising the log (with an attribute
+\code{"total_runtime_secs"} storing the total runtime in seconds).
+\item If \code{style = "errors-only"}: a character string if all succeeded, or a
+character vector listing only the failed steps.
+}
 }
 \description{
-Reads the log of a chronicle.
+\code{read_log()} provides different human-readable views of the log information
+stored in a \code{chronicle} object. It can show a pretty, narrative-style summary,
+a tabular summary suitable for inspection or debugging, or a compact
+error-focused report.
 }
 \examples{
-\dontrun{
-read_log(chronicle_object)
-}
+r_select <- record(dplyr::select)
+r_group_by <- record(dplyr::group_by)
+r_summarise <- record(dplyr::summarise)
+
+output <- dplyr::starwars \%>\%
+  r_select(height, mass, species, sex) \%>\%
+  bind_record(r_group_by, species, sex) \%>\%
+  bind_record(r_summarise, mass = mean(mass, na.rm = TRUE))
+
+read_log(output, style = "pretty")
+read_log(output, style = "table")
+read_log(output, style = "errors-only")
+
 }

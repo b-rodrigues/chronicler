@@ -2,6 +2,7 @@
 
 ## New features
 
+- `read_log()` now has "pretty", "table", and "errors-only" styles for viewing pipeline logs.
 - New `write_chronicle_df` function which writes data frames to .csv or .xlsx formats alongside their logs.
 - `as.data.frame` will coerce a `chronicle` object to data frame if its value can be coerced to data frame.
 - New `zap_log` function that resets the log of a `chronicle` object.
