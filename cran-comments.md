@@ -3,15 +3,23 @@
 No notes, no errors nor warnings on win-devel nor win-release.
 Only on win-oldrel, 2 NOTES:
 
-Found the following (possibly) invalid URLs:
-  URL: https://x.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw
-    From: inst/doc/a-non-mathematician-s-introduction-to-monads.html
-    Status: 403
-    Message: Forbidden
-  URL: https://x.com/putosaure
-    From: README.md
-    Status: 403
-    Message: Forbidden
+>Found the following (possibly) invalid URLs:
+>
+>  URL: https://x.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw
+>
+>    From: inst/doc/a-non-mathematician-s-introduction-to-monads.html
+>
+>    Status: 403
+>
+>    Message: Forbidden
+>
+>  URL: https://x.com/putosaure
+>
+>    From: README.md
+>
+>    Status: 403
+>
+>    Message: Forbidden
 
 but these links do exist and are accessible.
 
