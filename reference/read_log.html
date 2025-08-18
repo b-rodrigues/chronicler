@@ -97,9 +97,9 @@ character vector listing only the failed steps.</p></li>
 <span class="r-in"><span>  <span class="fu"><a href="bind_record.html">bind_record</a></span><span class="op">(</span><span class="va">r_summarise</span>, mass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mass</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">read_log</span><span class="op">(</span><span class="va">output</span>, style <span class="op">=</span> <span class="st">"pretty"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "OK `dplyr::select` at 08:57:27 (0.001s)"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "OK `dplyr::group_by` at 08:57:27 (0.003s)" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "OK `dplyr::summarise` at 08:57:27 (0.003s)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "OK `dplyr::select` at 08:59:34 (0.001s)"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "OK `dplyr::group_by` at 08:59:34 (0.003s)" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "OK `dplyr::summarise` at 08:59:34 (0.003s)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4] "Total: 0.007 secs"                         </span>
 <span class="r-in"><span><span class="fu">read_log</span><span class="op">(</span><span class="va">output</span>, style <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   step             func status runtime message</span>
