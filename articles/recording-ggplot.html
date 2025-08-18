@@ -129,8 +129,8 @@ rendering (like the one from <code>geom_smooth</code>), use
 <code><a href="../reference/read_log.html">read_log()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_plot</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 08:09:48 (0.777s)"</span></span>
-<span><span class="co">#&gt; [2] "Total: 0.777 secs"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 08:57:47 (0.789s)"</span></span>
+<span><span class="co">#&gt; [2] "Total: 0.789 secs"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="handling-failures-gracefully">Handling Failures Gracefully<a class="anchor" aria-label="anchor" href="#handling-failures-gracefully"></a>
@@ -164,7 +164,7 @@ logged, and an informative error plot is generated instead.</p>
 <span></span>
 <span><span class="co"># The log tells you exactly what went wrong</span></span>
 <span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">r_bad</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 08:09:50 (0.044s)"</span></span>
+<span><span class="co">#&gt; [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 08:57:48 (0.044s)"</span></span>
 <span><span class="co">#&gt; [2] "Total: 0.044 secs"</span></span></code></pre>
 <p>The R session continues without interruption, and you have a clear
 record of the problem.</p>
