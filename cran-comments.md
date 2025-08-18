@@ -1,7 +1,21 @@
 # Submission of version 0.3.0
 
-No notes, no errors nor warnings. Tested on win-devel and win-release as
-well as R-hub.
+No notes, no errors nor warnings on win-devel nor win-release.
+Only on win-oldrel, 2 NOTES:
+
+Found the following (possibly) invalid URLs:
+  URL: https://x.com/armcn_/status/1511705262935011330?s=20&t=UfwIjsqyOX7-UbTMBHOCuw
+    From: inst/doc/a-non-mathematician-s-introduction-to-monads.html
+    Status: 403
+    Message: Forbidden
+  URL: https://x.com/putosaure
+    From: README.md
+    Status: 403
+    Message: Forbidden
+
+but these links do exist and are accessible.
+
+Also tested as well on R-hub, no notes, nor errors on other platforms.
 
 # Submission of version 0.2.2
 
