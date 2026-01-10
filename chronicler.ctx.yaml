@@ -1,0 +1,198 @@
+---
+kind: context_header
+llm_instructions: This is an LLM-optimized API specification for the R package 'chronicler'. Use this context to write correct code using chronicler functions. Each 'function' record describes a public function with its signature, arguments, and purpose. The 'package' record contains metadata. All listed functions are part of the public API.
+---
+kind: package
+schema_version: '1.1'
+name: chronicler
+version: 0.3.0
+language: R
+description: Add Logging to Functions
+---
+kind: function
+name: bind_record
+exported: true
+signature: bind_record(.c, .f, ...)
+arguments:
+  '...': Further parameters to pass to .f.
+  .c: A chronicle object.
+  .f: A chronicle function to apply to the returning value of .c.
+returns: A chronicle object.
+examples:
+- code: r_sqrt <- record(sqrt)
+- code: r_exp <- record(exp)
+- code: 3 |> r_sqrt() |> bind_record(r_exp)
+---
+kind: function
+name: flatten_record
+exported: true
+signature: flatten_record(.c)
+arguments:
+  .c: A nested chronicle object, where the $value element is itself a chronicle object
+returns: Returns .c where value is the actual value, and logs are concatenated.
+examples:
+- code: r_sqrt <- record(sqrt)
+- code: r_log <- record(log)
+- code: a <- as_chronicle(r_log(10))
+---
+kind: function
+name: fmap_record
+exported: true
+signature: fmap_record(.c, .f, ...)
+arguments:
+  '...': Further parameters to pass to .f.
+  .c: A chronicle object.
+  .f: A non-chronicle function.
+returns: Returns the result of .f(.c$value) as a new chronicle object.
+examples:
+- code: as_chronicle(3) |> fmap_record(sqrt)
+---
+kind: function
+name: record_ggplot
+exported: true
+signature: record_ggplot(ggplot_expression, strict = 2)
+arguments:
+  ggplot_expression: The entire {ggplot2} expression to be recorded.
+  strict: 'An optional integer argument controlling what is treated as a failure: 1: Catches only errors. 2: Catches errors and warnings (the default). 3: Catches errors, warnings, and messages.'
+returns: A chronicle object. When printed, it will display the plot if successful or an error plot if it failed.
+---
+kind: function
+name: record
+exported: true
+signature: record(.f, .g = (\(x) NA), strict = 2, diff = "none")
+arguments:
+  .f: A function to decorate.
+  .g: Optional. A function to apply to the intermediary results for monitoring purposes. Defaults to returning NA.
+  diff: Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)
+  strict: Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
+returns: 'A function which returns objects of type chronicle. chronicle objects carry several elements: a value which is the result of the function evaluated on its inputs and a second object called log_df. log_df contains logging information, which can be read using read_log(). log_df is a data frame with columns: outcome, function, arguments, message, start_time, end_time, run_time, g and diff_obj.'
+examples:
+- code: record(sqrt)(10)
+- code: record(sqrt)(x = 10)
+---
+kind: function
+name: record_many
+exported: true
+signature: record_many(list_funcs,.g = (function(x) NA),strict = 2,diff = "none")
+arguments:
+  .g: Optional. Defaults to a function which returns NA.
+  diff: Whether to show the diff between the input and the output ("full"), just a summary of the diff ("summary"), or none ("none", the default)
+  list_funcs: A list of function names, as strings.
+  strict: Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
+returns: Puts a string into the systems clipboard.
+examples:
+- code: list_funcs <- list("exp", "dplyr::select", "exp")
+- code: record_many(list_funcs)
+---
+kind: function
+name: read_log
+exported: true
+signature: read_log(.c, style = c("pretty", "table", "errors-only"))
+arguments:
+  .c: A chronicle object.
+  style: 'A string indicating the display style. One of: "pretty": a short, human-friendly log with OK/NOK status, function names, timestamps, and runtimes. "table": a tabular summary of the log as a data frame, including function names, status, runtime, and messages. "errors-only": a minimal report. If all steps succeed, only a single success message is shown. If any step fails, only the failures are listed.'
+returns: 'If style = "pretty": a character vector of sentences. If style = "table": a data frame summarising the log (with an attribute "total_runtime_secs" storing the total runtime in seconds). If style = "errors-only": a character string if all succeeded, or a character vector listing only the failed steps.'
+examples:
+- code: r_select <- record(dplyr::select)
+- code: r_group_by <- record(dplyr::group_by)
+- code: r_summarise <- record(dplyr::summarise)
+---
+kind: function
+name: is_chronicle
+exported: true
+signature: is_chronicle(.x)
+arguments:
+  .x: An object to test.
+returns: TRUE if .x is of class "chronicle", FALSE if not.
+---
+kind: function
+name: as_chronicle
+exported: true
+signature: as_chronicle(.x, .log_df = data.frame())
+arguments:
+  .log_df: Used internally, the user does need to interact with it. Defaults to an empty data frame.
+  .x: Any object.
+returns: Returns a chronicle object with the object as the $value.
+examples:
+- code: as_chronicle(3)
+---
+kind: function
+name: unveil
+exported: true
+signature: unveil(.c, .e = "value")
+arguments:
+  .c: A chronicle object.
+  .e: Element of interest to retrieve, one of "value" (default) or "log_df".
+returns: The value or log_df element of the chronicle object .c.
+examples:
+- code: r_sqrt <- record(sqrt)
+- code: r_exp <- record(exp)
+- code: 3 |> r_sqrt() \%>=\% r_exp() |> unveil("value")
+---
+kind: function
+name: check_g
+exported: true
+signature: check_g(.c, columns = c("ops_number", "function"))
+arguments:
+  .c: A chronicle object.
+  columns: Columns to select for the output. Defaults to c("ops_number", "function").
+returns: A data.frame with the selected columns and column "g".
+examples:
+- code: r_subset <- record(subset, .g = dim)
+- code: result <- r_subset(mtcars, select = am)
+- code: check_g(result)
+---
+kind: function
+name: check_diff
+exported: true
+signature: check_diff(.c, columns = c("ops_number", "function"))
+arguments:
+  .c: A chronicle object.
+  columns: Columns to select for the output. Defaults to c("ops_number", "function").
+returns: A data.frame with the selected columns and column "diff_obj".
+examples:
+- code: r_subset <- record(subset, diff = "full")
+- code: result <- r_subset(mtcars, select = am)
+- code: |-
+    check_diff(result) # <- this is the data frame listing the operations and the accompanying diffs
+    check_diff(result)$diff_obj # <- actually look at the diffs
+---
+kind: function
+name: purely
+exported: true
+signature: purely(.f, strict = 2)
+arguments:
+  .f: A function to decorate.
+  strict: Controls if the decorated function should catch only errors (1), errors and warnings (2, the default) or errors, warnings and messages (3).
+returns: A function which returns a list. The first element of the list, $value, is the result of the original function .f applied to its inputs. The second element, $log is NULL in case everything goes well. In case of error/warning/message, $value is NA and $log holds the message. purely() is used by record() to allow the latter to handle errors.
+examples:
+- code: purely(log)(10)
+- code: purely(log)(-10)
+- code: 'purely(log, strict = 1)(-10) # This produces a warning, so with strict = 1 nothing gets captured.'
+---
+kind: function
+name: write_chronicle_df
+exported: true
+signature: write_chronicle_df(.c, path, row.names = FALSE, sep = ",", ...)
+arguments:
+  '...': Additional arguments passed to \link[utils]{write.table} when writing CSV.
+  .c: A chronicler object.
+  path: A single character string specifying the output file path. The file extension must be either .csv or .xlsx.
+  row.names: Logical, whether to include row names when writing to CSV. Defaults to FALSE.
+  sep: Character. Field separator for CSV output. Defaults to ",".
+returns: Invisibly returns NULL. The function is called for its side effect of writing files.
+examples:
+- code: write_chronicle_df(c, path = "output.csv")
+- code: write_chronicle_df(c, path = "output.xlsx")
+---
+kind: function
+name: zap_log
+exported: true
+signature: zap_log(.c)
+arguments:
+  .c: A chronicle object.
+returns: A new chronicle object with the same value as the input, but with its log_df replaced by a single entry.
+examples:
+- code: library(dplyr)
+- code: r_select <- record(select)
+- code: r_filter <- record(filter)
