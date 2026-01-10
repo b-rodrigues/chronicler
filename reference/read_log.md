@@ -55,13 +55,13 @@ output <- dplyr::starwars |>
   bind_record(r_summarise, mass = mean(mass, na.rm = TRUE))
 
 read_log(output, style = "pretty")
-#> [1] "OK `dplyr::select` at 12:39:52 (0.001s)"   
-#> [2] "OK `dplyr::group_by` at 12:39:52 (0.003s)" 
-#> [3] "OK `dplyr::summarise` at 12:39:52 (0.004s)"
+#> [1] "OK `dplyr::select` at 12:42:06 (0.002s)"   
+#> [2] "OK `dplyr::group_by` at 12:42:06 (0.003s)" 
+#> [3] "OK `dplyr::summarise` at 12:42:06 (0.004s)"
 #> [4] "Total: 0.008 secs"                         
 read_log(output, style = "table")
 #>   step             func status runtime message
-#> 1    1    dplyr::select     OK   0.001      NA
+#> 1    1    dplyr::select     OK   0.002      NA
 #> 2    2  dplyr::group_by     OK   0.003      NA
 #> 3    3 dplyr::summarise     OK   0.004      NA
 read_log(output, style = "errors-only")

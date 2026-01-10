@@ -120,11 +120,11 @@ What happened? Let’s read the log to find out!
 
 ``` r
 read_log(avia_clean2)
-#> [1] "OK `select` at 12:40:03 (0.008s)"      
-#> [2] "OK `pivot_longer` at 12:40:03 (0.021s)"
-#> [3] "OK `separate` at 12:40:03 (4.876s)"    
-#> [4] "NOK `mutate` at 12:40:08 (0.324s)"     
-#> [5] "Total: 5.229 secs"
+#> [1] "OK `select` at 12:42:18 (0.009s)"      
+#> [2] "OK `pivot_longer` at 12:42:18 (0.023s)"
+#> [3] "OK `separate` at 12:42:18 (5.182s)"    
+#> [4] "NOK `mutate` at 12:42:23 (0.336s)"     
+#> [5] "Total: 5.549 secs"
 ```
 
 So what happened is that
@@ -268,14 +268,14 @@ Now that the data is clean, we can read the log:
 
 ``` r
 read_log(avia_monthly)
-#> [1] "OK `select` at 12:40:03 (0.008s)"      
-#> [2] "OK `pivot_longer` at 12:40:03 (0.021s)"
-#> [3] "OK `separate` at 12:40:03 (4.876s)"    
-#> [4] "OK `mutate` at 12:40:09 (0.074s)"      
-#> [5] "OK `filter` at 12:40:09 (0.011s)"      
-#> [6] "OK `mutate` at 12:40:09 (0.010s)"      
-#> [7] "OK `select` at 12:40:09 (0.002s)"      
-#> [8] "Total: 5.002 secs"
+#> [1] "OK `select` at 12:42:18 (0.009s)"      
+#> [2] "OK `pivot_longer` at 12:42:18 (0.023s)"
+#> [3] "OK `separate` at 12:42:18 (5.182s)"    
+#> [4] "OK `mutate` at 12:42:23 (0.076s)"      
+#> [5] "OK `filter` at 12:42:24 (0.011s)"      
+#> [6] "OK `mutate` at 12:42:24 (0.010s)"      
+#> [7] "OK `select` at 12:42:24 (0.002s)"      
+#> [8] "Total: 5.313 secs"
 ```
 
 This is especially useful if the object `avia_monthly` gets saved using
