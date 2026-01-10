@@ -1,0 +1,105 @@
+# The Maybe monad
+
+``` r
+library(chronicler)
+```
+
+``` r
+library(chronicler)
+library(maybe)
+```
+
+`{chronicler}` uses the [maybe](https://github.com/armcn/maybe) package
+under the hood; [maybe](https://github.com/armcn/maybe) implements the
+*Maybe* monad which provides an elegant solution to situations where
+functions fail. As an example, let’s consider the
+[`sqrt()`](https://rdrr.io/r/base/MathFun.html) function decorated using
+[`maybe()`](https://armcn.github.io/maybe/reference/maybe.html):
+
+``` r
+m_sqrt <- maybe(sqrt)
+
+m_sqrt(16)
+#> Just
+#> [1] 4
+```
+
+`m_sqrt(16)` succeeds and returns `Just 4`. But what happens if it
+fails?
+
+``` r
+m_sqrt("10")
+#> Nothing
+```
+
+`m_sqrt("10")` returns `Nothing` because `sqrt("10")` would return an
+error. Using
+[`maybe()`](https://armcn.github.io/maybe/reference/maybe.html) allows
+you to build safe functions that never fail; you can explicitely handle
+`Nothing` values instead of having the program crash and stop.
+
+When a computation fails, functions decorated using
+[`record()`](https://b-rodrigues.github.io/chronicler/reference/record.md)
+also return `Nothing`:
+
+``` r
+r_sqrt <- record(sqrt)
+
+r_sqrt("16")
+#> NOK! Value computed unsuccessfully:
+#> ---------------
+#> Nothing
+#> 
+#> ---------------
+#> This is an object of type `chronicle`.
+#> Retrieve the value of this object with unveil(.c, "value").
+#> To read the log of this object, call read_log(.c).
+```
+
+and when computations succeed, `Just` values are also returned:
+
+``` r
+r_sqrt <- record(sqrt)
+
+r_sqrt(16)
+#> OK! Value computed successfully:
+#> ---------------
+#> Just
+#> [1] 4
+#> 
+#> ---------------
+#> This is an object of type `chronicle`.
+#> Retrieve the value of this object with unveil(.c, "value").
+#> To read the log of this object, call read_log(.c).
+```
+
+If `Nothing` is passed to a function decorated by
+[`record()`](https://b-rodrigues.github.io/chronicler/reference/record.md),
+`Nothing` gets immediately returned.
+
+Users of `{chronicle}` do not need to be familiar with the
+[maybe](https://github.com/armcn/maybe) package to use it, as conversion
+to and from `maybe` objects is handled automatically.
+
+To recuperate the value from a `chronicler` object, users can use
+[`unveil()`](https://b-rodrigues.github.io/chronicler/reference/unveil.md):
+
+``` r
+unveil(r_sqrt(16), "value")
+#> [1] 4
+```
+
+[`unveil()`](https://b-rodrigues.github.io/chronicler/reference/unveil.md)
+converts the value from the `maybe` type to the underlying type of the
+object. Compare to:
+
+``` r
+(r_sqrt(16))$value
+#> Just
+#> [1] 4
+```
+
+which returns the `Just` object. To learn more about
+[maybe](https://github.com/armcn/maybe), read the
+[package’s](https://armcn.github.io/maybe/) readme which provides a nice
+introduction.
