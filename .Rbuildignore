@@ -22,4 +22,3 @@ result
 .envrc
 .aider.tags.cache.v4
 .direnv
-^chronicler\.ctx\.yaml$
