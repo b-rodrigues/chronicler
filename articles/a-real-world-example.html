@@ -173,11 +173,11 @@ to numbers:</p>
 <p>What happened? Let’s read the log to find out!</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_clean2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "OK `select` at 12:54:10 (0.008s)"      </span></span>
-<span><span class="co">#&gt; [2] "OK `pivot_longer` at 12:54:10 (0.027s)"</span></span>
-<span><span class="co">#&gt; [3] "OK `separate` at 12:54:10 (4.599s)"    </span></span>
-<span><span class="co">#&gt; [4] "NOK `mutate` at 12:54:14 (0.386s)"     </span></span>
-<span><span class="co">#&gt; [5] "Total: 5.020 secs"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "OK `select` at 13:14:58 (0.008s)"      </span></span>
+<span><span class="co">#&gt; [2] "OK `pivot_longer` at 13:14:58 (0.029s)"</span></span>
+<span><span class="co">#&gt; [3] "OK `separate` at 13:14:58 (4.372s)"    </span></span>
+<span><span class="co">#&gt; [4] "NOK `mutate` at 13:15:02 (0.405s)"     </span></span>
+<span><span class="co">#&gt; [5] "Total: 4.814 secs"</span></span></code></pre></div>
 <p>So what happened is that <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code> introduced
 <code>NA</code>s by coercion. This is what happens when trying to
 convert a character to a number, for example
@@ -300,14 +300,14 @@ print method:</p>
 <p>Now that the data is clean, we can read the log:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_log.html">read_log</a></span><span class="op">(</span><span class="va">avia_monthly</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "OK `select` at 12:54:10 (0.008s)"      </span></span>
-<span><span class="co">#&gt; [2] "OK `pivot_longer` at 12:54:10 (0.027s)"</span></span>
-<span><span class="co">#&gt; [3] "OK `separate` at 12:54:10 (4.599s)"    </span></span>
-<span><span class="co">#&gt; [4] "OK `mutate` at 12:54:15 (0.057s)"      </span></span>
-<span><span class="co">#&gt; [5] "OK `filter` at 12:54:15 (0.006s)"      </span></span>
-<span><span class="co">#&gt; [6] "OK `mutate` at 12:54:15 (0.008s)"      </span></span>
-<span><span class="co">#&gt; [7] "OK `select` at 12:54:15 (0.002s)"      </span></span>
-<span><span class="co">#&gt; [8] "Total: 4.707 secs"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "OK `select` at 13:14:58 (0.008s)"      </span></span>
+<span><span class="co">#&gt; [2] "OK `pivot_longer` at 13:14:58 (0.029s)"</span></span>
+<span><span class="co">#&gt; [3] "OK `separate` at 13:14:58 (4.372s)"    </span></span>
+<span><span class="co">#&gt; [4] "OK `mutate` at 13:15:03 (0.056s)"      </span></span>
+<span><span class="co">#&gt; [5] "OK `filter` at 13:15:03 (0.009s)"      </span></span>
+<span><span class="co">#&gt; [6] "OK `mutate` at 13:15:03 (0.008s)"      </span></span>
+<span><span class="co">#&gt; [7] "OK `select` at 13:15:03 (0.002s)"      </span></span>
+<span><span class="co">#&gt; [8] "Total: 4.484 secs"</span></span></code></pre></div>
 <p>This is especially useful if the object <code>avia_monthly</code>
 gets saved using <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code>. People can then read this
 object, can read the log to know what happened and reproduce the steps
