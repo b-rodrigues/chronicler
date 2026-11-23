@@ -68,8 +68,8 @@ rendering (like the one from `geom_smooth`), use
 ``` r
 
 read_log(r_plot)
-#> [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 12:41:15 (0.785s)"
-#> [2] "Total: 0.785 secs"
+#> [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 12:54:18 (0.870s)"
+#> [2] "Total: 0.870 secs"
 ```
 
 ## Handling Failures Gracefully
@@ -110,8 +110,8 @@ r_bad
 
     # The log tells you exactly what went wrong
     read_log(r_bad)
-    #> [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 12:41:16 (0.034s)"
-    #> [2] "Total: 0.034 secs"
+    #> [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 12:54:20 (0.039s)"
+    #> [2] "Total: 0.039 secs"
 
 The R session continues without interruption, and you have a clear
 record of the problem.
