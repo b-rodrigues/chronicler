@@ -34,9 +34,15 @@ flatten_record <- function(.c) {
     return(.c)
   }
 
+  log_df <- dplyr::bind_rows(nested_chronicle$log_df, .c$log_df) |>
+    dplyr::mutate(
+      ops_number = dplyr::row_number(),
+      lag_outcome = dplyr::lag(outcome, 1)
+    )
+
   list(
     value = nested_chronicle$value,
-    log_df = dplyr::bind_rows(nested_chronicle$log_df, .c$log_df)
+    log_df = log_df
   ) |>
     structure(class = "chronicle")
 }
@@ -45,30 +51,50 @@ flatten_record <- function(.c) {
 #' @param .c A chronicle object.
 #' @param .f A non-chronicle function.
 #' @param ... Further parameters to pass to `.f`.
-#' @importFrom maybe fmap
-#' @importFrom dplyr bind_rows
+#' @importFrom maybe from_maybe nothing is_nothing
+#' @importFrom dplyr bind_rows mutate row_number lag
 #' @return Returns the result of `.f(.c$value)` as a new chronicle object.
 #' @examples
 #' as_chronicle(3) |> fmap_record(sqrt)
 #' @export
 fmap_record <- function(.c, .f, ...) {
-  f_string <- deparse(substitute(.f))
+  f_string <- deparse1(substitute(.f))
 
-  # Match the shape expected by make_log_df()
-  res_pure <- list(log_df = NA_character_, value = NA)
+  start <- Sys.time()
+  pure_f <- purely(.f, strict = 2)
+  val <- maybe::from_maybe(.c$value, default = maybe::nothing())
+  res_pure <- pure_f(val, ...)
+  end <- Sys.time()
 
-  log_df <- make_log_df(
-    success = TRUE,
+  was_successful <- !maybe::is_nothing(res_pure$value)
+
+  log_df_entry <- make_log_df(
+    success = was_successful,
     fstring = "fmap_record",
     args = f_string,
     res_pure = res_pure,
-    start = Sys.time(),
-    end = Sys.time()
+    start = start,
+    end = end
   )
 
+  log_df <- dplyr::bind_rows(.c$log_df, log_df_entry) |>
+    dplyr::mutate(
+      ops_number = dplyr::row_number(),
+      lag_outcome = dplyr::lag(outcome, 1)
+    )
+
+  current_row <- nrow(log_df)
+  if (
+    !was_successful &&
+      current_row > 1 &&
+      grepl("NOK!", log_df$lag_outcome[current_row])
+  ) {
+    log_df$message[current_row] <- "Pipeline failed upstream"
+  }
+
   list(
-    value = maybe::fmap(.c$value, .f, ...),
-    log_df = dplyr::bind_rows(.c$log_df, log_df)
+    value = res_pure$value,
+    log_df = log_df
   ) |>
     structure(class = "chronicle")
 }

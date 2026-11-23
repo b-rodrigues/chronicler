@@ -15,7 +15,6 @@
 #' @return A new `chronicle` object with the same `value` as the input, but with
 #' its `log_df` replaced by a single entry.
 #' @importFrom tibble tibble
-#' @importFrom rlang `%||%`
 #' @export
 #' @examples
 #' library(dplyr)

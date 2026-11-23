@@ -40,27 +40,23 @@ write_chronicle_df <- function(.c, path, row.names = FALSE, sep = ",", ...) {
   value <- chronicler::unveil(.c, "value")
   stopifnot("Value must be of class data.frame!" = is.data.frame(value))
 
-  ext <- regmatches(
-    path,
-    regexpr("\\.([0-9a-z]+)(?=[?#])|(\\.)(?:[\\w]+)$", path, perl = TRUE)
+  ext <- if (grepl("\\.[^./\\\\]+$", path)) {
+    tolower(sub("^.*(\\.[^./\\\\]+)$", "\\1", path))
+  } else {
+    ""
+  }
+
+  stopifnot(
+    "write_chronicle_df() can only save data as either .csv or .xlsx. Change the extension of the output." = ext %in%
+      c(".csv", ".xlsx")
   )
 
-  if (
-    any(ext %in% c(".xlsx", ".xls")) &&
-      !requireNamespace("openxlsx", quietly = TRUE)
-  ) {
+  if (ext == ".xlsx" && !requireNamespace("openxlsx", quietly = TRUE)) {
     stop(
-      sprintf(
-        "The 'openxlsx' package is required to write %s files.\n  Please install it to use this feature.",
-        ext
-      )
+      "The 'openxlsx' package is required to write .xlsx files.\n  Please install it to use this feature.",
+      call. = FALSE
     )
   }
-  stopifnot(
-    "write_chronicle() can only save data as either .csv or .xlsx. Change the extension of the output." = any(
-      c(".csv", ".xlsx") %in% ext
-    )
-  )
 
   log <- chronicler::read_log(.c)
 
@@ -103,4 +99,6 @@ write_chronicle_df <- function(.c, path, row.names = FALSE, sep = ",", ...) {
 
     openxlsx::write.xlsx(xlsx_output, file = path)
   }
+
+  invisible(NULL)
 }

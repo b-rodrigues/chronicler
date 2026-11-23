@@ -53,3 +53,18 @@ test_that("test that pipe and bind_record give same results for dplyr functions"
 
   expect_equal(result_pipe$value, result_bind$value)
 })
+
+test_that("%>=% works with inline record() calls and list-indexed functions", {
+  funs <- list(r_exp = record(exp))
+
+  res_inline <- 4 |>
+    record(sqrt)() %>=%
+    record(exp)()
+
+  res_list <- 4 |>
+    record(sqrt)() %>=%
+    funs$r_exp()
+
+  expect_equal(unveil(res_inline, "value"), exp(sqrt(4)))
+  expect_equal(unveil(res_list, "value"), exp(sqrt(4)))
+})

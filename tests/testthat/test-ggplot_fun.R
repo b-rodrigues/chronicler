@@ -76,15 +76,18 @@ test_that("record_ggplot respects the 'strict' parameter for warnings", {
   expect_equal(plot_value_strict2$theme$plot.background$fill, "#FFDDDD")
 
   # ---- Scenario 2: strict = 1 (errors only, ignores warnings) ----
-  chronicled_plot_strict1 <- record_ggplot(
-    ggplot(df_with_na, aes(x, y)) + geom_line(),
-    strict = 1
+  expect_warning(
+    chronicled_plot_strict1 <- record_ggplot(
+      ggplot(df_with_na, aes(x, y)) + geom_line() + ylim(0, 3),
+      strict = 1
+    ),
+    "Removed 3 row"
   )
 
   # Log should show success because the warning was ignored
   log_df_strict1 <- unveil(chronicled_plot_strict1, "log_df")
   expect_true(grepl("OK! Success", log_df_strict1$outcome))
-  expect_equal(log_df_strict1$message, "NA")
+  expect_true(is.na(log_df_strict1$message))
 
   # Value should be the original ggplot, not the error plot
   plot_value_strict1 <- unveil(chronicled_plot_strict1, "value")
@@ -109,10 +112,19 @@ test_that("The error plot's annotation layer contains the correct error message"
   # Check that the actual error message from the log is present in the plot's label
   log_message <- unveil(chronicled_plot, "log_df")$message
   expect_true(grepl(error_message, log_message))
-  # The label in the plot is wrapped, so we test if the log message is contained within it
+  expect_length(error_label_in_plot, 1)
   expect_true(grepl(
-    strwrap(log_message),
+    paste(strwrap(log_message), collapse = "\n"),
     error_label_in_plot,
     fixed = TRUE
   ))
+})
+
+test_that("create_error_plot collapses multi-line wrapped messages into a single label", {
+  long_msg <- paste(rep("this is a very long error message", 5), collapse = " ")
+  p <- create_error_plot(long_msg)
+  lbl <- p$layers[[1]]$aes_params$label
+
+  expect_length(lbl, 1)
+  expect_true(grepl("\n", lbl, fixed = TRUE))
 })

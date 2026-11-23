@@ -15,9 +15,9 @@
   f_exp <- rlang::quo_get_expr(f_quo)
   f_env <- rlang::quo_get_env(f_quo)
 
-  # Extract the function name and get the function object
-  f_chr <- deparse(f_exp[[1]])
-  f <- get(f_chr, envir = f_env)
+  # Evaluate the function expression in the caller's environment
+  # (supports bare symbols, pkg::fun, and inline expressions like record(fun))
+  f <- eval(f_exp[[1]], envir = f_env)
 
   # Match the provided call to the function's formal arguments
   q_ex_std <- rlang::call_match(call = f_exp, fn = f)
@@ -29,11 +29,15 @@
   names(expr_ls)[names(expr_ls) == ".value"] <- ""
 
   # Evaluate the function call with the value from the chronicle object
-  # and the accumulated log.
-  rlang::eval_tidy(rlang::call2(
-    f,
-    .value = maybe::from_maybe(.c$value, default = maybe::nothing()),
-    !!!expr_ls[-1],
-    .log_df = .c$log_df
-  ))
+  # and the accumulated log in the RHS caller's environment.
+  val <- maybe::from_maybe(.c$value, default = maybe::nothing())
+  rlang::eval_tidy(
+    rlang::call2(
+      f,
+      .value = rlang::call2(base::quote, val),
+      !!!expr_ls[-1],
+      .log_df = .c$log_df
+    ),
+    env = f_env
+  )
 }

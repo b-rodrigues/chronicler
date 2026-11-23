@@ -2,5 +2,4 @@
 
 #' zzz Global imports
 #' @noRd
-#' @importFrom utils data
 utils::globalVariables(c("outcome"))

@@ -60,3 +60,23 @@ test_that("write_chronicle_df xlsx content matches snapshot", {
   # so no snapshot tests
   expect_equal(actual, expected, ignore_attr = TRUE)
 })
+
+test_that("write_chronicle_df handles case-insensitive extensions, invalid extensions, and returns NULL invisibly", {
+  res <- record(dplyr::select)(mtcars, mpg, cyl)
+
+  temp_csv_upper <- tempfile(fileext = ".CSV")
+  on.exit(unlink(temp_csv_upper), add = TRUE)
+
+  ret <- expect_invisible(write_chronicle_df(res, temp_csv_upper))
+  expect_null(ret)
+  expect_true(file.exists(temp_csv_upper))
+
+  expect_error(
+    write_chronicle_df(res, tempfile(fileext = ".xls")),
+    "write_chronicle_df\\(\\) can only save data as either \\.csv or \\.xlsx"
+  )
+  expect_error(
+    write_chronicle_df(res, tempfile(fileext = "")),
+    "write_chronicle_df\\(\\) can only save data as either \\.csv or \\.xlsx"
+  )
+})

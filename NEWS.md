@@ -1,4 +1,17 @@
-# chonicler 0.3.0
+# chronicler 0.3.1
+
+## Bug fixes
+
+- Fixed scoping in `record()` and `%>=%` so decorated functions called inside another function (directly, via `|>`, `bind_record()`, or `%>=%`) resolve arguments and local variables in the caller's environment without requiring explicit unquoting (`!!`).
+- Fixed `%>=%` to evaluate namespaced and inline function expressions (e.g., `pkg::r_fun()` or `record(fun)()`).
+- Fixed `record_many()` stripping of package namespaces (e.g., `"dplyr::select"` now generates `r_select` instead of `r_:select`).
+- Fixed `make_log_df()` converting missing messages (`NA_character_`) into the literal string `"NA"`.
+- Fixed `record_ggplot()` error plots collapsing wrapped error lines with `"\n"` instead of overlapping multiple text layers.
+- Fixed `fmap_record()` to catch errors via `purely()`, propagate `Nothing` status, and renumber `ops_number` (along with `flatten_record()`).
+- Fixed `as.data.frame.chronicle()` to coerce tibbles and grouped data frames to base `data.frame` and honour `row.names`, `optional`, and `...`.
+- Fixed `write_chronicle_df()` case-insensitive extension handling, error messaging, and invisible `NULL` return value.
+
+# chronicler 0.3.0
 
 ## New features
 

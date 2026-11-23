@@ -17,7 +17,7 @@
 #' @importFrom diffobj diffObj summary
 #' @importFrom dplyr mutate lag row_number bind_rows
 #' @importFrom maybe is_nothing from_maybe nothing just
-#' @importFrom rlang enexprs
+#' @importFrom rlang enquos quo_get_env quo_get_expr call2 eval_tidy
 #' @importFrom tibble tibble
 #' @examples
 #' record(sqrt)(10)
@@ -29,30 +29,24 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
   fstring <- deparse1(substitute(.f))
 
   function(.value, ..., .log_df = data.frame()) {
-    # Capture the call and arguments
-    other_args_exprs <- rlang::enexprs(...)
+    # Capture the call and arguments as quosures to preserve caller environments
+    other_args_quos <- rlang::enquos(...)
 
     # Determine the main data value and other arguments based on call type
     if (missing(.value)) {
       # This is a direct call, not from a pipe.
       # e.g., r_sqrt(10) or r_select(df, col)
-      if (length(other_args_exprs) == 0) {
+      if (length(other_args_quos) == 0) {
         stop("At least one argument must be provided.", call. = FALSE)
       }
       # The first argument in ... is the data
-      data_val <- eval(other_args_exprs[[1]], envir = parent.frame())
-      func_args <- other_args_exprs[-1]
-      log_args_exprs <- other_args_exprs
+      data_val <- rlang::eval_tidy(other_args_quos[[1]])
+      func_args <- other_args_quos[-1]
     } else {
       # This is a piped call, either from `|>` or `%>=%` (bind_record)
       # .value is the data from the pipe.
       data_val <- .value
-      func_args <- other_args_exprs
-      # For logging, we need to represent the full call.
-      # deparse(substitute(.value)) will give the name of the variable if it came from a pipe.
-      # For bind_record, it might be complex, so we just represent it as the data itself.
-      # A simple deparse is sufficient for most logging cases.
-      log_args_exprs <- c(list(substitute(.value)), other_args_exprs)
+      func_args <- other_args_quos
     }
 
     # For logging, deparse the expressions to get a string representation
@@ -64,8 +58,32 @@ record <- function(.f, .g = (\(x) NA), strict = 2, diff = "none") {
 
     start <- Sys.time()
     pure_f <- purely(.f, strict = strict)
-    # We pass the evaluated data_val and the unevaluated other args to pure_f
-    res_pure <- do.call(pure_f, c(list(data_val), func_args))
+    if (length(func_args) == 0) {
+      res_pure <- pure_f(data_val)
+    } else {
+      arg_envs <- lapply(func_args, rlang::quo_get_env)
+      eval_env <- arg_envs[[1]]
+      same_env <- all(vapply(arg_envs, identical, logical(1), eval_env))
+
+      call_args <- if (same_env) {
+        lapply(func_args, rlang::quo_get_expr)
+      } else {
+        # Mixed environments: unwrap args matching eval_env for base NSE (e.g.
+        # subset()), while keeping foreign quosures intact for tidy eval.
+        Map(
+          function(q, env) {
+            if (identical(env, eval_env)) rlang::quo_get_expr(q) else q
+          },
+          func_args,
+          arg_envs
+        )
+      }
+
+      res_pure <- rlang::eval_tidy(
+        rlang::call2(pure_f, rlang::call2(base::quote, data_val), !!!call_args),
+        env = eval_env
+      )
+    }
     end <- Sys.time()
 
     input <- data_val
@@ -153,7 +171,7 @@ record_many <- function(
       )
     )
   }
-  sanitized_list <- gsub(".*?:", "", list_funcs)
+  sanitized_list <- sub("^.*:", "", list_funcs)
 
   string_to_paste <- paste0(
     "r_",
@@ -162,7 +180,7 @@ record_many <- function(
     "record(",
     list_funcs,
     ", .g = ",
-    deparse(substitute(.g)),
+    deparse1(substitute(.g)),
     ", strict = ",
     strict,
     ", diff = ",
@@ -209,10 +227,11 @@ make_log_df <- function(
   outcome <- if (ok) "OK! Success" else "NOK! Caution - ERROR"
 
   msg <- res_pure$log_df
-  if (is.null(msg) || length(msg) == 0) {
+  if (is.null(msg) || length(msg) == 0 || all(is.na(msg))) {
     msg <- NA_character_
+  } else {
+    msg <- paste0(msg, collapse = " ")
   }
-  msg <- paste0(msg, collapse = " ")
 
   tibble::tibble(
     ops_number = ops_number,
@@ -316,7 +335,7 @@ read_log <- function(.c, style = c("pretty", "table", "errors-only")) {
 
     # Drop the "Pipeline failed upstream" noise
     errors <- errors[
-      errors$message != "Pipeline failed upstream",
+      is.na(errors$message) | errors$message != "Pipeline failed upstream",
       ,
       drop = FALSE
     ]
@@ -452,6 +471,9 @@ unveil <- function(.c, .e = "value") {
 #' check_g(result)
 #' @export
 check_g <- function(.c, columns = c("ops_number", "function")) {
+  if (!is_chronicle(.c)) {
+    stop("`.c` must be a chronicle object.", call. = FALSE)
+  }
   as.data.frame(.c$log_df[, c(columns, "g")])
 }
 
@@ -470,5 +492,8 @@ check_g <- function(.c, columns = c("ops_number", "function")) {
 #' check_diff(result)$diff_obj # <- actually look at the diffs
 #' @export
 check_diff <- function(.c, columns = c("ops_number", "function")) {
+  if (!is_chronicle(.c)) {
+    stop("`.c` must be a chronicle object.", call. = FALSE)
+  }
   as.data.frame(.c$log_df[, c(columns, "diff_obj")])
 }

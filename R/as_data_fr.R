@@ -57,19 +57,21 @@ as.data.frame.chronicle <- function(
   # 1. Safely unveil the value from the chronicle object
   value <- unveil(x, "value")
 
-  # 2. If the value is already a data frame, we can return it directly.
-  #    This is a fast path that avoids unnecessary work.
-  if (is.data.frame(value)) {
-    return(value)
-  }
-
-  # 3. Use a tryCatch block for robust coercion and a custom error message.
-  #    This lets the base as.data.frame method do the hard work, and we
-  #    just intercept any failures to provide a better error.
+  # 2. Delegate to base as.data.frame() (ensures tibbles/grouped_dfs are
+  #    coerced to base data.frame and row.names/optional/... are respected)
   tryCatch(
     {
       # Attempt to coerce using the base S3 method on the extracted value
-      as.data.frame(value, row.names = row.names, optional = optional, ...)
+      out <- as.data.frame(
+        value,
+        row.names = row.names,
+        optional = optional,
+        ...
+      )
+      if (!is.null(row.names)) {
+        row.names(out) <- row.names
+      }
+      out
     },
     error = function(e) {
       # If the coercion fails, stop with a custom, more informative error.

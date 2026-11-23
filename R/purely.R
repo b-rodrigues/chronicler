@@ -6,7 +6,7 @@
 #' is the result of the original function `.f` applied to its inputs. The second element, `$log` is
 #' `NULL` in case everything goes well. In case of error/warning/message, `$value` is NA and `$log`
 #' holds the message. `purely()` is used by `record()` to allow the latter to handle errors.
-#' @importFrom rlang try_fetch eval_tidy cnd_message
+#' @importFrom rlang cnd_message
 #' @importFrom maybe just nothing is_nothing
 #' @examples
 #' purely(log)(10)

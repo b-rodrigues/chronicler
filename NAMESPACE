@@ -18,37 +18,45 @@ export(record_many)
 export(unveil)
 export(write_chronicle_df)
 export(zap_log)
-importFrom(diffobj,diffObj)
-importFrom(diffobj,summary)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,lag)
-importFrom(dplyr,mutate)
-importFrom(dplyr,row_number)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,annotate)
-importFrom(ggplot2,element_rect)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,theme)
-importFrom(ggplot2,theme_void)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,pdf)
-importFrom(maybe,fmap)
-importFrom(maybe,from_maybe)
-importFrom(maybe,is_nothing)
-importFrom(maybe,just)
-importFrom(maybe,nothing)
-importFrom(rlang,`%||%`)
-importFrom(rlang,abort)
-importFrom(rlang,call2)
-importFrom(rlang,call_match)
-importFrom(rlang,cnd_message)
-importFrom(rlang,enexprs)
-importFrom(rlang,enquo)
-importFrom(rlang,eval_tidy)
-importFrom(rlang,quo_get_env)
-importFrom(rlang,quo_get_expr)
-importFrom(rlang,quo_text)
-importFrom(rlang,try_fetch)
+importFrom(diffobj,
+  diffObj,
+  summary
+)
+importFrom(dplyr,
+  bind_rows,
+  lag,
+  mutate,
+  row_number
+)
+importFrom(ggplot2,
+  aes,
+  annotate,
+  element_rect,
+  ggplot,
+  theme,
+  theme_void
+)
+importFrom(grDevices,
+  dev.off,
+  pdf
+)
+importFrom(maybe,
+  from_maybe,
+  is_nothing,
+  just,
+  nothing
+)
+importFrom(rlang,
+  abort,
+  call2,
+  call_match,
+  cnd_message,
+  enquo,
+  enquos,
+  eval_tidy,
+  quo_get_env,
+  quo_get_expr,
+  quo_text
+)
 importFrom(tibble,tibble)
-importFrom(utils,data)
 importFrom(utils,write.table)
