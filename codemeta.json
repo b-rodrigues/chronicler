@@ -5,13 +5,13 @@
   "description": "Decorate functions to make them return enhanced output. The enhanced output consists in an object of type 'chronicle' containing the result of the function applied to its arguments, as well as a log detailing when the function was run, what were its inputs, what were the errors (if the function failed to run) and other useful information. Tools to handle decorated functions are included, such as a forward pipe operator that makes chaining decorated functions possible.",
   "name": "chronicler: Add Logging to Functions",
   "license": "https://spdx.org/licenses/GPL-3.0",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.5.1 (2025-06-13)",
+  "runtimePlatform": "R version 4.6.2 (2026-10-29)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -237,7 +237,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "467.398KB",
+  "fileSize": "454.221KB",
   "codeRepository": "https://github.com/b-rodrigues/chronicler",
   "releaseNotes": "https://github.com/b-rodrigues/chronicler/blob/main/NEWS.md",
   "readme": "https://github.com/b-rodrigues/chronicler/blob/master/README.md",
