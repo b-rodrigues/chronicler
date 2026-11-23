@@ -31,11 +31,11 @@ jobs:
           echo "GITHUB_PAT=${{ secrets.GITHUB_TOKEN }}" >> ~/.Renviron
         shell: bash
 
-      - uses: cachix/install-nix-action@v25
+      - uses: cachix/install-nix-action@v32
         with:
           nix_path: nixpkgs=https://github.com/rstats-on-nix/nixpkgs/archive/refs/heads/r-daily.tar.gz
 
-      - uses: cachix/cachix-action@v14
+      - uses: cachix/cachix-action@v17
         with:
           name: rstats-on-nix
 
