@@ -39,6 +39,7 @@ Let’s start by recording a valid ggplot expression.
 captures the entire call, including all the layers.
 
 ``` r
+
 r_plot <- record_ggplot(
   ggplot(mtcars, aes(x = mpg, y = hp)) +
     geom_point() +
@@ -54,6 +55,7 @@ To get the raw ggplot object back, you can use
 [`unveil()`](https://b-rodrigues.github.io/chronicler/reference/unveil.md):
 
 ``` r
+
 unveil(r_plot)
 ```
 
@@ -64,9 +66,10 @@ rendering (like the one from `geom_smooth`), use
 [`read_log()`](https://b-rodrigues.github.io/chronicler/reference/read_log.md):
 
 ``` r
+
 read_log(r_plot)
-#> [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 12:42:27 (0.944s)"
-#> [2] "Total: 0.944 secs"
+#> [1] "OK `ggplot(mtcars, aes(x = mpg, y = hp)) + geom_point() + geom_smooth(method = \"lm\", \n    formula = y ~ x)` at 12:29:28 (1.003s)"
+#> [2] "Total: 1.003 secs"
 ```
 
 ## Handling Failures Gracefully
@@ -84,6 +87,7 @@ the error is caught and logged, and an informative error plot is
 generated instead.
 
 ``` r
+
 r_bad <- record_ggplot(
   ggplot(mtcars, aes(x = mpg, y = hpp)) +  # typo: 'hpp'
     geom_point()
@@ -106,8 +110,8 @@ r_bad
 
     # The log tells you exactly what went wrong
     read_log(r_bad)
-    #> [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 12:42:29 (0.063s)"
-    #> [2] "Total: 0.063 secs"
+    #> [1] "NOK `ggplot(mtcars, aes(x = mpg, y = hpp)) + geom_point()` at 12:29:29 (0.050s)"
+    #> [2] "Total: 0.050 secs"
 
 The R session continues without interruption, and you have a clear
 record of the problem.
@@ -122,6 +126,7 @@ produces a message about the formula it’s using. By setting
 critical event and generate an error plot.
 
 ``` r
+
 r_plot_strict <- record_ggplot(
   ggplot(mtcars, aes(x = mpg, y = hp)) +
     geom_point() +
@@ -134,6 +139,7 @@ Now, instead of the plot, we see the captured message displayed in the
 error plot:
 
 ``` r
+
 unveil(r_plot_strict)
 ```
 

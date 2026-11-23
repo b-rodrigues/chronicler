@@ -10,6 +10,7 @@ Let’s first load the required packages, and the `avia` dataset included
 in the `{chronicler}` package:
 
 ``` r
+
 library(chronicler)
 library(dplyr)
 #> 
@@ -37,6 +38,7 @@ as the `.g` argument of each function below. This will make it possible
 to see how the dimensions of the data change inside the pipeline:
 
 ``` r
+
 # Define required functions
 # You can use `record_many()` to avoid having to write everything
 
@@ -51,6 +53,7 @@ r_summarise <- record(summarise, .g = dim)
 We can now start by preparing the data:
 
 ``` r
+
 avia_clean <- avia %>%
   r_select(1, contains("20")) %>% # select the first column and every column starting with 20
   bind_record(r_pivot_longer,
@@ -66,6 +69,7 @@ avia_clean <- avia %>%
 Let’s take a look at the data:
 
 ``` r
+
 avia_clean
 #> OK! Value computed successfully:
 #> ---------------
@@ -95,6 +99,7 @@ The passengers column contains `":"` characters instead of `NA`s, and
 it’s a character column. Let’s convert this column to numbers:
 
 ``` r
+
 r_mutate <- record(mutate, .g = dim)
 
 avia_clean2 <- avia_clean %>%
@@ -105,6 +110,7 @@ avia_clean2 <- avia_clean %>%
 Let’s look at the data:
 
 ``` r
+
 avia_clean2
 #> NOK! Value computed unsuccessfully:
 #> ---------------
@@ -119,12 +125,13 @@ avia_clean2
 What happened? Let’s read the log to find out!
 
 ``` r
+
 read_log(avia_clean2)
-#> [1] "OK `select` at 12:42:18 (0.009s)"      
-#> [2] "OK `pivot_longer` at 12:42:18 (0.023s)"
-#> [3] "OK `separate` at 12:42:18 (5.182s)"    
-#> [4] "NOK `mutate` at 12:42:23 (0.336s)"     
-#> [5] "Total: 5.549 secs"
+#> [1] "OK `select` at 12:29:17 (0.009s)"      
+#> [2] "OK `pivot_longer` at 12:29:18 (0.032s)"
+#> [3] "OK `separate` at 12:29:18 (5.330s)"    
+#> [4] "NOK `mutate` at 12:29:23 (0.390s)"     
+#> [5] "Total: 5.761 secs"
 ```
 
 So what happened is that
@@ -140,6 +147,7 @@ the warning: let’s record
 `strict = 1`, so that only errors can stop the pipeline:
 
 ``` r
+
 r_mutate_lenient <- record(mutate, .g = dim, strict = 1)
 
 avia_clean2 <- avia_clean %>%
@@ -157,6 +165,7 @@ now take a look at the data and see that `":"` characters where
 successfully replaced by `NA`s:
 
 ``` r
+
 avia_clean2
 #> OK! Value computed successfully:
 #> ---------------
@@ -185,6 +194,7 @@ avia_clean2
 Let’s continue and focus on monthly data:
 
 ``` r
+
 avia_monthly <- avia_clean2 %>%
   bind_record(r_filter,
               freq == "M",
@@ -210,6 +220,7 @@ which makes it possible to apply an undecorated function to a
 `chronicle` object:
 
 ``` r
+
 fmap_record(avia_monthly, count, date)
 #> OK! Value computed successfully:
 #> ---------------
@@ -239,6 +250,7 @@ fmap_record(avia_monthly, count, date)
 just a list, with its own print method:
 
 ``` r
+
 avia_monthly
 #> OK! Value computed successfully:
 #> ---------------
@@ -267,15 +279,16 @@ avia_monthly
 Now that the data is clean, we can read the log:
 
 ``` r
+
 read_log(avia_monthly)
-#> [1] "OK `select` at 12:42:18 (0.009s)"      
-#> [2] "OK `pivot_longer` at 12:42:18 (0.023s)"
-#> [3] "OK `separate` at 12:42:18 (5.182s)"    
-#> [4] "OK `mutate` at 12:42:23 (0.076s)"      
-#> [5] "OK `filter` at 12:42:24 (0.011s)"      
-#> [6] "OK `mutate` at 12:42:24 (0.010s)"      
-#> [7] "OK `select` at 12:42:24 (0.002s)"      
-#> [8] "Total: 5.313 secs"
+#> [1] "OK `select` at 12:29:17 (0.009s)"      
+#> [2] "OK `pivot_longer` at 12:29:18 (0.032s)"
+#> [3] "OK `separate` at 12:29:18 (5.330s)"    
+#> [4] "OK `mutate` at 12:29:24 (0.075s)"      
+#> [5] "OK `filter` at 12:29:24 (0.007s)"      
+#> [6] "OK `mutate` at 12:29:24 (0.010s)"      
+#> [7] "OK `select` at 12:29:24 (0.002s)"      
+#> [8] "Total: 5.466 secs"
 ```
 
 This is especially useful if the object `avia_monthly` gets saved using
@@ -286,6 +299,7 @@ steps if necessary.
 Let’s take a look at the final data set:
 
 ``` r
+
 avia_monthly %>%
   unveil("value")
 #> # A tibble: 6,643 × 3
@@ -310,6 +324,7 @@ that contains more details, and see the output of the `.g` argument
 [`dim()`](https://rdrr.io/r/base/dim.html) function):
 
 ``` r
+
 check_g(avia_monthly)
 #>   ops_number     function         g
 #> 1          1       select 1434, 325

@@ -1,6 +1,7 @@
 # A non-mathematician's introduction to monads
 
 ``` r
+
 library(chronicler)
 ```
 
@@ -27,6 +28,7 @@ Suppose for instance that you wish for your functions to provide a log
 when they’re run. If your function looks like this:
 
 ``` r
+
 my_sqrt <- function(x){
 
   sqrt(x)
@@ -37,6 +39,7 @@ my_sqrt <- function(x){
 Then you would need to rewrite this function like this:
 
 ``` r
+
 my_sqrt <- function(x, log = ""){
 
   list(sqrt(x),
@@ -56,6 +59,7 @@ What do I mean with “these functions don’t compose”? Consider another
 such function `my_log()`:
 
 ``` r
+
 my_log <- function(x, log = ""){
 
   list(log(x),
@@ -70,6 +74,7 @@ my_log <- function(x, log = ""){
 be chained:
 
 ``` r
+
 10 |>
   sqrt() |>
   log()
@@ -79,6 +84,7 @@ be chained:
 while this is not true for `my_sqrt()` and `my_log()`:
 
 ``` r
+
 10 |>
   my_sqrt() |>
   my_log()
@@ -95,6 +101,7 @@ problem, not having to rewrite every function, can be tackled using
 Let’s write one for our problem:
 
 ``` r
+
 log_it <- function(.f, ..., log = NULL){
 
   fstring <- deparse(substitute(.f))
@@ -111,6 +118,7 @@ log_it <- function(.f, ..., log = NULL){
 We can now create our functions easily:
 
 ``` r
+
 l_sqrt <- log_it(sqrt)
 
 l_sqrt(10)
@@ -138,6 +146,7 @@ composed/chained. To solve this issue, we need another function, called
 `bind()`:
 
 ``` r
+
 bind <- function(.l, .f, ...){
 
   .f(.l$result, ..., .log = .l$log)
@@ -148,6 +157,7 @@ bind <- function(.l, .f, ...){
 Using `bind()`, it is now possible to compose `l_sqrt()` and `l_log()`:
 
 ``` r
+
 10 |>
   l_sqrt() |>
   bind(l_log)
@@ -164,6 +174,7 @@ function. We can check that the result is correct by comparing it the
 `$result` value from the returned object to `log(sqrt(10))`:
 
 ``` r
+
 log(sqrt(10))
 #> [1] 1.151293
 ```
@@ -208,6 +219,7 @@ did not focus on `return`/`unit`. Also, using our function factory, it
 is easy to implement `return/unit`:
 
 ``` r
+
 unit <- log_it(identity)
 ```
 
@@ -230,6 +242,7 @@ undecorated function and applies this undecorated function to the
 monadic value:
 
 ``` r
+
 fmap <- function(m, f, ...){
 
   fstring <- deparse(substitute(f))
@@ -243,6 +256,7 @@ fmap <- function(m, f, ...){
 Let’s first define a monadic value:
 
 ``` r
+
 # Let’s use unit(), which we defined above, for this.
 
 (m <- unit(10))
@@ -256,6 +270,7 @@ Let’s first define a monadic value:
 Let’s now use `fmap()` to apply a non-decorated function to `m`:
 
 ``` r
+
 fmap(m, log)
 #> $result
 #> [1] 2.302585
@@ -270,6 +285,7 @@ used `l_log()` with `fmap()` (so we’re using a decorated function
 instead of an undecorated one):
 
 ``` r
+
 fmap(m, l_log)
 #> $result
 #> $result$result
@@ -289,6 +305,7 @@ value where the value is itself a monadic value. We would like
 implementation of `flatten()`:
 
 ``` r
+
 flatten <- function(m){
 
   list(result = m$result$result,
@@ -300,6 +317,7 @@ flatten <- function(m){
 Let’s try now:
 
 ``` r
+
 flatten(fmap(m, l_log))
 #> $result
 #> [1] 2.302585
@@ -314,6 +332,7 @@ two functions relate to `flatmap()`? It turns out that `flatmap()` is
 the composition of `flatten()` and `fmap()`:
 
 ``` r
+
 # I first define a composition operator for functions
 `%.%` <- \(f,g)(function(...)(f(g(...))))
 
@@ -325,6 +344,7 @@ flatmap <- flatten %.% fmap
 So this means that we can now replace:
 
 ``` r
+
 10 |>
   l_sqrt() |>
   bind(l_log)
@@ -339,6 +359,7 @@ So this means that we can now replace:
 by:
 
 ``` r
+
 10 |>
   l_sqrt() |>
   flatmap(l_log)
@@ -368,6 +389,7 @@ need: [`as.list()`](https://rdrr.io/r/base/list.html) is
 [`purrr::map()`](https://purrr.tidyverse.org/reference/map.html):
 
 ``` r
+
 # Since I'm using `{purrr}`, might as well use purrr::compose() instead of my own implementation
 flatmap_list <- purrr::compose(purrr::flatten, purrr::map)
 
@@ -411,6 +433,7 @@ using `bind()` (or in the case of the `{chronicler}` package
 or passing a value to a monadic function is the same.
 
 ``` r
+
 a <- as_chronicle(10)
 r_sqrt <- record(sqrt)
 
@@ -433,6 +456,7 @@ chronicler objects) does nothing. Here again we have an issue with the
 log, that’s why I focus on the value:
 
 ``` r
+
 testthat::test_that("second monadic law", {
   testthat::expect_equal(bind_record(a, as_chronicle)$value, a$value)
 })
@@ -445,6 +469,7 @@ The third law is about associativity; applying monadic functions
 successively or composing them first gives the same result.
 
 ``` r
+
 a <- as_chronicle(10)
 
 r_sqrt <- record(sqrt)
@@ -475,6 +500,7 @@ and
 [`fmap_record()`](https://b-rodrigues.github.io/chronicler/reference/fmap_record.md):
 
 ``` r
+
 
 r_sqrt <- record(sqrt)
 r_exp <- record(exp)

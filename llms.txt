@@ -9,6 +9,7 @@ The package is available on
 [CRAN](https://cran.r-project.org/package=chronicler). Install it with:
 
 ``` r
+
 install.packages("chronicler")
 ```
 
@@ -16,6 +17,7 @@ You can install the development version from
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("b-rodrigues/chronicler")
 ```
@@ -36,6 +38,7 @@ Let’s first start with a simple example, by decorating the
 [`sqrt()`](https://rdrr.io/r/base/MathFun.html) function:
 
 ``` r
+
 library(chronicler)
 
 r_sqrt <- record(sqrt)
@@ -47,6 +50,7 @@ Object `a` is now an object of class `chronicle`. Let’s take a closer
 look at `a`:
 
 ``` r
+
 a
 #> OK! Value computed successfully:
 #> ---------------
@@ -87,6 +91,7 @@ function applied to its arguments can be obtained using
 as explained:
 
 ``` r
+
 unveil(a, "value")
 #> [1] 1.000000 1.414214 1.732051 2.000000 2.236068
 ```
@@ -95,6 +100,7 @@ A log also gets generated and can be read using
 [`read_log()`](https://b-rodrigues.github.io/chronicler/reference/read_log.md):
 
 ``` r
+
 read_log(a)
 #> [1] "OK `sqrt` at 10:07:05 (0.000s)" "Total: 0.000 secs"
 ```
@@ -103,6 +109,7 @@ This is especially useful for objects that get created using multiple
 calls:
 
 ``` r
+
 r_sqrt <- record(sqrt)
 r_exp <- record(exp)
 r_mean <- record(mean)
@@ -118,6 +125,7 @@ is used to chain multiple decorated functions and will be explained in
 detail in the next section.)
 
 ``` r
+
 read_log(b)
 #> [1] "OK `sqrt` at 10:07:05 (0.000s)" "OK `exp` at 10:07:05 (0.000s)" 
 #> [3] "OK `mean` at 10:07:05 (0.000s)" "Total: 0.000 secs"
@@ -133,6 +141,7 @@ works with any function, but not yet with
 To avoid having to define every function individually, like this:
 
 ``` r
+
 r_sqrt <- record(sqrt)
 r_exp <- record(exp)
 r_mean <- record(mean)
@@ -160,6 +169,7 @@ in action
 is used to pass the output from one decorated function to the next:
 
 ``` r
+
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -186,6 +196,7 @@ output <- starwars %>%
 ```
 
 ``` r
+
 read_log(output)
 #> [1] "OK `select` at 10:07:05 (0.002s)"    "OK `group_by` at 10:07:05 (0.002s)" 
 #> [3] "OK `filter` at 10:07:05 (0.002s)"    "OK `summarise` at 10:07:05 (0.002s)"
@@ -197,6 +208,7 @@ The value can then be accessed and worked on as usual using
 as explained above:
 
 ``` r
+
 unveil(output, "value")
 #> # A tibble: 9 × 3
 #> # Groups:   species [9]
@@ -218,6 +230,7 @@ instead of
 [`bind_record()`](https://b-rodrigues.github.io/chronicler/reference/bind_record.md):
 
 ``` r
+
 output_pipe <- starwars %>%
   r_select(height, mass, species, sex) %>=%
   r_group_by(species, sex) %>=%
@@ -226,6 +239,7 @@ output_pipe <- starwars %>%
 ```
 
 ``` r
+
 unveil(output_pipe, "value")
 #> # A tibble: 9 × 3
 #> # Groups:   species [9]
@@ -252,6 +266,7 @@ By default, errors and warnings get caught and composed in the log:
 
 ``` r
 
+
 errord_output <- starwars %>%
   r_select(height, mass, species, sex) %>=% 
   r_group_by(species, sx) %>=% # typo, "sx" instead of "sex"
@@ -260,6 +275,7 @@ errord_output <- starwars %>%
 ```
 
 ``` r
+
 errord_output
 #> NOK! Value computed unsuccessfully:
 #> ---------------
@@ -275,6 +291,7 @@ Reading the log tells you which function failed, and with which error
 message:
 
 ``` r
+
 read_log(errord_output)
 #> [1] "OK `select` at 10:07:05 (0.001s)"    
 #> [2] "NOK `group_by` at 10:07:05 (0.023s)" 
@@ -288,6 +305,7 @@ and messages using the `strict` parameter of
 [`record()`](https://b-rodrigues.github.io/chronicler/reference/record.md)
 
 ``` r
+
 # Only errors:
 
 r_sqrt <- record(sqrt, strict = 1)
@@ -325,6 +343,7 @@ which will be evaluated on the output. This makes it possible to, for
 example, monitor the size of a data frame throughout the pipeline:
 
 ``` r
+
 r_group_by <- record(group_by)
 r_select <- record(select, .g = dim)
 r_summarise <- record(summarise, .g = dim)
@@ -341,6 +360,7 @@ The `$log_df` element of a `chronicle` object contains detailed
 information:
 
 ``` r
+
 unveil(output_pipe, "log_df")
 #>   ops_number     outcome  function
 #> 1          1 OK! Success    select
@@ -369,6 +389,7 @@ provided ([`dim()`](https://rdrr.io/r/base/dim.html)) using
 [`check_g()`](https://b-rodrigues.github.io/chronicler/reference/check_g.md):
 
 ``` r
+
 check_g(output_pipe)
 #>   ops_number  function     g
 #> 1          1    select 87, 4
@@ -389,6 +410,7 @@ in record, which defaults to “none”. Setting it to “full” provides, at
 each step of a workflow, the diff between the input and the output:
 
 ``` r
+
 r_group_by <- record(group_by)
 r_select <- record(select, diff = "full")
 r_summarise <- record(summarise, diff = "full")
@@ -404,6 +426,7 @@ output_pipe <- starwars %>%
 Let’s compare the input and the output to `r_filter(sex != "male")`:
 
 ``` r
+
 # The following line generates a data frame with columns `ops_number`, `function` and `diff_obj`
 # it is possible to filter on the step of interest using the `ops_number` or the `function` column
 diff_pipe <- check_diff(output_pipe)
@@ -448,6 +471,7 @@ terminal, but not here, due to the color scheme). If `diff` is set to
 “summary”, then only a summary is provided:
 
 ``` r
+
 r_group_by <- record(group_by)
 r_select <- record(select, diff = "summary")
 r_summarise <- record(summarise, diff = "summary")
@@ -491,6 +515,7 @@ It is a separate function for two main reasons:
   thrown immediately. For example:
 
 ``` r
+
 # Notice the double "g" in "mpgg" 
 plot_1 <- ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpgg))
 # The error is not thrown here due to ggplot's lazy evaluation
@@ -505,6 +530,7 @@ takes the ggplot specification as the first argument. It can also take
 the `strict` argument mentioned above.
 
 ``` r
+
 r_plot_1 <- record_ggplot(ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg)))
 ```
 
@@ -512,12 +538,14 @@ The output of this function is the same as for
 [`record()`](https://b-rodrigues.github.io/chronicler/reference/record.md):
 
 ``` r
+
 unveil(r_plot_1, "value")
 ```
 
 ![](reference/figures/README-unnamed-chunk-27-1.png)
 
 ``` r
+
 read_log(r_plot_1)
 #> [1] "OK `ggplot(data = mtcars) + geom_point(aes(y = hp, x = mpg))` at 10:07:06 (0.064s)"
 #> [2] "Total: 0.064 secs"

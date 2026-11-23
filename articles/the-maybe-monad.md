@@ -1,10 +1,12 @@
 # The Maybe monad
 
 ``` r
+
 library(chronicler)
 ```
 
 ``` r
+
 library(chronicler)
 library(maybe)
 ```
@@ -17,6 +19,7 @@ functions fail. As an example, let’s consider the
 [`maybe()`](https://armcn.github.io/maybe/reference/maybe.html):
 
 ``` r
+
 m_sqrt <- maybe(sqrt)
 
 m_sqrt(16)
@@ -28,6 +31,7 @@ m_sqrt(16)
 fails?
 
 ``` r
+
 m_sqrt("10")
 #> Nothing
 ```
@@ -43,6 +47,7 @@ When a computation fails, functions decorated using
 also return `Nothing`:
 
 ``` r
+
 r_sqrt <- record(sqrt)
 
 r_sqrt("16")
@@ -59,6 +64,7 @@ r_sqrt("16")
 and when computations succeed, `Just` values are also returned:
 
 ``` r
+
 r_sqrt <- record(sqrt)
 
 r_sqrt(16)
@@ -85,6 +91,7 @@ To recuperate the value from a `chronicler` object, users can use
 [`unveil()`](https://b-rodrigues.github.io/chronicler/reference/unveil.md):
 
 ``` r
+
 unveil(r_sqrt(16), "value")
 #> [1] 4
 ```
@@ -94,6 +101,7 @@ converts the value from the `maybe` type to the underlying type of the
 object. Compare to:
 
 ``` r
+
 (r_sqrt(16))$value
 #> Just
 #> [1] 4

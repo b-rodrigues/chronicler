@@ -68,17 +68,15 @@ starwars_chronicle <- starwars %>%
 sw_df <- as.data.frame(starwars_chronicle)
 
 class(sw_df)
-#> [1] "tbl_df"     "tbl"        "data.frame"
+#> [1] "data.frame"
 head(sw_df)
-#> # A tibble: 6 × 3
-#>   name               height  mass
-#>   <chr>               <int> <dbl>
-#> 1 Luke Skywalker        172    77
-#> 2 Darth Vader           202   136
-#> 3 Leia Organa           150    49
-#> 4 Owen Lars             178   120
-#> 5 Beru Whitesun Lars    165    75
-#> 6 Biggs Darklighter     183    84
+#>                 name height mass
+#> 1     Luke Skywalker    172   77
+#> 2        Darth Vader    202  136
+#> 3        Leia Organa    150   49
+#> 4          Owen Lars    178  120
+#> 5 Beru Whitesun Lars    165   75
+#> 6  Biggs Darklighter    183   84
 
 
 # --- Error Example ---

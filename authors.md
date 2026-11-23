@@ -10,11 +10,11 @@
 ## Citation
 
 Rodrigues B (2026). *chronicler: Add Logging to Functions*. R package
-version 0.3.0.
+version 0.3.1.
 
     @Manual{,
       title = {chronicler: Add Logging to Functions},
       author = {Bruno Rodrigues},
       year = {2026},
-      note = {R package version 0.3.0},
+      note = {R package version 0.3.1},
     }

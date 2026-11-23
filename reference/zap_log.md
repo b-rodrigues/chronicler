@@ -43,8 +43,8 @@ original_chronicle <- starwars %>%
 cat("--- Original Log ---\n")
 #> --- Original Log ---
 read_log(original_chronicle)
-#> [1] "OK `select` at 12:42:08 (0.002s)" "OK `filter` at 12:42:08 (0.001s)"
-#> [3] "Total: 0.002 secs"               
+#> [1] "OK `select` at 12:29:07 (0.002s)" "OK `filter` at 12:29:07 (0.001s)"
+#> [3] "Total: 0.003 secs"               
 
 # 3. Zap the log
 zapped_chronicle <- zap_log(original_chronicle)
@@ -54,7 +54,7 @@ cat("\n--- Zapped Log ---\n")
 #> 
 #> --- Zapped Log ---
 read_log(zapped_chronicle)
-#> [1] "OK `zap_log` at 12:42:08 (0.000s)" "Total: 0.000 secs"                
+#> [1] "OK `zap_log` at 12:29:07 (0.000s)" "Total: 0.000 secs"                
 
 # 5. The underlying data value is unaffected
 identical(
